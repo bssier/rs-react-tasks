@@ -1,0 +1,5 @@
+.book-line td {
+  color: var(--main-text-color);
+  padding-left: var(--basic-padding);
+  font-family: Quicksand-Light, sans-serif;
+}
