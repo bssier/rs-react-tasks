@@ -1,7 +1,9 @@
 :root {
-  --main-bg-color: #1C0B26;
-  --main-text-color: #D9E2FF;
+  --main-bg-color: #1c0b26;
+  --main-text-color: #d9e2ff;
   --input-color: #515a7b;
+  --main-border-color: #6e779a;
   --basic-text-font: 16px;
+  --big-text-font: 22px;
   --basic-padding: 10px;
 }

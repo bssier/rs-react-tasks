@@ -1,0 +1,23 @@
+footer {
+  height: 75px;
+  width: 100%;
+  border-top: 1px solid var(--main-border-color);
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.links-container {
+  display: flex;
+  gap: 13vw;
+  padding-right: calc(var(--basic-padding) + 20px);
+  font-family: Quicksand-Light, sans-serif;
+
+  & a {
+    color: white;
+    text-decoration: none;
+  }
+}

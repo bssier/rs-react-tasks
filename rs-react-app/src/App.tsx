@@ -1,18 +1,29 @@
-import {Component} from "react";
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import "./App.css"
-import {Header} from "./Components/Header/Header.tsx";
-import {HomePage} from "./pages/home-page/HomePage.tsx";
+import { Component } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './App.css';
+import { Header } from './Components/Header/Header.tsx';
+import { HomePage } from './pages/home-page/HomePage.tsx';
+import { Footer } from './Components/Footer/Footer.tsx';
 
 export class App extends Component {
-    render() {
-        return (
-            <BrowserRouter>
-                <Header/>
-                <Routes>
-                    <Route path={"/"} element={<HomePage/>}/>
-                </Routes>
-            </BrowserRouter>
-        )
-    }
+  state = {
+    searchQuery: localStorage.getItem('input-value') || '',
+  };
+  handleSearch = (query: string) => {
+    this.setState({ searchQuery: query });
+  };
+  render() {
+    return (
+      <BrowserRouter>
+        <Header handleSearch={this.handleSearch} />
+        <Routes>
+          <Route
+            path={'/'}
+            element={<HomePage query={this.state.searchQuery} />}
+          />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    );
+  }
 }

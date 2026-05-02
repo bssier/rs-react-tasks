@@ -1,0 +1,67 @@
+main {
+  width: 100%;
+  min-height: calc(100vh - 150px);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding-top: calc(var(--basic-padding) + 15px);
+  padding-bottom: calc(var(--basic-padding) + 15px);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-bottom: 60px;
+  gap: 15px;
+  font-family: Quicksand-Light, sans-serif;
+  color: white;
+  margin-top: auto;
+}
+
+.book-table {
+  width: 50vw;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.book-table th,
+.book-table td {
+  border: 1px solid var(--main-text-color);
+}
+
+.prev-button-container,
+.next-button-container {
+  cursor: pointer;
+}
+
+.loader,
+.no-result {
+  color: var(--main-text-color);
+  padding-top: 100px;
+  text-align: center;
+  font-family: Quicksand-Light, sans-serif;
+}
+
+.book-table thead {
+  color: var(--main-text-color);
+  text-align: center;
+  font-family: Quicksand-Bold, sans-serif;
+}
+
+.greeting-menu {
+  width: 50vw;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 100px;
+}
+
+.greeting-menu span{
+  text-align: center;
+  color: var(--main-text-color);
+  font-family: Quicksand-Light, sans-serif;
+  font-size: 25px;
+}
