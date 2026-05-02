@@ -29,8 +29,8 @@ export class Header extends Component<PropsHeader, HeaderState> {
         clearTimeout(this.searchDebounceTimer);
       }
 
-      if (this.state.inputValue.trim() === this.props.searchQuery){
-        return
+      if (this.state.inputValue.trim() === this.props.searchQuery) {
+        return;
       }
 
       if (value.trim().length >= 3) {
