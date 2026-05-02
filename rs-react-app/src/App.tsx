@@ -15,7 +15,7 @@ export class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Header handleSearch={this.handleSearch} />
+        <Header handleSearch={this.handleSearch} searchQuery={this.state.searchQuery}/>
         <Routes>
           <Route
             path={'/'}

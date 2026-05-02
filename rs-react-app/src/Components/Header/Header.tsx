@@ -5,6 +5,7 @@ import { BookIcon } from '../../assets/BookIcon.tsx';
 
 interface PropsHeader {
   handleSearch: (query: string) => void;
+  searchQuery: string;
 }
 
 interface HeaderState {
@@ -26,6 +27,10 @@ export class Header extends Component<PropsHeader, HeaderState> {
       this.setState({ inputValue: e.target.value });
       if (this.searchDebounceTimer) {
         clearTimeout(this.searchDebounceTimer);
+      }
+
+      if (this.state.inputValue.trim() === this.props.searchQuery){
+        return
       }
 
       if (value.trim().length >= 3) {
