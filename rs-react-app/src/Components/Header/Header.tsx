@@ -44,6 +44,11 @@ export class Header extends Component<PropsHeader, HeaderState> {
       this.handleSearchClick();
     }
   };
+  generateError = ()=>{
+     this.setState(()=>{
+       throw new Error("Special error")
+     })
+  }
 
   render() {
     return (
@@ -73,6 +78,9 @@ export class Header extends Component<PropsHeader, HeaderState> {
               <Search />
             </div>
           </button>
+        </div>
+        <div className={'error-generate-container'}>
+            <button onClick={this.generateError}>Generate Error</button>
         </div>
       </header>
     );

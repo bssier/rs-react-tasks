@@ -5,6 +5,7 @@ import { Header } from './Components/Header/Header.tsx';
 import { HomePage } from './pages/home-page/HomePage.tsx';
 import { Footer } from './Components/Footer/Footer.tsx';
 import { NotFoundPage } from './pages/not-found/NotFoundPage.tsx';
+import {ErrorBoudary} from "./Components/ErrorBoudary/ErrorBoudary.tsx";
 
 export class App extends Component {
   state = {
@@ -16,6 +17,7 @@ export class App extends Component {
 
   render() {
     return (
+        <ErrorBoudary>
       <BrowserRouter>
         <Header
           handleSearch={this.handleSearch}
@@ -30,6 +32,7 @@ export class App extends Component {
         </Routes>
         <Footer />
       </BrowserRouter>
+        </ErrorBoudary>
     );
   }
 }
