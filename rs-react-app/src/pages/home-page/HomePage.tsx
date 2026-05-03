@@ -43,7 +43,7 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
         currentPage: page,
       });
     } catch (err) {
-      console.log('Ошибка', err);
+      console.log('Error', err);
     }
   };
 
@@ -98,25 +98,27 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
             for your request(
           </div>
         )}
-        <table
-          className={'book-table'}
-          style={{
-            display: isLoading || books.length === 0 ? 'none' : 'table',
-          }}
-        >
-          <thead>
+        <div className={"table-wrapper"}>
+          <table
+              className={'book-table'}
+              style={{
+                display: isLoading || books.length === 0 ? 'none' : 'table',
+              }}
+          >
+            <thead>
             <tr>
               <td>Title</td>
               <td>Author</td>
               <td>Publish year</td>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
             {books.map((book) => (
-              <BookLine key={book.key} book={book} />
+                <BookLine key={book.key} book={book} />
             ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
         {(totalBooks > 0 || isLoading) && (
           <div className={'pagination'}>
             <div

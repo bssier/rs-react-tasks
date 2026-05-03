@@ -17,34 +17,26 @@ export class Header extends Component<PropsHeader, HeaderState> {
     inputValue: localStorage.getItem('input-value') || '',
   };
 
-  searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const regExpOnlyEngSym = /^[a-zA-Z\s]*$/;
-    const value = e.target.value;
+      const regExpOnlyEngSym = /^[a-zA-Z\s]*$/;
+      const value = e.target.value;
 
-    if (regExpOnlyEngSym.test(value)) {
-      this.setState({ inputValue: e.target.value });
-      if (this.searchDebounceTimer) {
-        clearTimeout(this.searchDebounceTimer);
+      if (regExpOnlyEngSym.test(value)) {
+          this.setState({ inputValue: value });
       }
-
-      if (this.state.inputValue.trim() === this.props.searchQuery) {
-        return;
-      }
-
-      if (value.trim().length >= 3) {
-        this.searchDebounceTimer = setTimeout(() => {
-          this.props.handleSearch(value);
-          localStorage.setItem('input-value', value);
-        }, 600);
-      }
-    }
   };
 
   handleSearchClick = () => {
-    if (this.state.inputValue.trim()) {
-      this.props.handleSearch(this.state.inputValue);
+    const valueWithoutspace = this.state.inputValue.trim();
+
+    if (valueWithoutspace === this.props.searchQuery){
+        return;
+    }
+
+    if (valueWithoutspace.length >= 3) {
+      this.props.handleSearch(valueWithoutspace);
+      localStorage.setItem('input-value', valueWithoutspace)
     }
   };
 
