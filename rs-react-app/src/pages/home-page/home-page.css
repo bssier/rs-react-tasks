@@ -72,3 +72,12 @@ main {
   width: 50vw;
   min-height: 0;
 }
+
+.error-showing-container {
+  padding-top: 100px;
+}
+
+.error-showing-container span {
+  color: red;
+  font-family: Quicksand-Light, sans-serif;
+}

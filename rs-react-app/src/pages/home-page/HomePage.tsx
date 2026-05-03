@@ -18,6 +18,7 @@ interface HomePageState {
   isLoading: boolean;
   currentPage: number;
   totalBooks: number;
+  errorMessage: string;
 }
 
 export class HomePage extends Component<HomePageProps, HomePageState> {
@@ -26,6 +27,7 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
     isLoading: false,
     currentPage: 1,
     totalBooks: 0,
+    errorMessage: '',
   };
 
   fetchBooks = async (searchQuery: string, page: number = 1) => {
@@ -35,6 +37,15 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
       const response = await fetch(
         `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=15&page=${page}`
       );
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Resource not found');
+        }
+        if (response.status >= 500) {
+          throw new Error('Server error. We try fix problem, please wait');
+        }
+        throw new Error('Error data loading');
+      }
       const data = await response.json();
       this.setState({
         books: data.docs,
@@ -43,7 +54,12 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
         currentPage: page,
       });
     } catch (err) {
-      console.log('Error', err);
+      let errorMessage = '';
+
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      this.setState({ errorMessage: errorMessage, isLoading: false });
     }
   };
 
@@ -71,7 +87,8 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
   };
 
   render() {
-    const { books, isLoading, currentPage, totalBooks } = this.state;
+    const { books, isLoading, currentPage, totalBooks, errorMessage } =
+      this.state;
     const maxPage = Math.ceil(totalBooks / 15);
     return (
       <main>
@@ -92,30 +109,35 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
           </div>
         )}
         {isLoading && <div className={'loader'}>loading...</div>}
+        {errorMessage && (
+          <div className={'error-showing-container'}>
+            <span>Error: {errorMessage}</span>
+          </div>
+        )}
         {!isLoading && this.props.query && totalBooks === 0 && (
           <div className={'no-result'}>
             Sorry, we have a very large library, but we couldn't find anything
             for your request(
           </div>
         )}
-        <div className={"table-wrapper"}>
+        <div className={'table-wrapper'}>
           <table
-              className={'book-table'}
-              style={{
-                display: isLoading || books.length === 0 ? 'none' : 'table',
-              }}
+            className={'book-table'}
+            style={{
+              display: isLoading || books.length === 0 ? 'none' : 'table',
+            }}
           >
             <thead>
-            <tr>
-              <td>Title</td>
-              <td>Author</td>
-              <td>Publish year</td>
-            </tr>
+              <tr>
+                <td>Title</td>
+                <td>Author</td>
+                <td>Publish year</td>
+              </tr>
             </thead>
             <tbody>
-            {books.map((book) => (
+              {books.map((book) => (
                 <BookLine key={book.key} book={book} />
-            ))}
+              ))}
             </tbody>
           </table>
         </div>

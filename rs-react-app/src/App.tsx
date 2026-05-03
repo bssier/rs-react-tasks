@@ -4,6 +4,7 @@ import './App.css';
 import { Header } from './Components/Header/Header.tsx';
 import { HomePage } from './pages/home-page/HomePage.tsx';
 import { Footer } from './Components/Footer/Footer.tsx';
+import { NotFoundPage } from './pages/not-found/NotFoundPage.tsx';
 
 export class App extends Component {
   state = {
@@ -12,6 +13,7 @@ export class App extends Component {
   handleSearch = (query: string) => {
     this.setState({ searchQuery: query });
   };
+
   render() {
     return (
       <BrowserRouter>
@@ -24,6 +26,7 @@ export class App extends Component {
             path={'/'}
             element={<HomePage query={this.state.searchQuery} />}
           />
+          <Route path={'*'} element={<NotFoundPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

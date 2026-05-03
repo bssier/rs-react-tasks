@@ -17,26 +17,25 @@ export class Header extends Component<PropsHeader, HeaderState> {
     inputValue: localStorage.getItem('input-value') || '',
   };
 
-
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const regExpOnlyEngSym = /^[a-zA-Z\s]*$/;
-      const value = e.target.value;
+    const regExpOnlyEngSym = /^[a-zA-Z\s]*$/;
+    const value = e.target.value;
 
-      if (regExpOnlyEngSym.test(value)) {
-          this.setState({ inputValue: value });
-      }
+    if (regExpOnlyEngSym.test(value)) {
+      this.setState({ inputValue: value });
+    }
   };
 
   handleSearchClick = () => {
     const valueWithoutspace = this.state.inputValue.trim();
 
-    if (valueWithoutspace === this.props.searchQuery){
-        return;
+    if (valueWithoutspace === this.props.searchQuery) {
+      return;
     }
 
     if (valueWithoutspace.length >= 3) {
       this.props.handleSearch(valueWithoutspace);
-      localStorage.setItem('input-value', valueWithoutspace)
+      localStorage.setItem('input-value', valueWithoutspace);
     }
   };
 
