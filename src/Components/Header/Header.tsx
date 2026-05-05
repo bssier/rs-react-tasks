@@ -36,6 +36,7 @@ export class Header extends Component<PropsHeader, HeaderState> {
 
     if (valueWithoutspace.length >= 3) {
       this.props.handleSearch(valueWithoutspace);
+      this.setState({ inputValue: valueWithoutspace });
       localStorage.setItem('input-value', valueWithoutspace);
     }
   };
