@@ -27,7 +27,7 @@ export class Header extends Component<PropsHeader, HeaderState> {
   };
 
   handleSearchClick = () => {
-    const valueWithoutspace = this.state.inputValue.trim();
+    const valueWithoutspace = this.state.inputValue.trim().trimStart();
 
     if (valueWithoutspace === this.props.searchQuery) {
       return;
