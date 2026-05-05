@@ -5,7 +5,7 @@ import { Header } from './Components/Header/Header.tsx';
 import { HomePage } from './pages/home-page/HomePage.tsx';
 import { Footer } from './Components/Footer/Footer.tsx';
 import { NotFoundPage } from './pages/not-found/NotFoundPage.tsx';
-import {ErrorBoudary} from "./Components/ErrorBoudary/ErrorBoudary.tsx";
+import { ErrorBoudary } from './Components/ErrorBoudary/ErrorBoudary.tsx';
 
 export class App extends Component {
   state = {
@@ -17,22 +17,22 @@ export class App extends Component {
 
   render() {
     return (
-        <ErrorBoudary>
-      <BrowserRouter>
-        <Header
-          handleSearch={this.handleSearch}
-          searchQuery={this.state.searchQuery}
-        />
-        <Routes>
-          <Route
-            path={'/'}
-            element={<HomePage query={this.state.searchQuery} />}
+      <ErrorBoudary>
+        <BrowserRouter>
+          <Header
+            handleSearch={this.handleSearch}
+            searchQuery={this.state.searchQuery}
           />
-          <Route path={'*'} element={<NotFoundPage />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-        </ErrorBoudary>
+          <Routes>
+            <Route
+              path={'/'}
+              element={<HomePage query={this.state.searchQuery} />}
+            />
+            <Route path={'*'} element={<NotFoundPage />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </ErrorBoudary>
     );
   }
 }
