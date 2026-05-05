@@ -30,6 +30,7 @@ export class Header extends Component<PropsHeader, HeaderState> {
     const valueWithoutspace = this.state.inputValue.trim().trimStart();
 
     if (valueWithoutspace === this.props.searchQuery) {
+      this.setState({ inputValue: valueWithoutspace });
       return;
     }
 
