@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import './Header.css';
 import { Search } from '../../assets/Search.tsx';
-import { BookIcon } from '../../assets/BookIcon.tsx';
+import { Icon } from '../../assets/Icon.tsx';
 
 interface PropsHeader {
   handleSearch: (query: string) => void;
@@ -57,20 +57,14 @@ export class Header extends Component<PropsHeader, HeaderState> {
       <header>
         <div className={'logo'}>
           <div className={'logo-container'}>
-            <BookIcon />
-            <div className={'text-logo-container'}>
-              <span className={'text-logo'}>findyoubook.com</span>
-              <span className={'text-logo-description'}>
-                read.think.improve.inspired
-              </span>
-            </div>
+            <Icon />
           </div>
         </div>
         <div className={'search-container'}>
           <input
             type={'text'}
             className={'search-input'}
-            placeholder={'Search books... 👀'}
+            placeholder={'Search pokemons... 👀'}
             value={this.state.inputValue}
             onChange={this.handleInputChange}
             onKeyDown={this.handleEnterClick}
