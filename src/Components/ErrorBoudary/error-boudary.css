@@ -4,3 +4,11 @@
   text-align: center;
   padding-top: 100px;
 }
+
+.error-boudary-container a {
+  color: black;
+}
+
+.error-boudary-container span {
+  color: black;
+}

@@ -60,19 +60,19 @@ main {
 
 .greeting-menu span {
   text-align: center;
-  color: var(--main-text-color);
+  color: black;
   font-family: Quicksand-Light, sans-serif;
   font-size: 25px;
 }
 
-.table-wrapper {
+.list-wrapper {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   height: 60vh;
   overflow-y: auto;
   flex: 1;
-  width: 50vw;
+  width: 26vw;
   min-height: 0;
 }
 
@@ -83,4 +83,10 @@ main {
 .error-showing-container span {
   color: red;
   font-family: Quicksand-Light, sans-serif;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

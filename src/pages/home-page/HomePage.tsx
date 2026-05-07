@@ -1,45 +1,42 @@
 import { Component } from 'react';
-import { BookLine } from '../../Components/BookLine/BookLine.tsx';
+import { Line } from '../../Components/Line/Line.tsx';
 import './home-page.css';
 
 interface HomePageProps {
   query: string;
 }
 
-interface Book {
-  key: string;
+interface Item {
+  hp: number;
+  attack: number;
+  defense: number;
+  speed: number;
+  img: string;
   title: string;
-  author_name?: string[];
-  first_publish_year?: number;
 }
 
-interface HomePageState {
-  books: Book[];
+interface HomePageData {
   isLoading: boolean;
-  currentPage: number;
-  totalBooks: number;
   errorMessage: string;
+  items: Item[] | null;
 }
 
-export class HomePage extends Component<HomePageProps, HomePageState> {
-  state: HomePageState = {
-    books: [],
+export class HomePage extends Component<HomePageProps, HomePageData> {
+  state: HomePageData = {
     isLoading: false,
-    currentPage: 1,
-    totalBooks: 0,
     errorMessage: '',
+    items: null,
   };
 
-  fetchBooks = async (searchQuery: string, page: number = 1) => {
-    if (!searchQuery || searchQuery.trim().length < 3) return;
-    this.setState({ isLoading: true });
+  fetchData = async (query: string) => {
+    if (!query || query.trim().length < 3) return;
+    this.setState({ isLoading: true, items: null, errorMessage: '' });
+    const url = `https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`;
     try {
-      const response = await fetch(
-        `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=15&page=${page}`
-      );
+      const response = await fetch(url);
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error('Resource not found');
+          throw new Error('Not found');
         }
         if (response.status >= 500) {
           throw new Error('Server error. We try fix problem, please wait');
@@ -47,11 +44,19 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
         throw new Error('Error data loading');
       }
       const data = await response.json();
+
+      const mappedItem: Item = {
+        title: data.name,
+        img: data.sprites.front_default || '',
+        hp: data.stats[0]?.base_stat || 0,
+        attack: data.stats[1]?.base_stat || 0,
+        defense: data.stats[2]?.base_stat || 0,
+        speed: data.stats[5]?.base_stat || 0,
+      };
+
       this.setState({
-        books: data.docs,
-        totalBooks: data.numFound,
+        items: [mappedItem],
         isLoading: false,
-        currentPage: page,
       });
     } catch (err) {
       let errorMessage = '';
@@ -65,101 +70,40 @@ export class HomePage extends Component<HomePageProps, HomePageState> {
 
   componentDidMount() {
     if (this.props.query) {
-      this.fetchBooks(this.props.query, 1);
+      this.fetchData(this.props.query);
     }
   }
 
   componentDidUpdate(prevProps: HomePageProps) {
     if (this.props.query !== prevProps.query) {
-      this.fetchBooks(this.props.query, 1);
+      this.fetchData(this.props.query);
     }
   }
 
-  handlePageChange = (direction: 'next' | 'prev') => {
-    const { currentPage, totalBooks } = this.state;
-    const maxPage = Math.ceil(totalBooks / 15);
-
-    if (direction === 'next' && currentPage < maxPage) {
-      this.fetchBooks(this.props.query, currentPage + 1);
-    } else if (direction === 'prev' && currentPage > 1) {
-      this.fetchBooks(this.props.query, currentPage - 1);
-    }
-  };
-
   render() {
-    const { books, isLoading, currentPage, totalBooks, errorMessage } =
-      this.state;
-    const maxPage = Math.ceil(totalBooks / 15);
+    const { isLoading, errorMessage } = this.state;
     return (
       <main>
         {!localStorage.getItem('input-value') && (
           <div className={'greeting-menu'}>
             <span>
-              Hi, dear user! As you might have guessed, this is a book search
-              app. If you want to find something, enter the author's name or the
-              book's title, but it must be strictly in English.
-            </span>
-            <span>
-              And please don't be angry about the long loading time. It's not a
-              problem with your internet connection, it's just that the Book API
-              is so huge that if you enter a four-character query, for example,
-              it can take a very long time to find the books you need. So if you
-              don't want to wait forever, make a more precise query.
+              Hi, dear user! As you might have guessed, this is a app about
+              search pokemons. If you want to find something, enter the pokemon
+              name but it must be strictly in English.
             </span>
           </div>
         )}
         {isLoading && <div className={'loader'}>loading...</div>}
         {errorMessage && (
           <div className={'error-showing-container'}>
-            <span>Error: {errorMessage}</span>
+            <span>{errorMessage}</span>
           </div>
         )}
-        {!isLoading && this.props.query && totalBooks === 0 && (
-          <div className={'no-result'}>
-            Sorry, we have a very large library, but we couldn't find anything
-            for your request(
+        <div className={'list-wrapper'}>
+          <div className={'list'}>
+            {this.state.items && <Line item={this.state.items[0]} />}
           </div>
-        )}
-        <div className={'table-wrapper'}>
-          <table
-            className={'book-table'}
-            style={{
-              display: isLoading || books.length === 0 ? 'none' : 'table',
-            }}
-          >
-            <thead>
-              <tr>
-                <td>Title</td>
-                <td>Author</td>
-                <td>Publish year</td>
-              </tr>
-            </thead>
-            <tbody>
-              {books.map((book) => (
-                <BookLine key={book.key} book={book} />
-              ))}
-            </tbody>
-          </table>
         </div>
-        {(totalBooks > 0 || isLoading) && (
-          <div className={'pagination'}>
-            <div
-              className={'prev-button-container'}
-              onClick={() => this.handlePageChange('prev')}
-            >
-              <span className={'prev-button'}>prev</span>
-            </div>
-            <div className={'counter-container'}>
-              {currentPage} / {maxPage}
-            </div>
-            <div
-              className={'next-button-container'}
-              onClick={() => this.handlePageChange('next')}
-            >
-              <span className={'next-button'}>next</span>
-            </div>
-          </div>
-        )}
       </main>
     );
   }
