@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import './Header.css';
-import { Search } from '../../assets/Search.tsx';
-import { Icon } from '../../assets/Icon.tsx';
+import { Search } from '../../assets/Search';
+import { Icon } from '../../assets/Icon';
 
 interface PropsHeader {
   handleSearch: (query: string) => void;
@@ -69,7 +69,7 @@ export class Header extends Component<PropsHeader, HeaderState> {
             onChange={this.handleInputChange}
             onKeyDown={this.handleEnterClick}
           />
-          <button className={'search-button'} onClick={this.handleSearchClick}>
+          <button className={'search-button'} onClick={this.handleSearchClick} aria-label={"search"}>
             <div className={'search-icon-container'}>
               <Search />
             </div>
