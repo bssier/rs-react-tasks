@@ -1,4 +1,4 @@
-import {Component, type FC, useState} from 'react';
+import {type FC, useState} from 'react';
 import './Header.css';
 import { Search } from '../../assets/Search';
 import Logo from '../../assets/pokemon-logo.svg';
