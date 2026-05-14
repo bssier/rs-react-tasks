@@ -1,84 +1,80 @@
-import { Component } from 'react';
+import {Component, type FC, useState} from 'react';
 import './Header.css';
 import { Search } from '../../assets/Search';
-import { Icon } from '../../assets/Icon';
+import Logo from '../../assets/pokemon-logo.svg';
 
 interface PropsHeader {
   handleSearch: (query: string) => void;
   searchQuery: string;
 }
 
-interface HeaderState {
-  inputValue: string;
-}
+export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery })=>{
+  const [inputValue, setInputValue] = useState(localStorage.getItem('input-value') || '')
+  const [error, setError] = useState<Error | null>(null);
 
-export class Header extends Component<PropsHeader, HeaderState> {
-  state: HeaderState = {
-    inputValue: localStorage.getItem('input-value') || '',
-  };
-
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regExpOnlyEngSym = /^[a-zA-Z\s]*$/;
     const value = e.target.value;
 
     if (regExpOnlyEngSym.test(value)) {
-      this.setState({ inputValue: value });
+      setInputValue(value)
     }
   };
 
-  handleSearchClick = () => {
-    const valueWithoutspace = this.state.inputValue.trim().trimStart();
+  const handleSearchClick = () => {
+    const valueWithoutspace = inputValue.trim().trimStart();
 
-    if (valueWithoutspace === this.props.searchQuery) {
-      this.setState({ inputValue: valueWithoutspace });
+    if (valueWithoutspace === searchQuery) {
+      setInputValue(valueWithoutspace);
       return;
     }
 
     if (valueWithoutspace.length >= 3) {
-      this.props.handleSearch(valueWithoutspace);
-      this.setState({ inputValue: valueWithoutspace });
+      handleSearch(valueWithoutspace);
+      setInputValue(valueWithoutspace)
       localStorage.setItem('input-value', valueWithoutspace);
     }
-  };
+  }
 
-  handleEnterClick = (e: React.KeyboardEvent) => {
+  const handleEnterClick = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      this.handleSearchClick();
+      handleSearchClick();
     }
   };
-  generateError = () => {
-    this.setState(() => {
-      throw new Error('Special error');
-    });
+
+  if (error) {
+    throw error;
+  }
+
+  const generateError = () => {
+    setError(new Error('Special error'));
   };
 
-  render() {
-    return (
+  return (
       <header>
         <div className={'logo'}>
           <div className={'logo-container'}>
-            <Icon />
+            <img src={Logo} alt={"logo"} className={'logo'}/>
           </div>
         </div>
         <div className={'search-container'}>
           <input
-            type={'text'}
-            className={'search-input'}
-            placeholder={'Search pokemons... 👀'}
-            value={this.state.inputValue}
-            onChange={this.handleInputChange}
-            onKeyDown={this.handleEnterClick}
+              type={'text'}
+              className={'search-input'}
+              placeholder={'Search pokemons... 👀'}
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyDown={handleEnterClick}
           />
-          <button className={'search-button'} onClick={this.handleSearchClick} aria-label={"search"}>
+          <button className={'search-button'} onClick={handleSearchClick} aria-label={"search"}>
             <div className={'search-icon-container'}>
               <Search />
             </div>
           </button>
         </div>
         <div className={'error-generate-container'}>
-          <button onClick={this.generateError}>Generate Error</button>
+          <button onClick={generateError}>Generate Error</button>
         </div>
       </header>
-    );
-  }
+  );
 }

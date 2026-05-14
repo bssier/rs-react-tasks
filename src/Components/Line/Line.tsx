@@ -14,10 +14,9 @@ interface Props {
   item: Item;
 }
 
-export class Line extends Component<Props> {
-  render() {
-    const { hp, attack, defense, speed, img, title } = this.props.item;
-    return (
+export const Line = ({item}: Props)=>{
+  const { hp, attack, defense, speed, img, title } = item;
+  return(
       <div className={'line'}>
         <div className={'title'}>
           {title[0].toUpperCase() + title.slice(1)}
@@ -30,6 +29,5 @@ export class Line extends Component<Props> {
           <div className={'stats'}>Hp: {hp}</div>
         </div>
       </div>
-    );
-  }
+  )
 }

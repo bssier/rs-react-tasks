@@ -58,7 +58,7 @@ main {
   padding-top: 100px;
 }
 
-.greeting-menu span {
+.greeting-menu p {
   text-align: center;
   color: black;
   font-family: Quicksand-Light, sans-serif;

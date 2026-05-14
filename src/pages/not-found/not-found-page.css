@@ -10,17 +10,17 @@
 }
 
 .not-found-header {
-  color: var(--main-text-color);
+  color: black;
   font-family: Quicksand-Bold, sans-serif;
   font-size: 32px;
 }
 
 .not-found-text {
-  color: var(--main-text-color);
+  color: black;
   font-family: Quicksand-Light, sans-serif;
 }
 
 .not-found-text a {
   text-decoration: none;
-  color: var(--main-text-color);
+  color: black;
 }
