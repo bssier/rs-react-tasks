@@ -1,50 +1,51 @@
-import {useEffect, useState} from 'react';
-import {BrowserRouter, Route, Outlet, Routes} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Outlet, Routes } from 'react-router-dom';
 import './App.css';
-import {Header} from './Components/Header/Header';
-import {HomePage} from './pages/home-page/HomePage';
-import {Footer} from './Components/Footer/Footer';
-import {NotFoundPage} from './pages/not-found/NotFoundPage';
-import {ErrorBoundary} from './Components/ErrorBoudary/ErrorBoundary.tsx';
-import {AboutPage} from "./pages/AboutPage/AboutPage.tsx";
-
+import { Header } from './Components/Header/Header';
+import { HomePage } from './pages/home-page/HomePage';
+import { Footer } from './Components/Footer/Footer';
+import { NotFoundPage } from './pages/not-found/NotFoundPage';
+import { ErrorBoundary } from './Components/ErrorBoudary/ErrorBoundary.tsx';
+import { AboutPage } from './pages/AboutPage/AboutPage.tsx';
+import { ElementDetail } from './Components/PokemonDetail/ElementDetail.tsx';
 
 export const App = () => {
-    const [searchQuery, setSearchQuery] = useState<string>(() => {
-        return localStorage.getItem('input-value') || '';
-    });
+  const [searchQuery, setSearchQuery] = useState<string>(() => {
+    return localStorage.getItem('input-value') || '';
+  });
 
-    useEffect(() => {
-        localStorage.setItem('input-value', searchQuery);
-    }, [searchQuery]);
+  useEffect(() => {
+    localStorage.setItem('input-value', searchQuery);
+  }, [searchQuery]);
 
-    const handleSearch = (query: string) => {
-        setSearchQuery(query);
-    };
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
-    const MainLayout = () => {
-        return (
-            <>
-                <Header handleSearch={handleSearch} searchQuery={searchQuery}/>
-                <Outlet/>
-                <Footer/>
-            </>
-        )
-    }
-
+  const MainLayout = () => {
     return (
-        <BrowserRouter>
-            <ErrorBoundary>
-                <Routes>
+      <>
+        <Header handleSearch={handleSearch} searchQuery={searchQuery} />
+        <Outlet />
+        <Footer />
+      </>
+    );
+  };
 
-                    <Route element={<MainLayout/>}>
-                        <Route path={"/"} element={<HomePage query={searchQuery}/>}></Route>
-                        <Route path={"/about"} element={<AboutPage/>}></Route>
-                    </Route>
+  return (
+    <BrowserRouter>
+      <ErrorBoundary>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path={'/'} element={<HomePage query={searchQuery} />}>
+              <Route path="pokemon/:name" element={<ElementDetail />} />
+            </Route>
+            <Route path={'/about'} element={<AboutPage />}></Route>
+          </Route>
 
-                    <Route path={"*"} element={<NotFoundPage/>}/>
-                </Routes>
-            </ErrorBoundary>
-        </BrowserRouter>
-    )
-}
+          <Route path={'*'} element={<NotFoundPage />} />
+        </Routes>
+      </ErrorBoundary>
+    </BrowserRouter>
+  );
+};
