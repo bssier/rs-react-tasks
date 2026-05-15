@@ -43,7 +43,7 @@ main {
 
 .loader,
 .no-result {
-  color: var(--main-text-color);
+  color: black;
   padding-top: 100px;
   text-align: center;
   font-family: Quicksand-Light, sans-serif;
@@ -57,14 +57,12 @@ main {
 
 
 .list-wrapper {
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  height: 60vh;
-  overflow-y: auto;
-  flex: 1;
-  width: 26vw;
-  min-height: 0;
+  align-items: center;
+
 }
 
 .error-showing-container {
@@ -78,6 +76,9 @@ main {
 
 .list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
   gap: 20px;
+  width: 100%;
 }
