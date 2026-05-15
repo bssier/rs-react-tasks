@@ -1,47 +1,50 @@
 import {useEffect, useState} from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {BrowserRouter, Route, Outlet, Routes} from 'react-router-dom';
 import './App.css';
 import {Header} from './Components/Header/Header';
 import {HomePage} from './pages/home-page/HomePage';
 import {Footer} from './Components/Footer/Footer';
 import {NotFoundPage} from './pages/not-found/NotFoundPage';
-import {ErrorBoudary} from './Components/ErrorBoudary/ErrorBoudary';
+import {ErrorBoundary} from './Components/ErrorBoudary/ErrorBoundary.tsx';
+import {AboutPage} from "./pages/AboutPage/AboutPage.tsx";
 
 
 export const App = () => {
-    const [searchQuery, setSearchQuery] = useState(() => {
+    const [searchQuery, setSearchQuery] = useState<string>(() => {
         return localStorage.getItem('input-value') || '';
     });
 
     useEffect(() => {
-        try {
-            const stored: string | null = window.localStorage?.getItem('input-value');
-            if (stored) this.setState({searchQuery: stored});
-        } catch (e) {
-            console.log(e)
-        }
-    }, [])
+        localStorage.setItem('input-value', searchQuery);
+    }, [searchQuery]);
 
     const handleSearch = (query: string) => {
-        setSearchQuery(query)
+        setSearchQuery(query);
+    };
+
+    const MainLayout = () => {
+        return (
+            <>
+                <Header handleSearch={handleSearch} searchQuery={searchQuery}/>
+                <Outlet/>
+                <Footer/>
+            </>
+        )
     }
 
     return (
-        <ErrorBoudary>
-            <BrowserRouter>
-                <Header
-                    handleSearch={handleSearch}
-                    searchQuery={searchQuery}
-                />
+        <BrowserRouter>
+            <ErrorBoundary>
                 <Routes>
-                    <Route
-                        path={'/'}
-                        element={<HomePage query={searchQuery}/>}
-                    />
-                    <Route path={'*'} element={<NotFoundPage/>}/>
+
+                    <Route element={<MainLayout/>}>
+                        <Route path={"/"} element={<HomePage query={searchQuery}/>}></Route>
+                        <Route path={"/about"} element={<AboutPage/>}></Route>
+                    </Route>
+
+                    <Route path={"*"} element={<NotFoundPage/>}/>
                 </Routes>
-                <Footer/>
-            </BrowserRouter>
-        </ErrorBoudary>
+            </ErrorBoundary>
+        </BrowserRouter>
     )
 }

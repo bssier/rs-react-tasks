@@ -10,14 +10,20 @@ main {
 }
 
 .pagination {
+  margin-top: auto;
+  margin-bottom: 50px;
   display: flex;
   justify-content: center;
   flex-shrink: 0;
   gap: 15px;
+}
+
+.pagination p {
   font-family: Quicksand-Light, sans-serif;
-  color: white;
-  padding-top: 20px;
-  margin-bottom: 50px;
+}
+
+.switch-page {
+  cursor: pointer;
 }
 
 .book-table {
@@ -49,21 +55,6 @@ main {
   font-family: Quicksand-Bold, sans-serif;
 }
 
-.greeting-menu {
-  width: 50vw;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: 5px;
-  padding-top: 100px;
-}
-
-.greeting-menu p {
-  text-align: center;
-  color: black;
-  font-family: Quicksand-Light, sans-serif;
-  font-size: 25px;
-}
 
 .list-wrapper {
   display: flex;
@@ -80,7 +71,7 @@ main {
   padding-top: 100px;
 }
 
-.error-showing-container span {
+.error-showing-container p {
   color: red;
   font-family: Quicksand-Light, sans-serif;
 }

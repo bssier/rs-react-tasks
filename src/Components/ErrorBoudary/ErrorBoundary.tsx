@@ -1,6 +1,7 @@
 import { Component, type ErrorInfo } from 'react';
 import type { ReactNode } from 'react';
 import './error-boudary.css';
+import {Link} from "react-router-dom";
 
 interface Props {
   children: ReactNode;
@@ -11,7 +12,7 @@ interface State {
   hasError: boolean;
 }
 
-export class ErrorBoudary extends Component<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
@@ -25,15 +26,19 @@ export class ErrorBoudary extends Component<Props, State> {
     console.error('Error:', error, errorInfo);
   }
 
+  handleResetError(){
+    this.setState({ hasError: false });
+  }
+
   render() {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
           <div className={'error-boudary-container'}>
             <h1> Something went wrong. </h1>
-            <span className={'not-found-text'}>
-              back to <a href={'/'}>main page</a>
-            </span>
+            <p className={'not-found-text'}>
+              back to <Link to={'/'} onClick={this.handleResetError}>main page</Link>
+            </p>
           </div>
         )
       );

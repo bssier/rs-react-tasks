@@ -1,5 +1,5 @@
 import { type FC, useEffect, useState} from 'react';
-import {Line} from '../../Components/Line/Line.tsx';
+import {Line} from '../../Components/Line/Line';
 import './home-page.css';
 
 interface HomePageProps {
@@ -19,7 +19,6 @@ export const HomePage: FC<HomePageProps> = ({query}) => {
     const [isLoading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [items, setItems] = useState<Item[] | null>(null)
-
 
     const fetchData = async (searchQuery: string) => {
         setItems(null)
@@ -74,25 +73,21 @@ export const HomePage: FC<HomePageProps> = ({query}) => {
 
     return (
         <main>
-            {!localStorage.getItem('input-value') && (
-                <div className={'greeting-menu'}>
-                    <p>
-                        Hi, dear user! As you might have guessed, this is a app about
-                        search pokemons. If you want to find something, enter the pokemon
-                        name but it must be strictly in English.
-                    </p>
-                </div>
-            )}
             {isLoading && <div className={'loader'}>loading...</div>}
             {errorMessage && (
                 <div className={'error-showing-container'}>
-                    <span>{errorMessage}</span>
+                    <p>{errorMessage}</p>
                 </div>
             )}
             <div className={'list-wrapper'}>
                 <div className={'list'}>
                     {items && <Line item={items[0]}/>}
                 </div>
+            </div>
+            <div className={"pagination"}>
+                <p className={"switch-page"}>prev</p>
+                <p>1</p>
+                <p className={'switch-page'}>next</p>
             </div>
         </main>
     )
