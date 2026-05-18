@@ -34,7 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
-          <div className={'error-boudary-container'}>
+          <main className={'error-boudary-container'}>
             <h1> Something went wrong. </h1>
             <p className={'not-found-text'}>
               back to{' '}
@@ -42,7 +42,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 main page
               </Link>
             </p>
-          </div>
+          </main>
         )
       );
     }

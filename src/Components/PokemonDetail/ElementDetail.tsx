@@ -66,7 +66,7 @@ export const ElementDetail = () => {
   }, [name]);
 
   return (
-    <div className={'element-detail'}>
+    <article className={'element-detail'}>
       <div className={'close'}>
         <img src={closeIcon} onClick={handleCloseClick} />
       </div>
@@ -75,7 +75,7 @@ export const ElementDetail = () => {
         {!isLoading && item && (
           <div>
             <h1>{name}</h1>
-            <div className={'detailed-info'}>
+            <section className={'detailed-info'}>
               <p>Height: {item?.height}</p>
               <p>weight: {item?.weight}</p>
               <ul>
@@ -86,10 +86,10 @@ export const ElementDetail = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
           </div>
         )}
       </div>
-    </div>
+    </article>
   );
 };
