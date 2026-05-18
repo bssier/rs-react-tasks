@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { Header } from '../Components/Header/Header';
+import { Header } from '../components/Header/Header';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { ErrorBoundary } from '../Components/ErrorBoudary/ErrorBoundary.tsx';
+import { ErrorBoundary } from '../components/ErrorBoudary/ErrorBoundary.tsx';
 
 describe('header tests', () => {
   beforeEach(() => {
