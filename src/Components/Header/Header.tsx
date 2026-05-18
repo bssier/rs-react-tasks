@@ -1,6 +1,6 @@
 import { type FC, useState } from 'react';
-import './Header.css';
-import { Search } from '../../assets/Search';
+import './header.css';
+import Search  from '../../assets/search.svg';
 import Logo from '../../assets/pokemon-logo.svg';
 import { Link } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
     localStorage.getItem('input-value') || ''
   );
   const [error, setError] = useState<Error | null>(null);
+  const [snackBarMessage, setSnackBarMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regExpOnlyEngSym = /^[a-zA-Z\s]*$/;
@@ -21,6 +22,12 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
 
     if (regExpOnlyEngSym.test(value)) {
       setInputValue(value);
+    } else {
+        setSnackBarMessage('use only english letter!')
+
+        setTimeout(()=>{
+            setSnackBarMessage('')
+        }, 2000)
     }
   };
 
@@ -36,7 +43,19 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
       handleSearch(valueWithoutspace);
       setInputValue(valueWithoutspace);
       localStorage.setItem('input-value', valueWithoutspace);
+    } else {
+        setSnackBarMessage('your query must be longer than three characters!')
+
+        setTimeout(()=>{
+            setSnackBarMessage('')
+        }, 2000)
     }
+  };
+
+  const handleToPokemonListClick = () => {
+    localStorage.removeItem('input-value');
+    setInputValue('');
+    handleSearch('');
   };
 
   const handleEnterClick = (e: React.KeyboardEvent) => {
@@ -54,41 +73,51 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
   };
 
   return (
-    <header>
-      <div className={'logo'}>
-        <div className={'logo-container'}>
-          <img src={Logo} alt={'logo'} className={'logo'} />
-        </div>
-      </div>
-      <div className={'search-container'}>
-        <input
-          type={'text'}
-          className={'search-input'}
-          placeholder={'Search pokemons... 👀'}
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleEnterClick}
-        />
-        <button
-          className={'search-button'}
-          onClick={handleSearchClick}
-          aria-label={'search'}
-        >
-          <div className={'search-icon-container'}>
-            <Search />
+    <>
+        {snackBarMessage && (
+            <div className={"snack-bar"}>
+                <div className={"message-container"}>
+                    <p>{snackBarMessage}</p>
+                </div>
+            </div>
+        )}
+      <header>
+        <div className={'logo'}>
+          <div className={'logo-container'}>
+            <img src={Logo} alt={'logo'} className={'logo'} />
           </div>
-        </button>
-      </div>
-      <div className={'button-container'}>
-        <div className={'about-page-link'}>
+        </div>
+        <nav className={'to-pokemon-list-container'}>
+          <p onClick={handleToPokemonListClick}>Pokemon list</p>
+        </nav>
+        <div className={'search-container'}>
+          <input
+            type={'text'}
+            className={'search-input'}
+            placeholder={'Search pokemons...'}
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleEnterClick}
+          />
+          <button
+            className={'search-button'}
+            onClick={handleSearchClick}
+            aria-label={'search'}
+          >
+            <div className={'search-icon-container'}>
+              <img src={Search} alt={"search"}/>
+            </div>
+          </button>
+        </div>
+        <nav className={'about-page-link'}>
           <p>
             <Link to={'/about'}>About</Link>
           </p>
-        </div>
+        </nav>
         <div className={'error-generate-container'}>
           <button onClick={generateError}>Generate Error</button>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 };

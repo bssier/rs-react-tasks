@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const AboutPage = () => {
   return (
-    <div className={'about-page'}>
+    <article className={'about-page'}>
       <div className={'greeting-menu'}>
         <p>
           Hi, dear user! As you might have guessed, this is a app about search
@@ -18,6 +18,6 @@ export const AboutPage = () => {
           <Link to={'https://rs.school/courses/reactjs'}>Link</Link>
         </p>
       </div>
-    </div>
+    </article>
   );
 };

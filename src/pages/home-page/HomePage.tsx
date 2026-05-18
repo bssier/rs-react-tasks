@@ -1,5 +1,5 @@
 import { type FC, useEffect, useState } from 'react';
-import { Line } from '../../Components/Line/Line';
+import { Line } from '../../components/Line/Line';
 import './home-page.css';
 import { Outlet, useSearchParams, useNavigate } from 'react-router-dom';
 
@@ -63,22 +63,22 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
         setItems([mappedItem]);
         setLoading(false);
       } else {
-        const detailedItems = await Promise.all(
+        const detailedData = await Promise.all(
           data.results.map(async (pokemon: { url: string }) => {
-            const detailRes = await fetch(pokemon.url);
-            const d = await detailRes.json();
+            const data = await fetch(pokemon.url);
+            const details = await data.json();
             return {
-              title: d.name,
-              img: d.sprites.front_default || '',
-              hp: d.stats[0].base_stat,
-              attack: d.stats[1].base_stat,
-              defense: d.stats[2].base_stat,
-              speed: d.stats[5].base_stat,
+              title: details.name,
+              img: details.sprites.front_default || '',
+              hp: details.stats[0].base_stat,
+              attack: details.stats[1].base_stat,
+              defense: details.stats[2].base_stat,
+              speed: details.stats[5].base_stat,
             };
           })
         );
 
-        setItems(detailedItems);
+        setItems(detailedData);
         setLoading(false);
       }
     } catch (err) {
@@ -129,7 +129,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
         </div>
       )}
       <div className={'list-wrapper'}>
-        <div className={'list'}>
+        <section className={'list'}>
           {items?.map((item: Item) => {
             return (
               <div
@@ -141,11 +141,11 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
               </div>
             );
           })}
-        </div>
+        </section>
       </div>
       <Outlet />
       {!isLoading && items && items.length > 0 && (
-        <div className={'pagination'}>
+        <nav className={'pagination'}>
           <p className={'switch-page'} onClick={handlePrevPageClick}>
             prev
           </p>
@@ -153,7 +153,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
           <p className={'switch-page'} onClick={handleNextPageClick}>
             next
           </p>
-        </div>
+        </nav>
       )}
     </main>
   );

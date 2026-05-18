@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Outlet, Routes } from 'react-router-dom';
 import './App.css';
-import { Header } from './Components/Header/Header';
+import { Header } from './components/Header/Header';
 import { HomePage } from './pages/home-page/HomePage';
-import { Footer } from './Components/Footer/Footer';
+import { Footer } from './components/Footer/Footer';
 import { NotFoundPage } from './pages/not-found/NotFoundPage';
-import { ErrorBoundary } from './Components/ErrorBoudary/ErrorBoundary.tsx';
+import { ErrorBoundary } from './components/ErrorBoudary/ErrorBoundary.tsx';
 import { AboutPage } from './pages/AboutPage/AboutPage.tsx';
-import { ElementDetail } from './Components/PokemonDetail/ElementDetail.tsx';
+import { ElementDetail } from './components/PokemonDetail/ElementDetail.tsx';
 
 export const App = () => {
   const [searchQuery, setSearchQuery] = useState<string>(() => {
