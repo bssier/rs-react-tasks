@@ -1,0 +1,25 @@
+.line {
+  max-width: 355px;
+  display: flex;
+  border-radius: 10px;
+  border: 1px dashed var(--main-border-color);
+}
+
+.stats {
+  font-family: Quicksand-Light, sans-serif;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Quicksand-Bold, sans-serif;
+  padding-top: 15px;
+}
+
+.stats-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
