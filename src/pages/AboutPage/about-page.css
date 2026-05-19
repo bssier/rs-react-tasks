@@ -1,0 +1,22 @@
+.about-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.greeting-menu {
+  width: 50vw;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 100px;
+}
+
+.greeting-menu p {
+  text-align: center;
+  color: black;
+  font-family: Quicksand-Light, sans-serif;
+  font-size: 25px;
+  text-decoration: none;
+}

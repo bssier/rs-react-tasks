@@ -10,14 +10,20 @@ main {
 }
 
 .pagination {
+  margin-top: auto;
+  margin-bottom: 50px;
   display: flex;
   justify-content: center;
   flex-shrink: 0;
   gap: 15px;
+}
+
+.pagination p {
   font-family: Quicksand-Light, sans-serif;
-  color: white;
-  padding-top: 20px;
-  margin-bottom: 50px;
+}
+
+.switch-page {
+  cursor: pointer;
 }
 
 .book-table {
@@ -37,7 +43,7 @@ main {
 
 .loader,
 .no-result {
-  color: var(--main-text-color);
+  color: black;
   padding-top: 100px;
   text-align: center;
   font-family: Quicksand-Light, sans-serif;
@@ -49,44 +55,32 @@ main {
   font-family: Quicksand-Bold, sans-serif;
 }
 
-.greeting-menu {
-  width: 50vw;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: 5px;
-  padding-top: 100px;
-}
-
-.greeting-menu span {
-  text-align: center;
-  color: black;
-  font-family: Quicksand-Light, sans-serif;
-  font-size: 25px;
-}
-
 .list-wrapper {
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  height: 60vh;
-  overflow-y: auto;
-  flex: 1;
-  width: 26vw;
-  min-height: 0;
+  align-items: center;
 }
 
 .error-showing-container {
   padding-top: 100px;
 }
 
-.error-showing-container span {
+.error-showing-container p {
   color: red;
   font-family: Quicksand-Light, sans-serif;
 }
 
 .list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
   gap: 20px;
+  width: 100%;
+}
+
+.card-container {
+  cursor: pointer;
 }

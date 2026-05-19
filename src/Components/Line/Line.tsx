@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import './line.css';
 
 interface Item {
@@ -14,22 +13,20 @@ interface Props {
   item: Item;
 }
 
-export class Line extends Component<Props> {
-  render() {
-    const { hp, attack, defense, speed, img, title } = this.props.item;
-    return (
-      <div className={'line'}>
-        <div className={'title'}>
-          {title[0].toUpperCase() + title.slice(1)}
-          <img className={'image'} src={img} alt={'image'}></img>
-        </div>
-        <div className={'stats-wrapper'}>
-          <div className={'stats'}>Speed: {speed}</div>
-          <div className={'stats'}>Defense: {defense}</div>
-          <div className={'stats'}>Attack: {attack}</div>
-          <div className={'stats'}>Hp: {hp}</div>
-        </div>
+export const Line = ({ item }: Props) => {
+  const { hp, attack, defense, speed, img, title } = item;
+  return (
+    <article className={'line'}>
+      <div className={'title'}>
+        {title[0].toUpperCase() + title.slice(1)}
+        <img className={'image'} src={img} alt={'pokemon'}></img>
       </div>
-    );
-  }
-}
+      <div className={'stats-wrapper'}>
+        <div className={'stats'}>Speed: {speed}</div>
+        <div className={'stats'}>Defense: {defense}</div>
+        <div className={'stats'}>Attack: {attack}</div>
+        <div className={'stats'}>Hp: {hp}</div>
+      </div>
+    </article>
+  );
+};

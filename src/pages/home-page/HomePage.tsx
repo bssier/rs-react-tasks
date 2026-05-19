@@ -1,6 +1,7 @@
-import { Component } from 'react';
-import { Line } from '../../Components/Line/Line.tsx';
+import { type FC, useEffect, useState } from 'react';
+import { Line } from '../../components/Line/Line';
 import './home-page.css';
+import { Outlet, useSearchParams, useNavigate } from 'react-router-dom';
 
 interface HomePageProps {
   query: string;
@@ -15,23 +16,27 @@ interface Item {
   title: string;
 }
 
-interface HomePageData {
-  isLoading: boolean;
-  errorMessage: string;
-  items: Item[] | null;
-}
+export const HomePage: FC<HomePageProps> = ({ query }) => {
+  const [isLoading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [items, setItems] = useState<Item[] | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const page = Number(searchParams.get('page')) || 1;
 
-export class HomePage extends Component<HomePageProps, HomePageData> {
-  state: HomePageData = {
-    isLoading: false,
-    errorMessage: '',
-    items: null,
-  };
+  const fetchData = async (searchQuery: string) => {
+    setItems(null);
+    setErrorMessage('');
 
-  fetchData = async (query: string) => {
-    if (!query || query.trim().length < 3) return;
-    this.setState({ isLoading: true, items: null, errorMessage: '' });
-    const url = `https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`;
+    setLoading(true);
+    const offset = (page - 1) * 12;
+
+    const savedValue = localStorage.getItem('input-value') || '';
+    const isSearchMode = savedValue.trim().length >= 3;
+
+    const url = localStorage.getItem('input-value')
+      ? `https://pokeapi.co/api/v2/pokemon/${searchQuery.toLowerCase()}`
+      : `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${offset}`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -45,66 +50,111 @@ export class HomePage extends Component<HomePageProps, HomePageData> {
       }
       const data = await response.json();
 
-      const mappedItem: Item = {
-        title: data.name,
-        img: data.sprites.front_default || '',
-        hp: data.stats[0]?.base_stat || 0,
-        attack: data.stats[1]?.base_stat || 0,
-        defense: data.stats[2]?.base_stat || 0,
-        speed: data.stats[5]?.base_stat || 0,
-      };
+      if (isSearchMode) {
+        const mappedItem: Item = {
+          title: data.name,
+          img: data.sprites.front_default || '',
+          hp: data.stats[0]?.base_stat || 0,
+          attack: data.stats[1]?.base_stat || 0,
+          defense: data.stats[2]?.base_stat || 0,
+          speed: data.stats[5]?.base_stat || 0,
+        };
 
-      this.setState({
-        items: [mappedItem],
-        isLoading: false,
-      });
+        setItems([mappedItem]);
+        setLoading(false);
+      } else {
+        const detailedData = await Promise.all(
+          data.results.map(async (pokemon: { url: string }) => {
+            const data = await fetch(pokemon.url);
+            const details = await data.json();
+            return {
+              title: details.name,
+              img: details.sprites.front_default || '',
+              hp: details.stats[0].base_stat,
+              attack: details.stats[1].base_stat,
+              defense: details.stats[2].base_stat,
+              speed: details.stats[5].base_stat,
+            };
+          })
+        );
+
+        setItems(detailedData);
+        setLoading(false);
+      }
     } catch (err) {
-      let errorMessage = '';
+      let errorMessage: string = '';
 
       if (err instanceof Error) {
         errorMessage = err.message;
       }
-      this.setState({ errorMessage: errorMessage, isLoading: false });
+      setErrorMessage(errorMessage);
+      setLoading(false);
     }
   };
 
-  componentDidMount() {
-    if (this.props.query) {
-      this.fetchData(this.props.query);
+  const handlePrevPageClick = () => {
+    if (page === 1) {
+      return;
     }
-  }
 
-  componentDidUpdate(prevProps: HomePageProps) {
-    if (this.props.query !== prevProps.query) {
-      this.fetchData(this.props.query);
+    const nextPage = page - 1;
+    setSearchParams({ page: String(nextPage) });
+  };
+
+  const handleNextPageClick = () => {
+    const nextPage = page + 1;
+    setSearchParams(String(nextPage));
+    setSearchParams({ page: String(nextPage) });
+  };
+
+  const handleCardClick = (name: string) => {
+    navigate(`/pokemon/${name}${window.location.search}`);
+  };
+
+  useEffect(() => {
+    const localStorageValue = localStorage.getItem('input-value') || '';
+    if (localStorageValue.trim().length >= 3 && page !== 1) {
+      setSearchParams({ page: '1' });
     }
-  }
 
-  render() {
-    const { isLoading, errorMessage } = this.state;
-    return (
-      <main>
-        {!localStorage.getItem('input-value') && (
-          <div className={'greeting-menu'}>
-            <span>
-              Hi, dear user! As you might have guessed, this is a app about
-              search pokemons. If you want to find something, enter the pokemon
-              name but it must be strictly in English.
-            </span>
-          </div>
-        )}
-        {isLoading && <div className={'loader'}>loading...</div>}
-        {errorMessage && (
-          <div className={'error-showing-container'}>
-            <span>{errorMessage}</span>
-          </div>
-        )}
-        <div className={'list-wrapper'}>
-          <div className={'list'}>
-            {this.state.items && <Line item={this.state.items[0]} />}
-          </div>
+    fetchData(query);
+  }, [query, page]);
+
+  return (
+    <main>
+      {isLoading && <div className={'loader'}>loading...</div>}
+      {errorMessage && (
+        <div className={'error-showing-container'}>
+          <p>{errorMessage}</p>
         </div>
-      </main>
-    );
-  }
-}
+      )}
+      <div className={'list-wrapper'}>
+        <section className={'list'}>
+          {items?.map((item: Item) => {
+            return (
+              <div
+                key={item.title}
+                className={'card-container'}
+                onClick={() => handleCardClick(item.title)}
+              >
+                <Line item={item}></Line>
+              </div>
+            );
+          })}
+        </section>
+      </div>
+      <Outlet />
+      {!isLoading && items && items.length > 0 && (
+        <nav className={'pagination'}>
+          <p className={'switch-page'} onClick={handlePrevPageClick}>
+            prev
+          </p>
+          <p>{page}</p>
+          <p className={'switch-page'} onClick={handleNextPageClick}>
+            next
+          </p>
+        </nav>
+      )}
+    </main>
+  );
+};

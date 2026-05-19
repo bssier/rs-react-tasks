@@ -1,16 +1,14 @@
-import { Component } from 'react';
 import './not-found-page.css';
+import { Link } from 'react-router-dom';
 
-export class NotFoundPage extends Component {
-  render() {
-    return (
-      <div className={'not-found-info'}>
-        <span className={'not-found-header'}>404</span>
-        <span className={'not-found-text'}>Page not found</span>
-        <span className={'not-found-text'}>
-          back to <a href={'/'}>main page</a>
-        </span>
-      </div>
-    );
-  }
-}
+export const NotFoundPage = () => {
+  return (
+    <main className={'not-found-info'}>
+      <h1 className={'not-found-header'}>404</h1>
+      <p className={'not-found-text'}>Page not found</p>
+      <nav className={'not-found-text'}>
+        back to <Link to={'/'}>main page</Link>
+      </nav>
+    </main>
+  );
+};
