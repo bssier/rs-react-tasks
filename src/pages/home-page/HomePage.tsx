@@ -2,6 +2,7 @@ import { type FC, useEffect, useState } from 'react';
 import { Line } from '../../components/Line/Line';
 import './home-page.css';
 import { Outlet, useSearchParams, useNavigate } from 'react-router-dom';
+import { useTheme } from '../../context.ts';
 
 interface HomePageProps {
   query: string;
@@ -23,6 +24,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const page = Number(searchParams.get('page')) || 1;
+  const { theme } = useTheme();
 
   const fetchData = async (searchQuery: string) => {
     setItems(null);
@@ -121,7 +123,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   }, [query, page]);
 
   return (
-    <main>
+    <main className={`${theme === 'dark' ? 'dark-mode' : ''}`}>
       {isLoading && <div className={'loader'}>loading...</div>}
       {errorMessage && (
         <div className={'error-showing-container'}>

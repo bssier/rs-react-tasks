@@ -1,8 +1,11 @@
 import { type FC, useState } from 'react';
 import './header.css';
-import Search  from '../../assets/search.svg';
+import Search from '../../assets/search.svg';
 import Logo from '../../assets/pokemon-logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import DarkMode from '../../assets/dark-mode.svg';
+import LightMode from '../../assets/light-mode.svg';
+import { useTheme } from '../../context.ts';
 
 interface PropsHeader {
   handleSearch: (query: string) => void;
@@ -15,6 +18,8 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
   );
   const [error, setError] = useState<Error | null>(null);
   const [snackBarMessage, setSnackBarMessage] = useState('');
+  const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regExpOnlyEngSym = /^[a-zA-Z\s]*$/;
@@ -23,11 +28,11 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
     if (regExpOnlyEngSym.test(value)) {
       setInputValue(value);
     } else {
-        setSnackBarMessage('use only english letter!')
+      setSnackBarMessage('use only english letter!');
 
-        setTimeout(()=>{
-            setSnackBarMessage('')
-        }, 2000)
+      setTimeout(() => {
+        setSnackBarMessage('');
+      }, 2000);
     }
   };
 
@@ -44,11 +49,11 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
       setInputValue(valueWithoutspace);
       localStorage.setItem('input-value', valueWithoutspace);
     } else {
-        setSnackBarMessage('your query must be longer than three characters!')
+      setSnackBarMessage('your query must be longer than three characters!');
 
-        setTimeout(()=>{
-            setSnackBarMessage('')
-        }, 2000)
+      setTimeout(() => {
+        setSnackBarMessage('');
+      }, 2000);
     }
   };
 
@@ -56,6 +61,7 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
     localStorage.removeItem('input-value');
     setInputValue('');
     handleSearch('');
+    navigate('/');
   };
 
   const handleEnterClick = (e: React.KeyboardEvent) => {
@@ -74,13 +80,13 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
 
   return (
     <>
-        {snackBarMessage && (
-            <div className={"snack-bar"}>
-                <div className={"message-container"}>
-                    <p>{snackBarMessage}</p>
-                </div>
-            </div>
-        )}
+      {snackBarMessage && (
+        <div className={'snack-bar'}>
+          <div className={'message-container'}>
+            <p>{snackBarMessage}</p>
+          </div>
+        </div>
+      )}
       <header>
         <div className={'logo'}>
           <div className={'logo-container'}>
@@ -105,10 +111,20 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
             aria-label={'search'}
           >
             <div className={'search-icon-container'}>
-              <img src={Search} alt={"search"}/>
+              <img src={Search} alt={'search'} />
             </div>
           </button>
         </div>
+        <button
+          className={`theme-switcher ${theme}-mode`}
+          onClick={toggleTheme}
+        >
+          {theme === 'light' ? (
+            <img src={DarkMode} alt={'dark mode'} />
+          ) : (
+            <img src={LightMode} alt={'light mode'} />
+          )}
+        </button>
         <nav className={'about-page-link'}>
           <p>
             <Link to={'/about'}>About</Link>

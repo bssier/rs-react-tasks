@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 80vh;
 }
 
 .greeting-menu {
@@ -19,4 +20,17 @@
   font-family: Quicksand-Light, sans-serif;
   font-size: 25px;
   text-decoration: none;
+}
+
+.about-page.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+.about-page.dark-mode .greeting-menu p {
+  color: white;
+}
+
+.about-page.dark-mode .greeting-menu a {
+  color: #4da6ff;
 }
