@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { App } from './App.tsx';
 import { ThemeContext } from './context.ts';
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 
 const Main = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -28,9 +30,11 @@ const Main = () => {
 
   return (
     <StrictMode>
-      <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <App />
-      </ThemeContext.Provider>
+      <Provider store={store}>
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+          <App />
+        </ThemeContext.Provider>
+      </Provider>
     </StrictMode>
   );
 };

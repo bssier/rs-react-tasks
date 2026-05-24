@@ -3,6 +3,9 @@ import { Line } from '../../components/Line/Line';
 import './home-page.css';
 import { Outlet, useSearchParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context.ts';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '../../store/store.ts';
+import { toggleItem } from '../../store/itemSlice.ts';
 
 interface HomePageProps {
   query: string;
@@ -25,6 +28,11 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   const navigate = useNavigate();
   const page = Number(searchParams.get('page')) || 1;
   const { theme } = useTheme();
+
+  const dispatch = useDispatch();
+  const selectedItems = useSelector(
+    (state: RootState) => state.pokemons.selectedItems
+  );
 
   const fetchData = async (searchQuery: string) => {
     setItems(null);
@@ -105,7 +113,6 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
 
   const handleNextPageClick = () => {
     const nextPage = page + 1;
-    setSearchParams(String(nextPage));
     setSearchParams({ page: String(nextPage) });
   };
 
@@ -133,13 +140,22 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
       <div className={'list-wrapper'}>
         <section className={'list'}>
           {items?.map((item: Item) => {
+            const isChecked = selectedItems.some(
+              (selected: { title: string }) => selected.title === item.title
+            );
             return (
               <div
                 key={item.title}
                 className={'card-container'}
                 onClick={() => handleCardClick(item.title)}
               >
-                <Line item={item}></Line>
+                <Line
+                  item={item}
+                  isChecked={isChecked}
+                  handleCheckboxChange={() => {
+                    dispatch(toggleItem(item));
+                  }}
+                ></Line>
               </div>
             );
           })}

@@ -1,0 +1,75 @@
+.flyout-panel {
+  bottom: 20px;
+  left: 20px;
+  width: 320px;
+  position: fixed;
+  border-radius: 12px;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-top: 1px solid var(--main-border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  box-sizing: border-box;
+  z-index: 100;
+  font-family: Quicksand-Bold, sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.flyout-info {
+  font-size: 16px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.flyout-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.button-unselect,
+.button-download {
+  height: 30px;
+  width: 100px;
+  font-size: 9px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: Quicksand-Light, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid var(--main-border-color);
+  transition: all 0.2s ease;
+}
+
+.btn-unselect {
+  background-color: transparent;
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.btn-unselect:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-download {
+  background-color: #2ecc71;
+  color: white;
+  border-color: #2ecc71;
+}
+
+.btn-download:hover {
+  background-color: #27ae60;
+  border-color: #27ae60;
+}
+
+html.dark .flyout-panel {
+  background-color: #1a1a1a;
+  border-top-color: #333;
+}
+
+html.dark .flyout-info {
+  color: #ffffff;
+}
