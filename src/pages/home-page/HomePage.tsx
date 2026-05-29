@@ -106,7 +106,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
 
         const gettingData = await response.json();
 
-        if (isSearchMode) {
+        if (isSearchMode && gettingData) {
           const data = gettingData as PokemonResponse;
 
           const mappedItem: Item = {
@@ -120,7 +120,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
 
           setItems([mappedItem]);
           setLoading(false);
-        } else {
+        } else if (!isSearchMode && gettingData.results) {
           const data = gettingData as PokemonListResponse;
 
           const detailedData = await Promise.all(
