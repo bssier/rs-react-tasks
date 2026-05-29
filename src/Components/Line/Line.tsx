@@ -13,12 +13,18 @@ interface Props {
   item: Item;
   isChecked: boolean;
   handleCheckboxChange: () => void;
+  onClick?: () => void;
 }
 
-export const Line = ({ item, isChecked, handleCheckboxChange }: Props) => {
+export const Line = ({
+  item,
+  isChecked,
+  handleCheckboxChange,
+  onClick,
+}: Props) => {
   const { hp, attack, defense, speed, img, title } = item;
   return (
-    <article className={'line'}>
+    <article className={'line'} onClick={onClick}>
       <div className={'checkbox-container'}>
         <input
           type="checkbox"

@@ -178,19 +178,15 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
               (selected: { title: string }) => selected.title === item.title
             );
             return (
-              <div
+              <Line
                 key={item.title}
-                className={'card-container'}
                 onClick={() => handleCardClick(item.title)}
-              >
-                <Line
-                  item={item}
-                  isChecked={isChecked}
-                  handleCheckboxChange={() => {
-                    dispatch(toggleItem(item));
-                  }}
-                ></Line>
-              </div>
+                item={item}
+                isChecked={isChecked}
+                handleCheckboxChange={() => {
+                  dispatch(toggleItem(item));
+                }}
+              />
             );
           })}
         </section>
