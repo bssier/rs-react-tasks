@@ -72,7 +72,9 @@ export const ElementDetail = () => {
   return (
     <article className={'element-detail'}>
       <div className={'close'}>
-        <img src={closeIcon} onClick={handleCloseClick} />
+        <button  onClick={handleCloseClick}>
+          <img src={closeIcon} alt={"close"}/>
+        </button>
       </div>
       <div className={'info'}>
         {isLoading && <div className={'loader'}>loading...</div>}
