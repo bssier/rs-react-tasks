@@ -2,7 +2,7 @@ import { type FC, useState } from 'react';
 import './header.css';
 import Search from '../../assets/search.svg';
 import Logo from '../../assets/pokemon-logo.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import DarkMode from '../../assets/dark-mode.svg';
 import LightMode from '../../assets/light-mode.svg';
 import { useTheme } from '../../context.ts';
@@ -18,7 +18,6 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
   );
   const [error, setError] = useState<Error | null>(null);
   const [snackBarMessage, setSnackBarMessage] = useState('');
-  const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +60,6 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
     localStorage.removeItem('input-value');
     setInputValue('');
     handleSearch('');
-    navigate('/');
   };
 
   const handleEnterClick = (e: React.KeyboardEvent) => {
@@ -94,7 +92,7 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
           </div>
         </div>
         <nav className={'to-pokemon-list-container'}>
-          <p onClick={handleToPokemonListClick}>Pokemon list</p>
+          <Link onClick={handleToPokemonListClick} to={'/'}>Pokemon list</Link>
         </nav>
         <div className={'search-container'}>
           <input

@@ -101,9 +101,11 @@ header {
   font-family: Quicksand-Light, sans-serif;
 }
 
-.to-pokemon-list-container p {
+.to-pokemon-list-container a{
   font-family: Quicksand-Light, sans-serif;
   cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
 
 .snack-bar {
