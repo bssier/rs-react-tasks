@@ -57,7 +57,7 @@ describe('header tests', () => {
   test('localstorage load value test', () => {
     localStorage.setItem('input-value', 'pikachu');
 
-    renderHeader(<Header handleSearch={vi.fn()} searchQuery={'pikachu'} />);
+    renderHeader(<Header handleSearch={vi.fn()} searchQuery={''} />);
 
     const value = screen.getByDisplayValue('pikachu');
 
