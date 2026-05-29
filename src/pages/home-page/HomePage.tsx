@@ -107,13 +107,11 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
       return;
     }
 
-    const nextPage = page - 1;
-    setSearchParams({ page: String(nextPage) });
+    setSearchParams({ page: String(page - 1) });
   };
 
   const handleNextPageClick = () => {
-    const nextPage = page + 1;
-    setSearchParams({ page: String(nextPage) });
+    setSearchParams({ page: String(page + 1) });
   };
 
   const handleCardClick = (name: string) => {
