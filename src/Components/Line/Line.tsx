@@ -1,6 +1,6 @@
 import './line.css';
 
-interface Item {
+export interface Item {
   hp: number;
   attack: number;
   defense: number;
@@ -11,18 +11,33 @@ interface Item {
 
 interface Props {
   item: Item;
+  isChecked: boolean;
+  handleCheckboxChange: () => void;
 }
 
-export const Line = ({ item }: Props) => {
+export const Line = ({ item, isChecked, handleCheckboxChange }: Props) => {
   const { hp, attack, defense, speed, img, title } = item;
   return (
     <article className={'line'}>
-      <div className={'title'}>
+      <div className={'checkbox-container'}>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          id={`checkbox-${title}`}
+          onChange={handleCheckboxChange}
+          onClick={(e: React.MouseEvent<HTMLInputElement>) =>
+            e.stopPropagation()
+          }
+          className="card-checkbox"
+          aria-label={`select ${title}`}
+        />
+      </div>
+      <h3 className={'title'}>
         {title === ''
           ? 'Unknown Pokemon'
           : title[0].toUpperCase() + title.slice(1)}
         <img className={'image'} src={img} alt={title}></img>
-      </div>
+      </h3>
       <div className={'stats-wrapper'}>
         <div className={'stats'}>Speed: {speed}</div>
         <div className={'stats'}>Defense: {defense}</div>
