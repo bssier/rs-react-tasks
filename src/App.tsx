@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { HomePage } from './pages/home-page/HomePage';
 import { NotFoundPage } from './pages/not-found/NotFoundPage';
-import { ErrorBoundary } from './components/ErrorBoudary/ErrorBoundary.tsx';
+import { ErrorBoundary } from './components/error-boundary/ErrorBoundary.tsx';
 import { AboutPage } from './pages/about-page/AboutPage.tsx';
-import { ElementDetail } from './components/PokemonDetail/ElementDetail.tsx';
-import { MainLayout } from './components/MainLayout/MainLayout.tsx';
+import { ElementDetail } from './components/pokemon-detail/ElementDetail.tsx';
+import { MainLayout } from './components/main-layout/MainLayout.tsx';
 
 export const App = () => {
   const [searchQuery, setSearchQuery] = useState<string>(() => {

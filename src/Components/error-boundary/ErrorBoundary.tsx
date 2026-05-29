@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo } from 'react';
 import type { ReactNode } from 'react';
-import './error-boudary.css';
+import './ErrorBoudary.css';
 import { Link } from 'react-router';
 
 interface Props {

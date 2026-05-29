@@ -1,4 +1,4 @@
-import './line.css';
+import './Line.css';
 
 export interface Item {
   hp: number;

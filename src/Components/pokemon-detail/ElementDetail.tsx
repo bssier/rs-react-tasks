@@ -1,4 +1,4 @@
-import './element-detail.css';
+import './ElementDetail.css';
 import closeIcon from '../../assets/close.png';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
