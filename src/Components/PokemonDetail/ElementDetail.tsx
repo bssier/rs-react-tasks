@@ -14,7 +14,7 @@ interface PokemonApiAbilityItem {
     name: string;
     url: string;
   };
-  is_hidden: boolean;
+  isHidden: boolean;
   slot: number;
 }
 
