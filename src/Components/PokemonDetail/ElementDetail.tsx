@@ -18,6 +18,12 @@ interface PokemonApiAbilityItem {
   slot: number;
 }
 
+interface MappedData {
+  height: number;
+  weight: number;
+  abilities: string[];
+}
+
 export const ElementDetail = () => {
   const navigate = useNavigate();
   const { name } = useParams();
@@ -30,7 +36,8 @@ export const ElementDetail = () => {
   };
 
   useEffect(() => {
-    if (!name) {
+    if (!name || name === 'undefined') {
+      navigate(`/${location.search}`, { replace: true });
       return;
     }
 
@@ -54,28 +61,31 @@ export const ElementDetail = () => {
         setLoading(false);
         const data = await response.json();
 
-        const mappedData = {
-          height: data.height,
-          weight: data.weight,
-          abilities: data.abilities.map((item: PokemonApiAbilityItem) => {
-            return item.ability.name;
-          }),
+        const mappedData: MappedData = {
+          height: typeof data.height === 'number' ? data.height : 0,
+          weight: typeof data.weight === 'number' ? data.weight : 0,
+          abilities: data.abilities
+            .filter(
+              (abilityItem: PokemonApiAbilityItem) => abilityItem?.ability?.name
+            )
+            .map(
+              (abilityItem: PokemonApiAbilityItem) => abilityItem.ability.name
+            ),
         };
         setItem(mappedData);
-      } catch (error) {
-        console.log(error);
+      } catch {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [name]);
+  }, [name, navigate, location.search]);
 
   return (
     <article className={'element-detail'}>
       <div className={'close'}>
         <button onClick={handleCloseClick}>
-          <img src={closeIcon} alt={'close'} />
+          <img src={closeIcon} alt="close" />
         </button>
       </div>
       <div className={'info'}>
@@ -84,11 +94,11 @@ export const ElementDetail = () => {
           <div>
             <h1>{name}</h1>
             <section className={'detailed-info'}>
-              <p>Height: {item?.height}</p>
-              <p>weight: {item?.weight}</p>
+              <p>Height: {item.height}</p>
+              <p>weight: {item.weight}</p>
               <h3>Abilities:</h3>
               <ul>
-                {item?.abilities.map((ability) => (
+                {item.abilities.map((ability) => (
                   <li key={ability} className={'abilities'}>
                     {ability}
                   </li>
