@@ -98,12 +98,13 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
         </nav>
         <div className={'search-container'}>
           <input
-            type={'text'}
+            type="text"
             className={'search-input'}
             placeholder="Search pokemons..."
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleEnterClick}
+            aria-label="Search pokemons"
           />
           <button
             className={'search-button'}
