@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store/store.ts';
 import { toggleItem } from '../../store/itemSlice.ts';
 import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
+import { Pagination } from '../../components/Pagination/Pagination.tsx';
 
 interface HomePageProps {
   query: string;
@@ -77,18 +78,6 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   const selectedItems = useSelector(
     (state: RootState) => state.pokemons.selectedItems
   );
-
-  const handlePrevPageClick = () => {
-    if (page === 1) {
-      return;
-    }
-
-    setSearchParams({ page: String(page - 1) });
-  };
-
-  const handleNextPageClick = () => {
-    setSearchParams({ page: String(page + 1) });
-  };
 
   const handleCardClick = (name: string) => {
     navigate(`/pokemon/${name}${window.location.search}`);
@@ -193,15 +182,10 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
       </div>
       <Outlet />
       {!isLoading && items && items.length > 0 && (
-        <nav className={'pagination'}>
-          <p className={'switch-page'} onClick={handlePrevPageClick}>
-            prev
-          </p>
-          <p>{page}</p>
-          <p className={'switch-page'} onClick={handleNextPageClick}>
-            next
-          </p>
-        </nav>
+        <Pagination
+          page={page}
+          onChangePage={(newPage) => setSearchParams({ page: String(newPage) })}
+        />
       )}
     </main>
   );
