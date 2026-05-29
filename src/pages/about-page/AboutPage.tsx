@@ -1,4 +1,4 @@
-import './about-page.css';
+import './AboutPage.css';
 import { useTheme } from '../../context.ts';
 
 export const AboutPage = () => {

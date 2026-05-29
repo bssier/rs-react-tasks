@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { Header } from '../components/Header/Header';
+import { Header } from '../components/header/Header';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { ErrorBoundary } from '../components/ErrorBoudary/ErrorBoundary.tsx';
+import { ErrorBoundary } from '../components/error-boundary/ErrorBoundary.tsx';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeContext } from '../context.ts';
 

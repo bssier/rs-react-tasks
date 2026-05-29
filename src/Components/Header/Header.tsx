@@ -1,5 +1,5 @@
 import { type FC, useState } from 'react';
-import './header.css';
+import './Header.css';
 import Search from '../../assets/search.svg';
 import Logo from '../../assets/pokemon-logo.svg';
 import { Link } from 'react-router-dom';

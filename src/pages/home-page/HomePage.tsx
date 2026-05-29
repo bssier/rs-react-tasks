@@ -1,6 +1,6 @@
 import { type FC, useEffect, useState } from 'react';
-import { Line } from '../../components/Line/Line';
-import './home-page.css';
+import { Line } from '../../components/line/Line';
+import './HomePage.css';
 import {
   Outlet,
   useSearchParams,
@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store/store.ts';
 import { toggleItem } from '../../store/itemSlice.ts';
 import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
-import { Pagination } from '../../components/Pagination/Pagination.tsx';
+import { Pagination } from '../../components/pagination/Pagination.tsx';
 
 interface HomePageProps {
   query: string;

@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import pokemonReducer from '../store/itemSlice.ts';
-import { Flyout } from '../components/Flyout/Flyout';
+import { Flyout } from '../components/flyout/Flyout';
 import type { ItemState } from '../store/itemSlice.ts';
 
 const createTestStore = (preloadedState?: { pokemons: ItemState }) => {
@@ -15,7 +15,7 @@ const createTestStore = (preloadedState?: { pokemons: ItemState }) => {
   });
 };
 
-describe('Flyout component tests', () => {
+describe('flyout component tests', () => {
   test('should not render when no items are selected', () => {
     const store = createTestStore({
       pokemons: { selectedItems: [] },

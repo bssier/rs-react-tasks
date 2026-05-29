@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store/store.ts';
 import { clearAll } from '../../store/itemSlice.ts';
-import './flyout.css';
+import './Flyout.css';
 
 export const Flyout = () => {
   const dispatch = useDispatch();
