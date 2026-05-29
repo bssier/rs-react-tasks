@@ -14,7 +14,8 @@
   font-size: 25px;
 }
 
-.greeting-menu a,p {
+.greeting-menu a,
+p {
   text-align: center;
   color: black;
   font-family: Quicksand-Light, sans-serif;

@@ -34,74 +34,6 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
     (state: RootState) => state.pokemons.selectedItems
   );
 
-  const fetchData = async (searchQuery: string) => {
-    setItems(null);
-    setErrorMessage('');
-
-    setLoading(true);
-    const offset = (page - 1) * 12;
-
-    const savedValue = localStorage.getItem('input-value') || '';
-    const isSearchMode = savedValue.trim().length >= 3;
-
-    const url = localStorage.getItem('input-value')
-      ? `https://pokeapi.co/api/v2/pokemon/${searchQuery.toLowerCase()}`
-      : `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${offset}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error('Not found');
-        }
-        if (response.status >= 500) {
-          throw new Error('Server error. We try fix problem, please wait');
-        }
-        throw new Error('Error data loading');
-      }
-      const data = await response.json();
-
-      if (isSearchMode) {
-        const mappedItem: Item = {
-          title: data.name,
-          img: data.sprites.front_default || '',
-          hp: data.stats[0]?.base_stat || 0,
-          attack: data.stats[1]?.base_stat || 0,
-          defense: data.stats[2]?.base_stat || 0,
-          speed: data.stats[5]?.base_stat || 0,
-        };
-
-        setItems([mappedItem]);
-        setLoading(false);
-      } else {
-        const detailedData = await Promise.all(
-          data.results.map(async (pokemon: { url: string }) => {
-            const data = await fetch(pokemon.url);
-            const details = await data.json();
-            return {
-              title: details.name,
-              img: details.sprites.front_default || '',
-              hp: details.stats[0].base_stat,
-              attack: details.stats[1].base_stat,
-              defense: details.stats[2].base_stat,
-              speed: details.stats[5].base_stat,
-            };
-          })
-        );
-
-        setItems(detailedData);
-        setLoading(false);
-      }
-    } catch (err) {
-      let errorMessage: string = '';
-
-      if (err instanceof Error) {
-        errorMessage = err.message;
-      }
-      setErrorMessage(errorMessage);
-      setLoading(false);
-    }
-  };
-
   const handlePrevPageClick = () => {
     if (page === 1) {
       return;
@@ -122,10 +54,81 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
     const localStorageValue = localStorage.getItem('input-value') || '';
     if (localStorageValue.trim().length >= 3 && page !== 1) {
       setSearchParams({ page: '1' });
+      return;
     }
 
-    fetchData(query);
-  }, [query, page]);
+    const fetchData = async () => {
+      setItems(null);
+      setErrorMessage('');
+
+      setLoading(true);
+      const offset = (page - 1) * 12;
+
+      const cleanQuery = query.trim().toLowerCase();
+      const isSearchMode = cleanQuery.length >= 3;
+
+      const url = isSearchMode
+        ? `https://pokeapi.co/api/v2/pokemon/${cleanQuery}`
+        : `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${offset}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('Not found');
+          }
+          if (response.status >= 500) {
+            throw new Error('Server error. We try fix problem, please wait');
+          }
+          throw new Error('Error data loading');
+        }
+        const data = await response.json();
+
+        if (isSearchMode) {
+          const mappedItem: Item = {
+            title: data.name,
+            img: data.sprites.front_default || '',
+            hp: data.stats[0]?.base_stat || 0,
+            attack: data.stats[1]?.base_stat || 0,
+            defense: data.stats[2]?.base_stat || 0,
+            speed: data.stats[5]?.base_stat || 0,
+          };
+
+          setItems([mappedItem]);
+          setLoading(false);
+        } else {
+          const detailedData = await Promise.all(
+            data.results.map(async (pokemon: { url: string }) => {
+              const data = await fetch(pokemon.url);
+              const details = await data.json();
+              return {
+                title: details.name,
+                img: details.sprites.front_default || '',
+                hp: details.stats[0].base_stat,
+                attack: details.stats[1].base_stat,
+                defense: details.stats[2].base_stat,
+                speed: details.stats[5].base_stat,
+              };
+            })
+          );
+
+          setItems(detailedData);
+          setLoading(false);
+        }
+      } catch (err) {
+        let errorMessage: string = '';
+
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        }
+        setErrorMessage(errorMessage);
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [query, page, setSearchParams]);
 
   return (
     <main className={`${theme === 'dark' ? 'dark-mode' : ''}`}>
