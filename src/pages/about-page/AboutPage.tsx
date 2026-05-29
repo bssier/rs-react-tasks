@@ -12,13 +12,21 @@ export const AboutPage = () => {
           pokemons. If you want to find something, enter the pokemon name but it
           must be strictly in English.
         </p>
-          <a href="https://github.com/bssier" target="_blank" rel="noopener noreferrer">
-              GitHub Profile
-          </a>
+        <a
+          href="https://github.com/bssier"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub Profile
+        </a>
 
-          <a href="https://rs.school/courses/reactjs" target="_blank" rel="noopener noreferrer">
-              RS React course
-          </a>
+        <a
+          href="https://rs.school/courses/reactjs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          RS React course
+        </a>
       </div>
     </article>
   );

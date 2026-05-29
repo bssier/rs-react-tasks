@@ -92,7 +92,9 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
           </div>
         </div>
         <nav className={'to-pokemon-list-container'}>
-          <Link onClick={handleToPokemonListClick} to={'/'}>Pokemon list</Link>
+          <Link onClick={handleToPokemonListClick} to={'/'}>
+            Pokemon list
+          </Link>
         </nav>
         <div className={'search-container'}>
           <input

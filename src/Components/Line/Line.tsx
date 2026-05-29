@@ -33,7 +33,9 @@ export const Line = ({ item, isChecked, handleCheckboxChange }: Props) => {
         />
       </div>
       <div className={'title'}>
-         {title === "" ? 'Unknown Pokemon': title[0].toUpperCase() + title.slice(1)}
+        {title === ''
+          ? 'Unknown Pokemon'
+          : title[0].toUpperCase() + title.slice(1)}
         <img className={'image'} src={img} alt={title}></img>
       </div>
       <div className={'stats-wrapper'}>

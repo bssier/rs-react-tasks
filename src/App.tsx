@@ -6,7 +6,7 @@ import { NotFoundPage } from './pages/not-found/NotFoundPage';
 import { ErrorBoundary } from './components/ErrorBoudary/ErrorBoundary.tsx';
 import { AboutPage } from './pages/about-page/AboutPage.tsx';
 import { ElementDetail } from './components/PokemonDetail/ElementDetail.tsx';
-import {MainLayout} from "./components/MainLayout/MainLayout.tsx";
+import { MainLayout } from './components/MainLayout/MainLayout.tsx';
 
 export const App = () => {
   const [searchQuery, setSearchQuery] = useState<string>(() => {
@@ -25,7 +25,14 @@ export const App = () => {
     <BrowserRouter>
       <ErrorBoundary>
         <Routes>
-          <Route element={<MainLayout handleSearch={handleSearch} searchQuery={searchQuery} />}>
+          <Route
+            element={
+              <MainLayout
+                handleSearch={handleSearch}
+                searchQuery={searchQuery}
+              />
+            }
+          >
             <Route path={'/'} element={<HomePage query={searchQuery} />}>
               <Route path="pokemon/:name" element={<ElementDetail />} />
             </Route>
