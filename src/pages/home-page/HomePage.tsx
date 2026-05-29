@@ -1,11 +1,17 @@
 import { type FC, useEffect, useState } from 'react';
 import { Line } from '../../components/Line/Line';
 import './home-page.css';
-import { Outlet, useSearchParams, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  useSearchParams,
+  useNavigate,
+  type NavigateFunction,
+} from 'react-router-dom';
 import { useTheme } from '../../context.ts';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store/store.ts';
 import { toggleItem } from '../../store/itemSlice.ts';
+import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
 
 interface HomePageProps {
   query: string;
@@ -25,8 +31,9 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [items, setItems] = useState<Item[] | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const page = Number(searchParams.get('page')) || 1;
+  const navigate: NavigateFunction = useNavigate();
+  const page: number = Number(searchParams.get('page')) || 1;
+  const [localStorageValue] = useLocalStorage<string>('input-value', '');
   const { theme } = useTheme();
 
   const dispatch = useDispatch();
@@ -51,8 +58,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   };
 
   useEffect(() => {
-    const localStorageValue = localStorage.getItem('input-value') || '';
-    if (localStorageValue.trim().length >= 3 && page !== 1) {
+    if (localStorageValue.length >= 3 && page !== 1) {
       setSearchParams({ page: '1' });
       return;
     }
@@ -128,7 +134,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
     };
 
     fetchData();
-  }, [query, page, setSearchParams]);
+  }, [query, page, setSearchParams, localStorageValue]);
 
   return (
     <main className={`${theme === 'dark' ? 'dark-mode' : ''}`}>
