@@ -18,8 +18,8 @@ export const Line = ({ item }: Props) => {
   return (
     <article className={'line'}>
       <div className={'title'}>
-        {title[0].toUpperCase() + title.slice(1)}
-        <img className={'image'} src={img} alt={'pokemon'}></img>
+         {title === "" ? 'Unknown Pokemon': title[0].toUpperCase() + title.slice(1)}
+        <img className={'image'} src={img} alt={title}></img>
       </div>
       <div className={'stats-wrapper'}>
         <div className={'stats'}>Speed: {speed}</div>
