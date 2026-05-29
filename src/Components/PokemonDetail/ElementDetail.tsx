@@ -29,39 +29,43 @@ export const ElementDetail = () => {
     navigate(`/${location.search}`);
   };
 
-  const fetchData = async () => {
-    setLoading(true);
-
-    try {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error('Not found');
-        }
-        if (response.status >= 500) {
-          throw new Error('Server error. We try fix problem, please wait');
-        }
-        throw new Error('Error data loading');
-      }
-
-      setLoading(false);
-      const data = await response.json();
-
-      const mappedData = {
-        height: data.height,
-        weight: data.weight,
-        abilities: data.abilities.map((item: PokemonApiAbilityItem) => {
-          return item.ability.name;
-        }),
-      };
-      setItem(mappedData);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    if (!name) {
+      return;
+    }
+
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('Not found');
+          }
+          if (response.status >= 500) {
+            throw new Error('Server error. We try fix problem, please wait');
+          }
+          throw new Error('Error data loading');
+        }
+
+        setLoading(false);
+        const data = await response.json();
+
+        const mappedData = {
+          height: data.height,
+          weight: data.weight,
+          abilities: data.abilities.map((item: PokemonApiAbilityItem) => {
+            return item.ability.name;
+          }),
+        };
+        setItem(mappedData);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, [name]);
 
