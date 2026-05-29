@@ -26,6 +26,23 @@ interface Item {
   title: string;
 }
 
+interface PokemonResponse {
+  name: string;
+  sprites: {
+    front_default: string | null;
+  };
+  stats: Array<{
+    base_stat: number;
+  }>;
+}
+
+interface PokemonListResponse {
+  results: Array<{
+    name: string;
+    url: string;
+  }>;
+}
+
 export const HomePage: FC<HomePageProps> = ({ query }) => {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -66,14 +83,12 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
     const fetchData = async () => {
       setItems(null);
       setErrorMessage('');
-
       setLoading(true);
-      const offset = (page - 1) * 12;
+      const offset: number = (page - 1) * 12;
+      const cleanQuery: string = localStorageValue || query;
+      const isSearchMode: boolean = cleanQuery.length >= 3;
 
-      const cleanQuery = query.trim().toLowerCase();
-      const isSearchMode = cleanQuery.length >= 3;
-
-      const url = isSearchMode
+      const url: string = isSearchMode
         ? `https://pokeapi.co/api/v2/pokemon/${cleanQuery}`
         : `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${offset}`;
       try {
@@ -87,9 +102,12 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
           }
           throw new Error('Error data loading');
         }
-        const data = await response.json();
+
+        const gettingData = await response.json();
 
         if (isSearchMode) {
+          const data = gettingData as PokemonResponse;
+
           const mappedItem: Item = {
             title: data.name,
             img: data.sprites.front_default || '',
@@ -102,6 +120,8 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
           setItems([mappedItem]);
           setLoading(false);
         } else {
+          const data = gettingData as PokemonListResponse;
+
           const detailedData = await Promise.all(
             data.results.map(async (pokemon: { url: string }) => {
               const data = await fetch(pokemon.url);
