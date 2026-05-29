@@ -84,8 +84,8 @@ export const ElementDetail = () => {
             <section className={'detailed-info'}>
               <p>Height: {item?.height}</p>
               <p>weight: {item?.weight}</p>
+              <h3>Abilities:</h3>
               <ul>
-                <h3>Abilities:</h3>
                 {item?.abilities.map((ability) => (
                   <li key={ability} className={'abilities'}>
                     {ability}
