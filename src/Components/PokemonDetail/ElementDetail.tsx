@@ -3,7 +3,7 @@ import closeIcon from '../../assets/close.png';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-interface pokemonDetailedInfo {
+interface PokemonDetailedInfo {
   height: number;
   weight: number;
   abilities: string[];
@@ -22,7 +22,7 @@ export const ElementDetail = () => {
   const navigate = useNavigate();
   const { name } = useParams();
   const [isLoading, setLoading] = useState(false);
-  const [item, setItem] = useState<pokemonDetailedInfo | null>(null);
+  const [item, setItem] = useState<PokemonDetailedInfo | null>(null);
   const location = useLocation();
 
   const handleCloseClick = () => {
