@@ -1,5 +1,4 @@
 import './about-page.css';
-import { Link } from 'react-router';
 import { useTheme } from '../../context.ts';
 
 export const AboutPage = () => {
@@ -13,13 +12,13 @@ export const AboutPage = () => {
           pokemons. If you want to find something, enter the pokemon name but it
           must be strictly in English.
         </p>
-        <p>
-          Author Git Hub: <Link to={'https://github.com/bssier'}>Link</Link>
-        </p>
-        <p>
-          RS React course:{' '}
-          <Link to={'https://rs.school/courses/reactjs'}>Link</Link>
-        </p>
+          <a href="https://github.com/bssier" target="_blank" rel="noopener noreferrer">
+              GitHub Profile
+          </a>
+
+          <a href="https://rs.school/courses/reactjs" target="_blank" rel="noopener noreferrer">
+              RS React course
+          </a>
       </div>
     </article>
   );
