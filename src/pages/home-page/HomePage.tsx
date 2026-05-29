@@ -91,6 +91,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
       const url: string = isSearchMode
         ? `https://pokeapi.co/api/v2/pokemon/${cleanQuery}`
         : `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${offset}`;
+
       try {
         const response = await fetch(url);
         if (!response.ok) {
