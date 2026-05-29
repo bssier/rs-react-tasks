@@ -33,6 +33,7 @@ interface PokemonResponse {
   };
   stats: Array<{
     base_stat: number;
+    stat: { name: string };
   }>;
 }
 
@@ -42,6 +43,25 @@ interface PokemonListResponse {
     url: string;
   }>;
 }
+
+const mapPokemonItem = (apiData: PokemonResponse): Item => {
+  const statsMap: Record<string, number> = {};
+
+  apiData.stats.forEach((stat) => {
+    if (stat.stat?.name) {
+      statsMap[stat.stat.name] = stat.base_stat;
+    }
+  });
+
+  return {
+    title: apiData.name,
+    img: apiData.sprites.front_default || '',
+    hp: statsMap['hp'] || 0,
+    attack: statsMap['attack'] || 0,
+    defense: statsMap['defense'] || 0,
+    speed: statsMap['speed'] || 0,
+  };
+};
 
 export const HomePage: FC<HomePageProps> = ({ query }) => {
   const [isLoading, setLoading] = useState(false);
@@ -109,14 +129,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
         if (isSearchMode && gettingData) {
           const data = gettingData as PokemonResponse;
 
-          const mappedItem: Item = {
-            title: data.name,
-            img: data.sprites.front_default || '',
-            hp: data.stats[0]?.base_stat || 0,
-            attack: data.stats[1]?.base_stat || 0,
-            defense: data.stats[2]?.base_stat || 0,
-            speed: data.stats[5]?.base_stat || 0,
-          };
+          const mappedItem = mapPokemonItem(data);
 
           setItems([mappedItem]);
           setLoading(false);
@@ -127,14 +140,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
             data.results.map(async (pokemon: { url: string }) => {
               const data = await fetch(pokemon.url);
               const details = await data.json();
-              return {
-                title: details.name,
-                img: details.sprites.front_default || '',
-                hp: details.stats[0].base_stat,
-                attack: details.stats[1].base_stat,
-                defense: details.stats[2].base_stat,
-                speed: details.stats[5].base_stat,
-              };
+              return mapPokemonItem(details);
             })
           );
 
