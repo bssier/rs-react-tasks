@@ -21,7 +21,7 @@ export const Line = ({ item, isChecked, handleCheckboxChange }: Props) => {
     <article className={'line'}>
       <div className={'checkbox-container'}>
         <input
-          type={'checkbox'}
+          type="checkbox"
           checked={isChecked}
           id={`checkbox-${title}`}
           onChange={handleCheckboxChange}
@@ -32,12 +32,12 @@ export const Line = ({ item, isChecked, handleCheckboxChange }: Props) => {
           aria-label={`select ${title}`}
         />
       </div>
-      <div className={'title'}>
+      <h3 className={'title'}>
         {title === ''
           ? 'Unknown Pokemon'
           : title[0].toUpperCase() + title.slice(1)}
         <img className={'image'} src={img} alt={title}></img>
-      </div>
+      </h3>
       <div className={'stats-wrapper'}>
         <div className={'stats'}>Speed: {speed}</div>
         <div className={'stats'}>Defense: {defense}</div>

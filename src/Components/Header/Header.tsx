@@ -21,7 +21,7 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
   const { theme, toggleTheme } = useTheme();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const regExpOnlyEngSym = /^[a-zA-Z\s]*$/;
+    const regExpOnlyEngSym = /^[a-zA-Z\s-]*$/;
     const value = e.target.value;
 
     if (regExpOnlyEngSym.test(value)) {
@@ -36,7 +36,7 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
   };
 
   const handleSearchClick = () => {
-    const valueWithoutspace = inputValue.trim().trimStart();
+    const valueWithoutspace = inputValue.trim();
 
     if (valueWithoutspace === searchQuery) {
       setInputValue(valueWithoutspace);
@@ -100,7 +100,7 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
           <input
             type={'text'}
             className={'search-input'}
-            placeholder={'Search pokemons...'}
+            placeholder="Search pokemons..."
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleEnterClick}
@@ -109,6 +109,7 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
             className={'search-button'}
             onClick={handleSearchClick}
             aria-label={'search'}
+            type="button"
           >
             <div className={'search-icon-container'}>
               <img src={Search} alt={'search'} />
