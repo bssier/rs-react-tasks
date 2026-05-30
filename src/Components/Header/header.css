@@ -101,9 +101,11 @@ header {
   font-family: Quicksand-Light, sans-serif;
 }
 
-.to-pokemon-list-container p {
+.to-pokemon-list-container a {
   font-family: Quicksand-Light, sans-serif;
   cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
 
 .snack-bar {
@@ -123,9 +125,26 @@ header {
   font-size: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background-color: #333333;
-  color: white;
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.message-container p {
+  color: white;
+}
+
+.theme-switcher {
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--input-color);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }

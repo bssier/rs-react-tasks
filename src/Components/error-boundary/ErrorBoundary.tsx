@@ -1,7 +1,7 @@
 import { Component, type ErrorInfo } from 'react';
 import type { ReactNode } from 'react';
-import './error-boudary.css';
-import { Link } from 'react-router-dom';
+import './ErrorBoudary.css';
+import { Link } from 'react-router';
 
 interface Props {
   children: ReactNode;
@@ -18,7 +18,7 @@ export class ErrorBoundary extends Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(_: Error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 

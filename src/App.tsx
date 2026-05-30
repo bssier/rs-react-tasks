@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Outlet, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Header } from './components/Header/Header';
 import { HomePage } from './pages/home-page/HomePage';
-import { Footer } from './components/Footer/Footer';
 import { NotFoundPage } from './pages/not-found/NotFoundPage';
-import { ErrorBoundary } from './components/ErrorBoudary/ErrorBoundary.tsx';
-import { AboutPage } from './pages/AboutPage/AboutPage.tsx';
-import { ElementDetail } from './components/PokemonDetail/ElementDetail.tsx';
+import { ErrorBoundary } from './components/error-boundary/ErrorBoundary.tsx';
+import { AboutPage } from './pages/about-page/AboutPage.tsx';
+import { ElementDetail } from './components/pokemon-detail/ElementDetail.tsx';
+import { MainLayout } from './components/main-layout/MainLayout.tsx';
 
 export const App = () => {
   const [searchQuery, setSearchQuery] = useState<string>(() => {
@@ -22,21 +21,18 @@ export const App = () => {
     setSearchQuery(query);
   };
 
-  const MainLayout = () => {
-    return (
-      <>
-        <Header handleSearch={handleSearch} searchQuery={searchQuery} />
-        <Outlet />
-        <Footer />
-      </>
-    );
-  };
-
   return (
     <BrowserRouter>
       <ErrorBoundary>
         <Routes>
-          <Route element={<MainLayout />}>
+          <Route
+            element={
+              <MainLayout
+                handleSearch={handleSearch}
+                searchQuery={searchQuery}
+              />
+            }
+          >
             <Route path={'/'} element={<HomePage query={searchQuery} />}>
               <Route path="pokemon/:name" element={<ElementDetail />} />
             </Route>
