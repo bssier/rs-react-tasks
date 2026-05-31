@@ -1,16 +1,21 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Header } from '../components/header/Header';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from '../components/error-boundary/ErrorBoundary.tsx';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { ThemeContext } from '../context.ts';
+import { Provider } from 'react-redux';
+import { store } from '../store/store.ts';
 
 const renderHeader = (ui: React.ReactElement) => {
   return render(
-    <ThemeContext.Provider value={{ theme: 'light', toggleTheme: vi.fn() }}>
-      <BrowserRouter>{ui}</BrowserRouter>
-    </ThemeContext.Provider>
+    <Provider store={store}>
+      <ThemeContext.Provider value={{ theme: 'light', toggleTheme: vi.fn() }}>
+        <MemoryRouter>{ui}</MemoryRouter>
+      </ThemeContext.Provider>
+    </Provider>
   );
 };
 
@@ -22,7 +27,6 @@ describe('header tests', () => {
 
   test('render search input', () => {
     renderHeader(<Header handleSearch={vi.fn()} searchQuery={''} />);
-
     expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 
@@ -41,26 +45,41 @@ describe('header tests', () => {
 
   test('works error boudary test', async () => {
     const user = userEvent.setup();
+    const ProblemComponent = () => {
+      throw new Error('Test Crash');
+    };
 
-    renderHeader(
-      <ErrorBoundary>
-        <Header handleSearch={vi.fn()} searchQuery={''} />
-      </ErrorBoundary>
+    const TestApp = () => {
+      const [shouldCrash, setShouldCrash] = React.useState(false);
+      if (shouldCrash) return <ProblemComponent />;
+      return (
+        <button onClick={() => setShouldCrash(true)}>Generate Error</button>
+      );
+    };
+
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <MemoryRouter>
+        <ErrorBoundary>
+          <TestApp />
+        </ErrorBoundary>
+      </MemoryRouter>
     );
 
     const errButton = screen.getByRole('button', { name: 'Generate Error' });
-
     await user.click(errButton);
+
     expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
+
+    spy.mockRestore();
   });
 
   test('localstorage load value test', () => {
     localStorage.setItem('input-value', 'pikachu');
-
     renderHeader(<Header handleSearch={vi.fn()} searchQuery={''} />);
 
     const value = screen.getByDisplayValue('pikachu');
-
     expect(value).toBeInTheDocument();
   });
 });

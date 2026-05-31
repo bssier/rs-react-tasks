@@ -59,7 +59,7 @@ export const ElementDetail = () => {
             throw new Error('Not found');
           }
           if (response.status >= 500) {
-            throw new Error('Server error. We try fix problem, please wait');
+            throw new Error('Server error.');
           }
           throw new Error('Error data loading');
         }
