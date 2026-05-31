@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store/store.ts';
 import { toggleItem } from '../../store/itemSlice.ts';
 import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
-import { Pagination } from '../../components/pagination/Pagination.tsx';
+import { Pagination } from '../../components/pagination-line/Pagination.tsx';
 
 interface HomePageProps {
   query: string;
