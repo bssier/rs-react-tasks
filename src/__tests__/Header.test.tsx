@@ -43,8 +43,45 @@ describe('header tests', () => {
     expect(localStorage.getItem('input-value')).toBe('pikachu');
   });
 
-  test('works error boudary test', async () => {
+  test('calls handleSearch on submit', async () => {
     const user = userEvent.setup();
+    const handleSearch = vi.fn();
+
+    renderHeader(<Header handleSearch={handleSearch} searchQuery={''} />);
+
+    const input = screen.getByPlaceholderText(/Search pokemons/i);
+    const button = screen.getByRole('button', { name: /search/i });
+
+    await user.type(input, 'pikachu');
+    await user.click(button);
+
+    expect(handleSearch).toHaveBeenCalledWith('pikachu');
+  });
+
+  test('does not call handleSearch on empty input', async () => {
+    const user = userEvent.setup();
+    const handleSearch = vi.fn();
+
+    renderHeader(<Header handleSearch={handleSearch} searchQuery={''} />);
+
+    const button = screen.getByRole('button', { name: /search/i });
+
+    await user.click(button);
+
+    expect(handleSearch).not.toHaveBeenCalled();
+  });
+
+  test('localstorage load value test', () => {
+    localStorage.setItem('input-value', 'pikachu');
+    renderHeader(<Header handleSearch={vi.fn()} searchQuery={''} />);
+
+    const value = screen.getByDisplayValue('pikachu');
+    expect(value).toBeInTheDocument();
+  });
+
+  test('works error boundary test', async () => {
+    const user = userEvent.setup();
+
     const ProblemComponent = () => {
       throw new Error('Test Crash');
     };
@@ -67,8 +104,7 @@ describe('header tests', () => {
       </MemoryRouter>
     );
 
-    const errButton = screen.getByRole('button', { name: 'Generate Error' });
-    await user.click(errButton);
+    await user.click(screen.getByRole('button', { name: 'Generate Error' }));
 
     expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
 

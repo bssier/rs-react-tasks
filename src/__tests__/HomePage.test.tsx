@@ -171,14 +171,12 @@ describe('home page test', () => {
     vi.fn();
     vi.stubGlobal(
       'fetch',
-      vi
-        .fn()
-        .mockResolvedValue(
-          new Response(JSON.stringify({ results: [] }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' },
-          })
-        )
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ results: [] }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        })
+      )
     );
 
     renderWithProviders(<HomePage query={''} />);
