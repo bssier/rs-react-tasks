@@ -166,4 +166,55 @@ describe('home page test', () => {
 
     expect(await screen.findByText(/pikachu/i)).toBeInTheDocument();
   });
+
+  test('refresh button', async () => {
+    vi.fn();
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(JSON.stringify({ results: [] }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          })
+        )
+    );
+
+    renderWithProviders(<HomePage query={''} />);
+
+    const btn = screen.getByRole('button', { name: /refresh data/i });
+
+    expect(btn).toBeInTheDocument();
+  });
+
+  test('home page renders list', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(
+          new Response(
+            JSON.stringify({
+              results: [{ name: 'pikachu', url: 'url' }],
+            }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+          )
+        )
+        .mockResolvedValue(
+          new Response(
+            JSON.stringify({
+              name: 'pikachu',
+              sprites: { front_default: '' },
+              stats: [{ base_stat: 10, stat: { name: 'hp' } }],
+            }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+          )
+        )
+    );
+
+    renderWithProviders(<HomePage query={''} />);
+    const item = await screen.findByText(/pikachu/i);
+    expect(item).toBeInTheDocument();
+  });
 });
