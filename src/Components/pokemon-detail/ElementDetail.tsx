@@ -24,6 +24,12 @@ interface MappedData {
   abilities: string[];
 }
 
+interface PokemonApiResponse {
+  height: number;
+  weight: number;
+  abilities: PokemonApiAbilityItem[];
+}
+
 export const ElementDetail = () => {
   const navigate = useNavigate();
   const { name } = useParams();
@@ -59,7 +65,7 @@ export const ElementDetail = () => {
         }
 
         setLoading(false);
-        const data = await response.json();
+        const data: PokemonApiResponse = await response.json();
 
         const mappedData: MappedData = {
           height: typeof data.height === 'number' ? data.height : 0,
