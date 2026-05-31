@@ -7,10 +7,6 @@ import {
   useNavigate,
   type NavigateFunction,
 } from 'react-router-dom';
-import { useTheme } from '../../context.ts';
-import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../../store/store.ts';
-import { toggleItem } from '../../store/itemSlice.ts';
 import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
 import { Pagination } from '../../components/pagination-line/Pagination.tsx';
 
@@ -72,12 +68,6 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   const navigate: NavigateFunction = useNavigate();
   const page: number = Number(searchParams.get('page')) || 1;
   const [localStorageValue] = useLocalStorage<string>('input-value', '');
-  const { theme } = useTheme();
-
-  const dispatch = useDispatch();
-  const selectedItems = useSelector(
-    (state: RootState) => state.pokemons.selectedItems
-  );
 
   const handleCardClick = (name: string) => {
     navigate(`/pokemon/${name}${window.location.search}`);
@@ -153,7 +143,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   }, [query, page, setSearchParams, localStorageValue]);
 
   return (
-    <main className={`${theme === 'dark' ? 'dark-mode' : ''}`}>
+    <main>
       {isLoading && <div className={'loader'}>loading...</div>}
       {errorMessage && (
         <div className={'error-showing-container'}>
@@ -163,18 +153,11 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
       <div className={'list-wrapper'}>
         <section className={'list'}>
           {items?.map((item: Item) => {
-            const isChecked = selectedItems.some(
-              (selected: { title: string }) => selected.title === item.title
-            );
             return (
               <Line
                 key={item.title}
                 onClick={() => handleCardClick(item.title)}
                 item={item}
-                isChecked={isChecked}
-                handleCheckboxChange={() => {
-                  dispatch(toggleItem(item));
-                }}
               />
             );
           })}

@@ -1,11 +1,8 @@
 import './AboutPage.css';
-import { useTheme } from '../../context.ts';
 
 export const AboutPage = () => {
-  const { theme } = useTheme();
-
   return (
-    <article className={`about-page ${theme === 'dark' ? 'dark-mode' : ''}`}>
+    <article>
       <div className={'greeting-menu'}>
         <p>
           Hi, dear user! As you might have guessed, this is an app for searching

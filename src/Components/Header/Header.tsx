@@ -3,9 +3,6 @@ import './Header.css';
 import Search from '../../assets/search.svg';
 import Logo from '../../assets/pokemon-logo.svg';
 import { Link } from 'react-router-dom';
-import DarkMode from '../../assets/dark-mode.svg';
-import LightMode from '../../assets/light-mode.svg';
-import { useTheme } from '../../context.ts';
 
 interface PropsHeader {
   handleSearch: (query: string) => void;
@@ -18,7 +15,6 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
   );
   const [error, setError] = useState<Error | null>(null);
   const [snackBarMessage, setSnackBarMessage] = useState('');
-  const { theme, toggleTheme } = useTheme();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regExpOnlyEngSym = /^[a-zA-Z\s-]*$/;
@@ -117,16 +113,6 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
             </div>
           </button>
         </div>
-        <button
-          className={`theme-switcher ${theme}-mode`}
-          onClick={toggleTheme}
-        >
-          {theme === 'light' ? (
-            <img src={DarkMode} alt={'dark mode'} />
-          ) : (
-            <img src={LightMode} alt={'light mode'} />
-          )}
-        </button>
         <nav className={'about-page-link'}>
           <p>
             <Link to={'/about'}>About</Link>

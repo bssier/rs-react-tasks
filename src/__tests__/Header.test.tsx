@@ -3,16 +3,6 @@ import { Header } from '../components/header/Header';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from '../components/error-boundary/ErrorBoundary.tsx';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeContext } from '../context.ts';
-
-const renderHeader = (ui: React.ReactElement) => {
-  return render(
-    <ThemeContext.Provider value={{ theme: 'light', toggleTheme: vi.fn() }}>
-      <BrowserRouter>{ui}</BrowserRouter>
-    </ThemeContext.Provider>
-  );
-};
 
 describe('header tests', () => {
   beforeEach(() => {
@@ -21,14 +11,14 @@ describe('header tests', () => {
   });
 
   test('render search input', () => {
-    renderHeader(<Header handleSearch={vi.fn()} searchQuery={''} />);
+    render(<Header handleSearch={vi.fn()} searchQuery={''} />);
 
     expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 
   test('save item in local storage', async () => {
     const user = userEvent.setup();
-    renderHeader(<Header handleSearch={vi.fn()} searchQuery={''} />);
+    render(<Header handleSearch={vi.fn()} searchQuery={''} />);
 
     const input = screen.getByPlaceholderText(/Search pokemons/i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -42,7 +32,7 @@ describe('header tests', () => {
   test('works error boudary test', async () => {
     const user = userEvent.setup();
 
-    renderHeader(
+    render(
       <ErrorBoundary>
         <Header handleSearch={vi.fn()} searchQuery={''} />
       </ErrorBoundary>
@@ -57,7 +47,7 @@ describe('header tests', () => {
   test('localstorage load value test', () => {
     localStorage.setItem('input-value', 'pikachu');
 
-    renderHeader(<Header handleSearch={vi.fn()} searchQuery={''} />);
+    render(<Header handleSearch={vi.fn()} searchQuery={'pikachu'} />);
 
     const value = screen.getByDisplayValue('pikachu');
 

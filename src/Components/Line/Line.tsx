@@ -16,28 +16,10 @@ interface Props {
   onClick?: () => void;
 }
 
-export const Line = ({
-  item,
-  isChecked,
-  handleCheckboxChange,
-  onClick,
-}: Props) => {
+export const Line = ({ item, onClick }: Props) => {
   const { hp, attack, defense, speed, img, title } = item;
   return (
     <article className={'line'} onClick={onClick}>
-      <div className={'checkbox-container'}>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          id={`checkbox-${title}`}
-          onChange={handleCheckboxChange}
-          onClick={(e: React.MouseEvent<HTMLInputElement>) =>
-            e.stopPropagation()
-          }
-          className="card-checkbox"
-          aria-label={`select ${title}`}
-        />
-      </div>
       <h3 className={'title'}>
         {title === ''
           ? 'Unknown Pokemon'
