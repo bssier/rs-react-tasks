@@ -1,0 +1,45 @@
+.main-content {
+  padding: 20px;
+}
+
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.menu-text {
+  margin: 0 0 10px;
+  color: #666;
+}
+
+.menu-button {
+  cursor: pointer;
+
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+
+  font-size: 14px;
+
+  background: #f9f9f9;
+
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.menu-button:hover {
+  border-color: #bbb;
+  background: #f0f0f0;
+}
+
+.button-container {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+}
