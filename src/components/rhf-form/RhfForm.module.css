@@ -1,0 +1,82 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.checkbox-label {
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.checkbox {
+  cursor: pointer;
+
+  width: 18px;
+  height: 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+
+  accent-color: #2563eb;
+}
+
+.error-text {
+  margin-top: 2px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #dc2626;
+}
+
+.submit-button {
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+
+  background-color: #2563eb;
+
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #1d4ed8;
+}
+
+.submit-button:active {
+  background-color: #1e40af;
+}
+
+.submit-button:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
