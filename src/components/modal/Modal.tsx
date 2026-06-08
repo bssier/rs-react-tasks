@@ -14,7 +14,9 @@ const getFocusableElements = (
   if (!container) {
     return [];
   }
+
   const nodes = container.querySelectorAll(FOCUSABLE_SELECTOR);
+
   return [...nodes].filter(
     (node): node is HTMLElement => node instanceof HTMLElement,
   );
@@ -29,16 +31,23 @@ const handleModalKeyDown = (
     onClose();
     return;
   }
+
   if (event.key !== 'Tab') {
     return;
   }
+
   const elements = getFocusableElements(container);
+
   if (elements.length === 0) {
     return;
   }
 
   const first = elements[0];
   const last = elements.at(-1);
+  if (!last) {
+    return;
+  }
+
   if (event.shiftKey && document.activeElement === first) {
     last.focus();
     event.preventDefault();
@@ -85,23 +94,27 @@ export const Modal = ({
   children,
 }: ModalProps): JSX.Element | undefined => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement>(undefined);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!isOpen) {
       return;
     }
+
     if (document.activeElement instanceof HTMLElement) {
       previousFocusRef.current = document.activeElement;
     }
+
     document.body.style.overflow = 'hidden';
 
     const onKeyDown = (event: KeyboardEvent): void => {
       handleModalKeyDown(event, modalRef.current, onClose);
     };
+
     document.addEventListener('keydown', onKeyDown);
 
     const elements = getFocusableElements(modalRef.current);
+
     if (elements[0]) {
       elements[0].focus();
     }
@@ -116,7 +129,9 @@ export const Modal = ({
   if (!isOpen) {
     return undefined;
   }
+
   const modalRoot = document.querySelector('#modal-root');
+
   if (!modalRoot) {
     return undefined;
   }
