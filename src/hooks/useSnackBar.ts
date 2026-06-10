@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { SnackBar } from '@/types/headerTypes.ts';
+import type { SnackBar } from '@/types/headerTypes';
 const TIMEOUT_DELAY = 2000;
 
 export const useSnackBar = (timeoutInterval = TIMEOUT_DELAY): SnackBar => {

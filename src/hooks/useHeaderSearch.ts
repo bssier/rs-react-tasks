@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useSnackBar } from './useSnackBar';
-import type { HeaderTypes } from '@/types/headerTypes.ts';
+import type { HeaderTypes } from '@/types/headerTypes';
 const MIN_LENGTH = 3;
 
 export const useHeaderSearch = (): HeaderTypes => {

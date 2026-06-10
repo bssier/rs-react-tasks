@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { Header } from '../components/header/Header';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { ErrorBoudary } from '../components/error-boudary/ErrorBoudary.tsx';
+import { ErrorBoundary } from '@/components/error-boundary/ErrorBoundary';
 
 describe('header tests', () => {
   beforeEach(() => {
@@ -11,14 +11,14 @@ describe('header tests', () => {
   });
 
   test('render search input', () => {
-    render(<Header handleSearch={vi.fn()} searchQuery={''} />);
+    render(<Header />);
 
     expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 
   test('save item in local storage', async () => {
     const user = userEvent.setup();
-    render(<Header handleSearch={vi.fn()} searchQuery={''} />);
+    render(<Header />);
 
     const input = screen.getByPlaceholderText(/Search pokemons/i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -33,9 +33,9 @@ describe('header tests', () => {
     const user = userEvent.setup();
 
     render(
-      <ErrorBoudary>
-        <Header handleSearch={vi.fn()} searchQuery={''} />
-      </ErrorBoudary>
+      <ErrorBoundary>
+        <Header />
+      </ErrorBoundary>,
     );
 
     const errButton = screen.getByRole('button', { name: 'Generate Error' });
@@ -47,7 +47,7 @@ describe('header tests', () => {
   test('localstorage load value test', () => {
     localStorage.setItem('input-value', 'pikachu');
 
-    render(<Header handleSearch={vi.fn()} searchQuery={'pikachu'} />);
+    render(<Header />);
 
     const value = screen.getByDisplayValue('pikachu');
 
