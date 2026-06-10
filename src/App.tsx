@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { HomePage } from './pages/home-page/HomePage';
 import { NotFoundPage } from './pages/not-found/NotFoundPage';
-import { ErrorBoundary } from './components/error-boundary/ErrorBoundary.tsx';
+import { ErrorBoudary } from './components/error-boudary/ErrorBoudary.tsx';
 import { AboutPage } from './pages/about-page/AboutPage.tsx';
 import { ElementDetail } from './components/pokemon-detail/ElementDetail.tsx';
 import { MainLayout } from './components/main-layout/MainLayout.tsx';
@@ -10,7 +10,7 @@ import { MainLayout } from './components/main-layout/MainLayout.tsx';
 export const App = () => {
   return (
     <BrowserRouter>
-      <ErrorBoundary>
+      <ErrorBoudary>
         <Routes>
           <Route element={<MainLayout />}>
             <Route path={'/'} element={<HomePage />}>
@@ -21,7 +21,7 @@ export const App = () => {
 
           <Route path={'*'} element={<NotFoundPage />} />
         </Routes>
-      </ErrorBoundary>
+      </ErrorBoudary>
     </BrowserRouter>
   );
 };

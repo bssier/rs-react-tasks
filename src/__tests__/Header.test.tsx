@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { Header } from '../components/header/Header';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { ErrorBoundary } from '../components/error-boundary/ErrorBoundary.tsx';
+import { ErrorBoudary } from '../components/error-boudary/ErrorBoudary.tsx';
 
 describe('header tests', () => {
   beforeEach(() => {
@@ -33,9 +33,9 @@ describe('header tests', () => {
     const user = userEvent.setup();
 
     render(
-      <ErrorBoundary>
+      <ErrorBoudary>
         <Header handleSearch={vi.fn()} searchQuery={''} />
-      </ErrorBoundary>
+      </ErrorBoudary>
     );
 
     const errButton = screen.getByRole('button', { name: 'Generate Error' });
