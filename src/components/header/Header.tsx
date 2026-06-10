@@ -1,120 +1,51 @@
-import { useState } from 'react';
-import './Header.css';
-import Search from '../../assets/search.svg';
+import { Link } from 'react-router-dom';
 import Logo from '../../assets/pokemon-logo.svg';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useHeaderSearch } from '../../hooks/useHeaderSearch';
+import { SnackBar } from '../snack-bar/SnackBar';
+import { SearchBar } from '../search-bar/SearchBar';
+import './Header.css';
 
 export const Header = () => {
-  const [error, setError] = useState<Error | null>(null);
-  const [snackBarMessage, setSnackBarMessage] = useState('');
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [inputValue, setInputValue] = useState(
-    searchParams.get('query') || localStorage.getItem('input-value') || ''
-  );
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const regExpOnlyEngSym = /^[a-zA-Z\s-]*$/;
-    const value = e.target.value;
-
-    if (regExpOnlyEngSym.test(value)) {
-      setInputValue(value);
-    } else {
-      setSnackBarMessage('use only english letter!');
-
-      setTimeout(() => {
-        setSnackBarMessage('');
-      }, 2000);
-    }
-  };
-
-  const handleSearchClick = () => {
-    const valueWithoutspace = inputValue.trim();
-
-    if (valueWithoutspace === searchParams.get('query')) {
-      setInputValue(valueWithoutspace);
-      return;
-    }
-
-    if (valueWithoutspace.length >= 3) {
-      setInputValue(valueWithoutspace);
-      localStorage.setItem('input-value', valueWithoutspace);
-      setSearchParams({ query: `${valueWithoutspace}` });
-    } else {
-      setSnackBarMessage('your query must be longer than three characters!');
-
-      setTimeout(() => {
-        setSnackBarMessage('');
-      }, 2000);
-    }
-  };
-
-  const handleToPokemonListClick = () => {
-    localStorage.removeItem('input-value');
-    setInputValue('');
-    setSearchParams({ query: '' });
-  };
-
-  const handleEnterClick = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearchClick();
-    }
-  };
-
-  if (error) {
-    throw error;
-  }
-
-  const generateError = () => {
-    setError(new Error('Special error'));
-  };
+  const {
+    inputValue,
+    snackBarMessage,
+    handleInputChange,
+    handleSearchClick,
+    handleToPokemonListClick,
+    handleEnterClick,
+    generateError,
+  } = useHeaderSearch();
 
   return (
     <>
-      {snackBarMessage && (
-        <div className={'snack-bar'}>
-          <div className={'message-container'}>
-            <p>{snackBarMessage}</p>
-          </div>
-        </div>
-      )}
+      {snackBarMessage && <SnackBar message={snackBarMessage} />}
       <header>
-        <div className={'logo'}>
-          <div className={'logo-container'}>
-            <img src={Logo} alt={'logo'} className={'logo'} />
+        <div className="logo">
+          <div className="logo-container">
+            <img src={Logo} alt="logo" className="logo" />
           </div>
         </div>
-        <nav className={'to-pokemon-list-container'}>
-          <Link onClick={handleToPokemonListClick} to={'/'}>
+
+        <nav className="to-pokemon-list-container">
+          <Link onClick={handleToPokemonListClick} to="/">
             Pokemon list
           </Link>
         </nav>
-        <div className={'search-container'}>
-          <input
-            type="text"
-            className={'search-input'}
-            placeholder="Search pokemons..."
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={handleEnterClick}
-            aria-label="Search pokemons"
-          />
-          <button
-            className={'search-button'}
-            onClick={handleSearchClick}
-            aria-label={'search'}
-            type="button"
-          >
-            <div className={'search-icon-container'}>
-              <img src={Search} alt={'search'} />
-            </div>
-          </button>
-        </div>
-        <nav className={'about-page-link'}>
+
+        <SearchBar
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleEnterClick}
+          onSearch={handleSearchClick}
+        />
+
+        <nav className="about-page-link">
           <p>
-            <Link to={'/about'}>About</Link>
+            <Link to="/about">About</Link>
           </p>
         </nav>
-        <div className={'error-generate-container'}>
+
+        <div className="error-generate-container">
           <button onClick={generateError}>Generate Error</button>
         </div>
       </header>
