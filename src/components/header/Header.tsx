@@ -1,20 +1,16 @@
-import { type FC, useState } from 'react';
+import { useState } from 'react';
 import './Header.css';
 import Search from '../../assets/search.svg';
 import Logo from '../../assets/pokemon-logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
-interface PropsHeader {
-  handleSearch: (query: string) => void;
-  searchQuery: string;
-}
-
-export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
-  const [inputValue, setInputValue] = useState(
-    localStorage.getItem('input-value') || ''
-  );
+export const Header = () => {
   const [error, setError] = useState<Error | null>(null);
   const [snackBarMessage, setSnackBarMessage] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [inputValue, setInputValue] = useState(
+    searchParams.get('query') || localStorage.getItem('input-value') || ''
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regExpOnlyEngSym = /^[a-zA-Z\s-]*$/;
@@ -34,15 +30,15 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
   const handleSearchClick = () => {
     const valueWithoutspace = inputValue.trim();
 
-    if (valueWithoutspace === searchQuery) {
+    if (valueWithoutspace === searchParams.get('query')) {
       setInputValue(valueWithoutspace);
       return;
     }
 
     if (valueWithoutspace.length >= 3) {
-      handleSearch(valueWithoutspace);
       setInputValue(valueWithoutspace);
       localStorage.setItem('input-value', valueWithoutspace);
+      setSearchParams({ query: `${valueWithoutspace}` });
     } else {
       setSnackBarMessage('your query must be longer than three characters!');
 
@@ -55,7 +51,7 @@ export const Header: FC<PropsHeader> = ({ handleSearch, searchQuery }) => {
   const handleToPokemonListClick = () => {
     localStorage.removeItem('input-value');
     setInputValue('');
-    handleSearch('');
+    setSearchParams({ query: '' });
   };
 
   const handleEnterClick = (e: React.KeyboardEvent) => {

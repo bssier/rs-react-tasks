@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Line } from '../../components/line/Line';
 import './HomePage.css';
 import {
@@ -8,11 +8,7 @@ import {
   type NavigateFunction,
 } from 'react-router-dom';
 import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
-import { Pagination } from '../../components/pagination-line/Pagination.tsx';
-
-interface HomePageProps {
-  query: string;
-}
+import { Pagination } from '../../components/pagination-line/Pagination';
 
 interface Item {
   hp: number;
@@ -60,7 +56,7 @@ const mapPokemonItem = (apiData: PokemonResponse): Item => {
   };
 };
 
-export const HomePage: FC<HomePageProps> = ({ query }) => {
+export const HomePage = () => {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [items, setItems] = useState<Item[] | null>(null);
@@ -72,6 +68,8 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
   const handleCardClick = (name: string) => {
     navigate(`/pokemon/${name}${window.location.search}`);
   };
+  const [searchQuery] = useSearchParams();
+  const query = searchQuery.get('query');
 
   useEffect(() => {
     if (localStorageValue.length >= 3 && page !== 1) {
@@ -84,7 +82,7 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
       setErrorMessage('');
       setLoading(true);
       const offset: number = (page - 1) * 12;
-      const cleanQuery: string = localStorageValue || query;
+      const cleanQuery: string | null = localStorageValue || query || '';
       const isSearchMode: boolean = cleanQuery.length >= 3;
 
       const url: string = isSearchMode
@@ -158,6 +156,10 @@ export const HomePage: FC<HomePageProps> = ({ query }) => {
                 key={item.title}
                 onClick={() => handleCardClick(item.title)}
                 item={item}
+                isChecked={false}
+                handleCheckboxChange={function (): void {
+                  throw new Error('Function not implemented.');
+                }}
               />
             );
           })}
