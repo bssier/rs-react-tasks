@@ -7,7 +7,6 @@ import {
 } from '../utils/dataMappers';
 import {
   MIN_LENGTH,
-  MIN_PAGE_LENGTH,
   NOT_FOUND,
   OFFSET,
   SERVER_ERROR,
@@ -21,7 +20,6 @@ export const usePokemonData = ({
   localStorageValue,
   query,
   page,
-  setSearchParams,
 }: PokemonDataTypes): ReturnUsePokemon => {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -30,11 +28,6 @@ export const usePokemonData = ({
   const offset: number = (page - 1) * OFFSET;
 
   useEffect((): void => {
-    if (localStorageValue.length >= MIN_LENGTH && page !== MIN_PAGE_LENGTH) {
-      setSearchParams({ page: '1' });
-      return;
-    }
-
     const fetchData = async (): Promise<void> => {
       setItems(null);
       setErrorMessage('');
@@ -95,7 +88,7 @@ export const usePokemonData = ({
     };
 
     void fetchData();
-  }, [query, page, setSearchParams, localStorageValue, offset]);
+  }, [query, page, localStorageValue, offset]);
 
   return { isLoading, errorMessage, items };
 };

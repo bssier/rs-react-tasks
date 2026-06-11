@@ -1,4 +1,9 @@
-import { Outlet, useSearchParams, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  useSearchParams,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { usePokemonData } from '../../hooks/usePokemonData';
 import { Line } from '../../components/line/Line';
@@ -9,6 +14,8 @@ import type { Item } from '../../types/homePageTypes';
 export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const page = Number(searchParams.get('page')) || 1;
   const query = searchParams.get('query');
   const [localStorageValue] = useLocalStorage('input-value', '');
@@ -17,12 +24,18 @@ export const HomePage = () => {
     localStorageValue,
     query,
     page,
-    setSearchParams,
   });
 
   const handleCardClick = (item: Item): void => {
     void navigate(`/pokemon/${item.title}${location.search}`, {
       state: { item },
+    });
+  };
+
+  const handlePageChange = (newPage: number): void => {
+    setSearchParams((prevParams) => {
+      prevParams.set('page', String(newPage));
+      return prevParams;
     });
   };
 
@@ -55,10 +68,7 @@ export const HomePage = () => {
       <Outlet />
 
       {!isLoading && items && items.length > 0 && (
-        <Pagination
-          page={page}
-          onChangePage={(newPage) => setSearchParams({ page: String(newPage) })}
-        />
+        <Pagination page={page} onChangePage={handlePageChange} />
       )}
     </main>
   );
