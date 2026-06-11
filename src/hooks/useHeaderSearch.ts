@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useSnackBar } from './useSnackBar';
 import type { HeaderTypes } from '@/types/headerTypes';
-const MIN_LENGTH = 3;
+import { MIN_LENGTH } from '../pages/home-page/homePageConstaints';
 
 export const useHeaderSearch = (): HeaderTypes => {
   const [error, setError] = useState<Error | null>(null);

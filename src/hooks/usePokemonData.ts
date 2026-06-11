@@ -12,14 +12,17 @@ import {
   OFFSET,
   SERVER_ERROR,
 } from '../pages/home-page/homePageConstaints';
-import type { ReturnUsePokemon, UsePokemonData } from '../types/usePokemonData';
+import type {
+  ReturnUsePokemon,
+  PokemonDataTypes,
+} from '../types/pokemonDataTypes.ts';
 
 export const usePokemonData = ({
   localStorageValue,
   query,
   page,
   setSearchParams,
-}: UsePokemonData): ReturnUsePokemon => {
+}: PokemonDataTypes): ReturnUsePokemon => {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [items, setItems] = useState<Item[] | null>(null);

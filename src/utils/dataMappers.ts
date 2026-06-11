@@ -8,7 +8,15 @@ export const isPokemonResponse = (data: unknown): data is PokemonResponse => {
   if (typeof data !== 'object' || data === null) {
     return false;
   }
-  return 'name' in data && 'sprites' in data && 'stats' in data;
+
+  return (
+    'name' in data &&
+    'sprites' in data &&
+    'stats' in data &&
+    'height' in data &&
+    'weight' in data &&
+    'abilities' in data
+  );
 };
 
 export const isPokemonListResponse = (
@@ -36,5 +44,8 @@ export const mapPokemonItem = (apiData: PokemonResponse): Item => {
     attack: statsMap.attack || 0,
     defense: statsMap.defense || 0,
     speed: statsMap.speed || 0,
+    height: apiData.height,
+    weight: apiData.weight,
+    abilities: apiData.abilities.map((a): string => a.ability.name),
   };
 };

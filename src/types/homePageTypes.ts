@@ -5,9 +5,14 @@ export type Item = {
   speed: number;
   img: string;
   title: string;
+  height: number;
+  weight: number;
+  abilities: string[];
 };
 
 export type PokemonResponse = {
+  height: number;
+  weight: number;
   name: string;
   sprites: {
     front_default: string | null;
@@ -15,6 +20,14 @@ export type PokemonResponse = {
   stats: {
     base_stat: number;
     stat: { name: string };
+  }[];
+  abilities: {
+    ability: {
+      name: string;
+      url: string;
+    };
+    is_hidden: boolean;
+    slot: number;
   }[];
 };
 

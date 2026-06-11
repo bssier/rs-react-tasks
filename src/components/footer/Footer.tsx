@@ -3,7 +3,7 @@ import './Footer.css';
 export const Footer = () => {
   return (
     <footer>
-      <nav className={'links-container'}>
+      <nav className="links-container">
         <a href={'https://github.com/bssier'} target="_blank" rel="noreferrer">
           Developer GitHub
         </a>

@@ -4,7 +4,7 @@ import { Footer } from '../footer/Footer';
 
 export const MainLayout = () => {
   return (
-    <div className={'app-layout'}>
+    <div className="app-layout">
       <Header />
       <Outlet />
       <Footer />

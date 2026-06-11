@@ -1,7 +1,7 @@
 import type { useSearchParams } from 'react-router-dom';
 import type { Item } from '../types/homePageTypes';
 
-export type UsePokemonData = {
+export type PokemonDataTypes = {
   localStorageValue: string;
   query: string | null;
   page: number;

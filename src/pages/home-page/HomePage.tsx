@@ -4,6 +4,7 @@ import { usePokemonData } from '../../hooks/usePokemonData';
 import { Line } from '../../components/line/Line';
 import { Pagination } from '../../components/pagination-line/Pagination';
 import './HomePage.css';
+import type { Item } from '../../types/homePageTypes';
 
 export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,15 +13,17 @@ export const HomePage = () => {
   const query = searchParams.get('query');
   const [localStorageValue] = useLocalStorage('input-value', '');
 
-  const { isLoading, errorMessage, items } = usePokemonData(
+  const { isLoading, errorMessage, items } = usePokemonData({
     localStorageValue,
     query,
     page,
     setSearchParams,
-  );
+  });
 
-  const handleCardClick = (name: string): void => {
-    void navigate(`/pokemon/${name}${globalThis.location.search}`);
+  const handleCardClick = (item: Item): void => {
+    void navigate(`/pokemon/${item.title}${location.search}`, {
+      state: { item },
+    });
   };
 
   return (
@@ -38,7 +41,7 @@ export const HomePage = () => {
           {items?.map((item) => (
             <Line
               key={item.title}
-              onClick={() => handleCardClick(item.title)}
+              onClick={() => handleCardClick(item)}
               item={item}
               isChecked={false}
               handleCheckboxChange={() => {
