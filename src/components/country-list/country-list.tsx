@@ -3,6 +3,7 @@ import { CountryCard } from '../country-card/country-card';
 import { getPopulationForYear, createYearDataMap } from '../../utils/data-transformers';
 
 import styles from './country-list.module.css';
+import {memo, useMemo} from "react";
 
 type CountryListProps = {
   countries: Country[];
@@ -15,7 +16,7 @@ type CountryListProps = {
   onYearChange: (year: number) => void;
 };
 
-export const CountryList = ({
+const CountryListComponent = ({
   countries,
   searchQuery,
   selectedColumns,
@@ -24,27 +25,29 @@ export const CountryList = ({
   sortField,
   sortOrder,
 }: CountryListProps) => {
-  const filteredCountries = countries
-    .filter((c) => {
-      const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
-      return matchesSearch && matchesRegion;
-    })
-    .sort((a, b) => {
-      if (sortField === 'name') {
-        return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
-      } else {
-        const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
-        const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
-        return sortOrder === 'asc' ? popA - popB : popB - popA;
-      }
-    });
+  const filteredCountries = useMemo(()=>{
+   return countries
+        .filter((c) => {
+          const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
+          return matchesSearch && matchesRegion;
+        })
+        .sort((a, b) => {
+          if (sortField === 'name') {
+            return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
+          } else {
+            const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
+            const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
+            return sortOrder === 'asc' ? popA - popB : popB - popA;
+          }
+        });
+  }, [countries, searchQuery, selectedRegion, sortField, sortOrder, selectedYear])
 
   return (
     <div className={styles.countryList}>
-      {filteredCountries.map((country, index) => (
+      {filteredCountries.map((country) => (
         <CountryCard
-          key={index}
+          key={country.id}
           country={country}
           selectedYear={selectedYear}
           selectedColumns={selectedColumns}
@@ -53,3 +56,5 @@ export const CountryList = ({
     </div>
   );
 };
+
+export const CountryList = memo(CountryListComponent);
