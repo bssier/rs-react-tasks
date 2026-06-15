@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { HomePage } from './pages/home-page/HomePage';
-import { NotFoundPage } from './pages/not-found/NotFoundPage';
-import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
-import { AboutPage } from './pages/about-page/AboutPage';
-import { ElementDetail } from './components/pokemon-detail/ElementDetail';
-import { MainLayout } from './components/main-layout/MainLayout';
-import { AppProviders } from './components/app-providers/AppProviders';
+import { HomePage } from '../../pages/home-page/HomePage.tsx';
+import { NotFoundPage } from '../../pages/not-found/NotFoundPage.tsx';
+import { ErrorBoundary } from '../error-boundary/ErrorBoundary.tsx';
+import { AboutPage } from '../../pages/about-page/AboutPage.tsx';
+import { ElementDetail } from '../pokemon-detail/ElementDetail.tsx';
+import { MainLayout } from '../main-layout/MainLayout.tsx';
+import { AppProviders } from '../app-providers/AppProviders.tsx';
 
 export const App = () => {
   return (
