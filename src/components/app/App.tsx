@@ -6,24 +6,21 @@ import { ErrorBoundary } from '../error-boundary/ErrorBoundary';
 import { AboutPage } from '../../pages/about-page/AboutPage';
 import { ElementDetail } from '../pokemon-detail/ElementDetail';
 import { MainLayout } from '../main-layout/MainLayout';
-import { AppProviders } from '../app-providers/AppProviders';
 
 export const App = () => {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <AppProviders>
-          <Routes>
-            <Route element={<MainLayout />}>
-              <Route path={'/'} element={<HomePage />}>
-                <Route path="pokemon/:name" element={<ElementDetail />} />
-              </Route>
-              <Route path={'/about'} element={<AboutPage />}></Route>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path={'/'} element={<HomePage />}>
+              <Route path="pokemon/:name" element={<ElementDetail />} />
             </Route>
+            <Route path={'/about'} element={<AboutPage />}></Route>
+          </Route>
 
-            <Route path={'*'} element={<NotFoundPage />} />
-          </Routes>
-        </AppProviders>
+          <Route path={'*'} element={<NotFoundPage />} />
+        </Routes>
       </BrowserRouter>
     </ErrorBoundary>
   );
