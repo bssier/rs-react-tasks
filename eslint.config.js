@@ -162,6 +162,7 @@ export default defineConfig([
       '**/*.d.ts',
       '*.config.js',
       'stylelint.config.ts',
+      '**/__tests__/**',
     ],
   },
 ]);
