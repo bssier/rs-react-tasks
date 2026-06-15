@@ -16,7 +16,7 @@ export function useLocalStorage(
 
   useEffect((): void => {
     try {
-      globalThis.localStorage.setItem(key, storedValue);
+      localStorage.setItem(key, storedValue);
     } catch (error) {
       console.error(`error with setting ls key "${key}":`, error);
     }

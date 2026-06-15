@@ -31,11 +31,11 @@ export const isPokemonListResponse = (
 export const mapPokemonItem = (apiData: PokemonResponse): Item => {
   const statsMap: Record<string, number> = {};
 
-  apiData.stats.forEach((stat) => {
+  for (const stat of apiData.stats) {
     if (stat.stat.name) {
       statsMap[stat.stat.name] = stat.base_stat;
     }
-  });
+  }
 
   return {
     title: apiData.name,

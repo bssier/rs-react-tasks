@@ -18,12 +18,15 @@ type Props = {
 
 export const Line = ({ item, onClick }: Props) => {
   const { hp, attack, defense, speed, img, title } = item;
+  const firstLetter = title.at(0)?.toUpperCase() ?? '';
+  const restOfName = title.slice(1);
+  const displayName =
+    title.trim() === '' ? 'Unknown Pokemon' : firstLetter + restOfName;
+
   return (
     <article className="line" onClick={onClick}>
       <h3 className="title">
-        {title === ''
-          ? 'Unknown Pokemon'
-          : title[0].toUpperCase() + title.slice(1)}
+        {displayName}
         <img className="image" src={img} alt={title}></img>
       </h3>
       <div className="stats-wrapper">

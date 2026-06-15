@@ -33,7 +33,7 @@ export const usePokemonData = ({
       setErrorMessage('');
       setLoading(true);
 
-      const cleanQuery: string = localStorageValue || query || '';
+      const cleanQuery: string = query ?? '';
       const isSearchMode: boolean = cleanQuery.length >= MIN_LENGTH;
 
       const url: string = isSearchMode
@@ -77,10 +77,7 @@ export const usePokemonData = ({
           throw new Error('Invalid API response structure');
         }
       } catch (error) {
-        let errorMsg = '';
-        if (error instanceof Error) {
-          errorMsg = error.message;
-        }
+        const errorMsg = error instanceof Error ? error.message : '';
         setErrorMessage(errorMsg);
       } finally {
         setLoading(false);

@@ -15,6 +15,10 @@ type State = {
 export class ErrorBoundary extends Component<Props, State> {
   public override state: State = { hasError: false };
 
+  public handleResetError = (): void => {
+    this.setState({ hasError: false });
+  };
+
   public static getDerivedStateFromError(): State {
     return { hasError: true };
   }
@@ -22,10 +26,6 @@ export class ErrorBoundary extends Component<Props, State> {
   public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.error('Error:', error, errorInfo);
   }
-
-  public handleResetError = (): void => {
-    this.setState({ hasError: false });
-  };
 
   public render(): ReactNode {
     if (this.state.hasError) {

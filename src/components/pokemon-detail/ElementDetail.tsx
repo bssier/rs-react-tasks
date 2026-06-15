@@ -17,10 +17,6 @@ export const ElementDetail = () => {
   const location = useLocation();
   const item = hasPokemonState(location.state) ? location.state.item : null;
 
-  const handleCloseClick = (): void => {
-    void navigate(`/${location.search}`);
-  };
-
   if (!item) {
     return (
       <article className="element-detail">
@@ -30,6 +26,10 @@ export const ElementDetail = () => {
       </article>
     );
   }
+
+  const handleCloseClick = (): void => {
+    void navigate(`/${location.search}`);
+  };
 
   return (
     <article className="element-detail">

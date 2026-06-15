@@ -13,6 +13,10 @@ export const useHeaderSearch = (): HeaderTypes => {
     () => searchParams.get('query') ?? '',
   );
 
+  if (error) {
+    throw error;
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     if (/^[a-zA-Z\s-]*$/.test(value)) {
@@ -44,10 +48,6 @@ export const useHeaderSearch = (): HeaderTypes => {
     searchParams.delete('query');
     setSearchParams(searchParams);
   };
-
-  if (error) {
-    throw error;
-  }
 
   return {
     inputValue,

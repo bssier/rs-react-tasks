@@ -1,7 +1,7 @@
 import type { Item } from '../types/homePageTypes';
 
 export type PokemonDataTypes = {
-  localStorageValue: string;
+  localStorageValue: string | null;
   query: string | null;
   page: number;
 };
