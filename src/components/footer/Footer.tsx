@@ -1,9 +1,13 @@
-import './footer.css';
+import './Footer.css';
 
 export const Footer = () => {
   return (
     <footer>
+<<<<<<< HEAD:src/Components/Footer/Footer.tsx
       <nav className={'links-container'}>
+=======
+      <nav className="links-container">
+>>>>>>> fix-hooks-and-routing-clean:src/components/footer/Footer.tsx
         <a href={'https://github.com/bssier'} target="_blank" rel="noreferrer">
           Developer GitHub
         </a>

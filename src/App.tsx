@@ -5,9 +5,9 @@ import { Header } from './components/Header/Header';
 import { HomePage } from './pages/home-page/HomePage';
 import { Footer } from './components/Footer/Footer';
 import { NotFoundPage } from './pages/not-found/NotFoundPage';
-import { ErrorBoundary } from './components/ErrorBoudary/ErrorBoundary.tsx';
-import { AboutPage } from './pages/about-page/AboutPage.tsx';
-import { ElementDetail } from './components/PokemonDetail/ElementDetail.tsx';
+import { ErrorBoundary } from './components/ErrorBoudary/ErrorBoundary';
+import { AboutPage } from './pages/AboutPage/AboutPage';
+import { ElementDetail } from './components/PokemonDetail/ElementDetail';
 import { Flyout } from './components/Flyout/Flyout.tsx';
 
 export const App = () => {
@@ -25,12 +25,12 @@ export const App = () => {
 
   const MainLayout = () => {
     return (
-      <div className={'app-layout'}>
+      <>
         <Header handleSearch={handleSearch} searchQuery={searchQuery} />
         <Outlet />
         <Flyout />
         <Footer />
-      </div>
+      </>
     );
   };
 

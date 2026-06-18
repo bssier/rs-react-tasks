@@ -1,44 +1,41 @@
 import { Component, type ErrorInfo } from 'react';
 import type { ReactNode } from 'react';
-import './error-boudary.css';
+import './ErrorBoundary.css';
 import { Link } from 'react-router-dom';
 
-interface Props {
+type Props = {
   children: ReactNode;
   fallback?: ReactNode;
-}
+};
 
-interface State {
+type State = {
   hasError: boolean;
-}
+};
 
 export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+  public override state: State = { hasError: false };
 
-  static getDerivedStateFromError(_: Error) {
+  public handleResetError = (): void => {
+    this.setState({ hasError: false });
+  };
+
+  public static getDerivedStateFromError(): State {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.error('Error:', error, errorInfo);
   }
 
-  handleResetError() {
-    this.setState({ hasError: false });
-  }
-
-  render() {
+  public render(): ReactNode {
     if (this.state.hasError) {
       return (
-        this.props.fallback || (
-          <main className={'error-boudary-container'}>
+        this.props.fallback ?? (
+          <main className="error-boudary-container">
             <h1> Something went wrong. </h1>
-            <p className={'not-found-text'}>
+            <p className="not-found-text">
               back to{' '}
-              <Link to={'/'} onClick={this.handleResetError}>
+              <Link to="/" onClick={this.handleResetError}>
                 main page
               </Link>
             </p>

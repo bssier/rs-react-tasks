@@ -101,9 +101,11 @@ header {
   font-family: Quicksand-Light, sans-serif;
 }
 
-.to-pokemon-list-container p {
+.to-pokemon-list-container a {
   font-family: Quicksand-Light, sans-serif;
   cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
 
 .snack-bar {
@@ -123,13 +125,19 @@ header {
   font-size: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background-color: #333333;
-  color: white;
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+<<<<<<< HEAD:src/Components/Header/header.css
+=======
+.message-container p {
+  color: white;
+}
+
+>>>>>>> fix-hooks-and-routing-clean:src/components/header/Header.css
 .theme-switcher {
   height: 30px;
   width: 30px;
