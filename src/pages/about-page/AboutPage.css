@@ -5,7 +5,6 @@
 }
 
 .greeting-menu {
-  width: 50vw;
   display: flex;
   justify-content: center;
   flex-direction: column;

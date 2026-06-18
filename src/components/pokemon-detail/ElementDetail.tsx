@@ -17,19 +17,24 @@ export const ElementDetail = () => {
   const location = useLocation();
   const item = hasPokemonState(location.state) ? location.state.item : null;
 
+  const handleCloseClick = (): void => {
+    void navigate(`/${location.search}`);
+  };
+
   if (!item) {
     return (
       <article className="element-detail">
+        <div className="close">
+          <button onClick={handleCloseClick}>
+            <img src={closeIcon} alt="close" />
+          </button>
+        </div>
         <div className="info">
           <p>Data not found. Please go back to the list.</p>
         </div>
       </article>
     );
   }
-
-  const handleCloseClick = (): void => {
-    void navigate(`/${location.search}`);
-  };
 
   return (
     <article className="element-detail">

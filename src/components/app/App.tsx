@@ -9,8 +9,8 @@ import { MainLayout } from '../main-layout/MainLayout';
 
 export const App = () => {
   return (
-    <ErrorBoundary>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ErrorBoundary>
         <Routes>
           <Route element={<MainLayout />}>
             <Route path={'/'} element={<HomePage />}>
@@ -21,7 +21,7 @@ export const App = () => {
 
           <Route path={'*'} element={<NotFoundPage />} />
         </Routes>
-      </BrowserRouter>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </BrowserRouter>
   );
 };
