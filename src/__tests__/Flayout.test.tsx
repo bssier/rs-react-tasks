@@ -24,7 +24,7 @@ describe('Flyout component tests', () => {
     const { container } = render(
       <Provider store={store}>
         <Flyout />
-      </Provider>
+      </Provider>,
     );
 
     expect(container.firstChild).toBeNull();
@@ -46,15 +46,15 @@ describe('Flyout component tests', () => {
     render(
       <Provider store={store}>
         <Flyout />
-      </Provider>
+      </Provider>,
     );
 
     expect(screen.getByText(/1 item selected/i)).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /unselect all/i })
+      screen.getByRole('button', { name: /unselect all/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /download csv/i })
+      screen.getByRole('button', { name: /download csv/i }),
     ).toBeInTheDocument();
   });
 
@@ -74,7 +74,7 @@ describe('Flyout component tests', () => {
     const { container } = render(
       <Provider store={store}>
         <Flyout />
-      </Provider>
+      </Provider>,
     );
 
     const unselectButton = screen.getByRole('button', {

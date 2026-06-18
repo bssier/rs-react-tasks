@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store/store.ts';
 import { clearAll } from '../../store/itemSlice.ts';
-import './flyout.css';
+import './Flyout.css';
 
 export const Flyout = () => {
   const dispatch = useDispatch();
   const selectedItems = useSelector(
-    (state: RootState) => state.pokemons.selectedItems
+    (state: RootState) => state.pokemons.selectedItems,
   );
 
   if (selectedItems.length === 0) {
@@ -18,7 +18,7 @@ export const Flyout = () => {
 
     const rows = selectedItems.map(
       (item) =>
-        `"${item.title}",${item.hp},${item.attack},${item.defense},${item.speed}`
+        `"${item.title}",${String(item.hp)},${String(item.attack)},${String(item.defense)},${String(item.speed)}`,
     );
     const csvContent = [headers.join(','), ...rows].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -26,10 +26,10 @@ export const Flyout = () => {
     const link = document.createElement('a');
 
     link.href = url;
-    link.setAttribute('download', `${selectedItems.length}_items.csv`);
-    document.body.appendChild(link);
+    link.setAttribute('download', `${String(selectedItems.length)}_items.csv`);
+    document.body.append(link);
     link.click();
-    document.body.removeChild(link);
+    link.remove();
     URL.revokeObjectURL(url);
   };
 

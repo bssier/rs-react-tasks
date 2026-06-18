@@ -131,13 +131,10 @@ header {
   align-items: center;
 }
 
-<<<<<<< HEAD:src/Components/Header/header.css
-=======
 .message-container p {
   color: white;
 }
 
->>>>>>> fix-hooks-and-routing-clean:src/components/header/Header.css
 .theme-switcher {
   height: 30px;
   width: 30px;

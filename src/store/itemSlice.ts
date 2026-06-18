@@ -1,9 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Item } from '../components/Line/Line';
+import type { Item } from '../сomponents/line/Line';
 
-export interface ItemState {
+export type ItemState = {
   selectedItems: Item[];
-}
+};
 
 const initialState: ItemState = {
   selectedItems: [],
@@ -15,11 +15,11 @@ const itemSlice = createSlice({
   reducers: {
     toggleItem: (state, action: PayloadAction<Item>) => {
       const isSelected = state.selectedItems.some(
-        (item) => item.title === action.payload.title
+        (item) => item.title === action.payload.title,
       );
       if (isSelected) {
         state.selectedItems = state.selectedItems.filter(
-          (item) => item.title !== action.payload.title
+          (item) => item.title !== action.payload.title,
         );
       } else {
         state.selectedItems.push(action.payload);

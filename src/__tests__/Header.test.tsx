@@ -7,60 +7,60 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeContext } from '../context.ts';
 
 const renderHeader = (ui: React.ReactElement) => {
-    return render(
-        <ThemeContext.Provider value={{ theme: 'light', toggleTheme: vi.fn() }}>
-            <BrowserRouter>{ui}</BrowserRouter>
-        </ThemeContext.Provider>
-    );
+  return render(
+    <ThemeContext.Provider value={{ theme: 'light', toggleTheme: vi.fn() }}>
+      <BrowserRouter>{ui}</BrowserRouter>
+    </ThemeContext.Provider>,
+  );
 };
 
 describe('header tests', () => {
-    beforeEach(() => {
-        localStorage.clear();
-        vi.restoreAllMocks();
-    });
+  beforeEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });
 
-    test('render search input', () => {
-        renderHeader(<Header />);
+  test('render search input', () => {
+    renderHeader(<Header />);
 
-        expect(screen.getByRole('textbox')).toBeInTheDocument();
-    });
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+  });
 
-    test('save item in local storage', async () => {
-        const user = userEvent.setup();
-        renderHeader(<Header />);
+  test('save item in local storage', async () => {
+    const user = userEvent.setup();
+    renderHeader(<Header />);
 
-        const input = screen.getByPlaceholderText(/Search pokemons/i);
-        const button = screen.getByRole('button', { name: /search/i });
+    const input = screen.getByPlaceholderText(/Search pokemons/i);
+    const button = screen.getByRole('button', { name: /search/i });
 
-        await user.type(input, 'pikachu');
-        await user.click(button);
+    await user.type(input, 'pikachu');
+    await user.click(button);
 
-        expect(localStorage.getItem('input-value')).toBe('pikachu');
-    });
+    expect(localStorage.getItem('input-value')).toBe('pikachu');
+  });
 
-    test('works error boudary test', async () => {
-        const user = userEvent.setup();
+  test('works error boudary test', async () => {
+    const user = userEvent.setup();
 
-        renderHeader(
-            <ErrorBoundary>
-                <Header />
-            </ErrorBoundary>
-        );
+    renderHeader(
+      <ErrorBoundary>
+        <Header />
+      </ErrorBoundary>,
+    );
 
-        const errButton = screen.getByRole('button', { name: 'Generate Error' });
+    const errButton = screen.getByRole('button', { name: 'Generate Error' });
 
-        await user.click(errButton);
-        expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
-    });
+    await user.click(errButton);
+    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
+  });
 
-    test('localstorage load value test', () => {
-        localStorage.setItem('input-value', 'pikachu');
+  test('localstorage load value test', () => {
+    localStorage.setItem('input-value', 'pikachu');
 
-        renderHeader(<Header />);
+    renderHeader(<Header />);
 
-        const value = screen.getByDisplayValue('pikachu');
+    const value = screen.getByDisplayValue('pikachu');
 
-        expect(value).toBeInTheDocument();
-    });
+    expect(value).toBeInTheDocument();
+  });
 });
