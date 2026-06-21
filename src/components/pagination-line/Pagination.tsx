@@ -4,20 +4,21 @@ import {
   MIN_PAGE_LENGTH,
   PAGE_LIMIT,
 } from '../../pages/home-page/homePageConstaints';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 
-type PaginationProps = {
-  page: number;
-  onChangePage: (newPage: number) => void;
-};
-
-export const Pagination: FC<PaginationProps> = ({ page, onChangePage }) => {
+export const Pagination: FC = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = Number(searchParams.get('page')) || 1;
+
   const isGoBack: boolean = MIN_PAGE_LENGTH < page;
   const isGoForward: boolean = PAGE_LIMIT > page;
 
-  const closeElementDetails = (): void => {
-    void navigate(`/${location.search}`);
+  const closeElementDetails = (newPage: number): void => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', String(newPage));
+    void navigate(`/?${newParams.toString()}`);
   };
 
   const handlePrevClick = (): void => {
@@ -25,8 +26,12 @@ export const Pagination: FC<PaginationProps> = ({ page, onChangePage }) => {
       return;
     }
 
-    onChangePage(page - 1);
-    closeElementDetails();
+    const newPage = page - 1;
+    setSearchParams((prev) => {
+      prev.set('page', String(newPage));
+      return prev;
+    });
+    closeElementDetails(newPage);
   };
 
   const handleNextClick = (): void => {
@@ -34,8 +39,12 @@ export const Pagination: FC<PaginationProps> = ({ page, onChangePage }) => {
       return;
     }
 
-    onChangePage(page + 1);
-    closeElementDetails();
+    const newPage = page + 1;
+    setSearchParams((prev) => {
+      prev.set('page', String(newPage));
+      return prev;
+    });
+    closeElementDetails(newPage);
   };
 
   return (

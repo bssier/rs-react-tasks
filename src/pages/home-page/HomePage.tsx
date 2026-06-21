@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 import { PAGE_LIMIT } from '../../pages/home-page/homePageConstaints';
 
 export const HomePage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,13 +38,6 @@ export const HomePage = () => {
   const handleCardClick = (item: Item): void => {
     void navigate(`/pokemon/${item.title}${location.search}`, {
       state: { item },
-    });
-  };
-
-  const handlePageChange = (newPage: number): void => {
-    setSearchParams((prevParams) => {
-      prevParams.set('page', String(newPage));
-      return prevParams;
     });
   };
 
@@ -76,9 +69,7 @@ export const HomePage = () => {
 
       <Outlet />
 
-      {!isLoading && items && items.length > 0 && (
-        <Pagination page={page} onChangePage={handlePageChange} />
-      )}
+      {!isLoading && items && items.length > 0 && <Pagination />}
     </main>
   );
 };

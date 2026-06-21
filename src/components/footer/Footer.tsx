@@ -4,7 +4,11 @@ export const Footer = () => {
   return (
     <footer className="footer">
       <nav className="links-container">
-        <a href={'https://github.com/bssier'} target="_blank" rel="noreferrer">
+        <a
+          href={'https://github.com/bssier'}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           Developer GitHub
         </a>
         <a
@@ -12,11 +16,15 @@ export const Footer = () => {
             'https://github.com/rolling-scopes-school/bssier-REACT2026Q2/tree/class-components'
           }
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
         >
           Project GitHub
         </a>
-        <a href={'https://rs.school/'} target="_blank" rel="noreferrer">
+        <a
+          href={'https://rs.school/'}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           RS School courses
         </a>
         <a
@@ -24,7 +32,7 @@ export const Footer = () => {
             'https://www.linkedin.com/in/michael-tavyrin-9b84833bb/?skipRedirect=true'
           }
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
         >
           Developer LinkedIn
         </a>
