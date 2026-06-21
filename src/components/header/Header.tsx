@@ -6,15 +6,8 @@ import { SearchBar } from '../search-bar/SearchBar';
 import './Header.css';
 
 export const Header = () => {
-  const {
-    inputValue,
-    snackBarMessage,
-    handleInputChange,
-    handleSearchClick,
-    handleToPokemonListClick,
-    handleEnterClick,
-    generateError,
-  } = useHeaderSearch();
+  const { snackBarMessage, handleToPokemonListClick, generateError } =
+    useHeaderSearch();
 
   return (
     <>
@@ -32,12 +25,7 @@ export const Header = () => {
           </Link>
         </nav>
 
-        <SearchBar
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleEnterClick}
-          onSearch={handleSearchClick}
-        />
+        <SearchBar />
 
         <nav className="about-page-link">
           <p>
