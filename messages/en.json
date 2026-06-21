@@ -1,0 +1,43 @@
+{
+  "Header": {
+    "pokemon-list": "Pokemon list",
+    "about": "About",
+    "placeholder": "Search pokemons...",
+    "generate-error": "Generate Error",
+    "error-only-english": "Use only english letters!",
+    "error-min-length": "Your query must be longer than three characters!"
+  },
+  "About": {
+    "description": " Hi, dear user! As you might have guessed, this is an app for searching pokemons. If you want to find something, enter the pokemon name but it must be strictly in English.",
+    "github": "GitHub Profile",
+    "course": "RS React course"
+  },
+
+  "NotFound": {
+    "not-found-page": "Page not found",
+    "to-main": "main page",
+    "back-to": "back to"
+  },
+
+  "HomePage": {
+    "refresh-data": "refresh data"
+  },
+
+  "Pagination": {
+    "prev": "prev",
+    "next": "next"
+  },
+
+  "Footer": {
+    "gh": "Project GitHub",
+    "course": "RS School courses",
+    "proj": "Project GitHub",
+    "dev-link": "Developer LinkedIn"
+  },
+
+  "Flyout": {
+    "selected": "selected",
+    "unselect-all": "Unselect all",
+    "download-csv": "Download CSV"
+  }
+}

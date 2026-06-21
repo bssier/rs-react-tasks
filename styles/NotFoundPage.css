@@ -1,0 +1,35 @@
+.not-found-info {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 100px;
+}
+
+.not-found-header {
+  color: black;
+  font-family: Quicksand-Bold, sans-serif;
+  font-size: 32px;
+}
+
+.not-found-text {
+  color: black;
+  font-family: Quicksand-Light, sans-serif;
+}
+
+.not-found-text a {
+  color: black;
+}
+
+body:has(.not-found-info) header,
+body:has(.not-found-info) footer {
+  display: none !important;
+}
+
+body:has(.not-found-info) .app-layout {
+  display: block;
+  height: 100vh;
+}
