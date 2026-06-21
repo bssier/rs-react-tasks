@@ -39,5 +39,17 @@
     "selected": "selected",
     "unselect-all": "Unselect all",
     "download-csv": "Download CSV"
+  },
+  "PokemonCard": {
+    "speed": "Speed",
+    "defense": "Defense",
+    "attack": "Attack",
+    "hp": "HP"
+  },
+
+  "PokemonDetail": {
+    "height": "Height",
+    "weight": "Weight",
+    "abilities": "Abilities"
   }
 }

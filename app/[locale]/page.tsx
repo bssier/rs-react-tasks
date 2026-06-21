@@ -1,23 +1,8 @@
-'use client';
-
-import { type FC, useEffect, useState, ReactNode } from 'react';
-import { Line } from '../../components/line/Line';
 import '../../styles/HomePage.css';
-import { useRouter, usePathname } from '@/navigation';
-import { useSearchParams } from 'next/navigation';
-import { useTheme } from '../../context';
-import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../../store/store.ts';
-import { toggleItem } from '../../store/itemSlice';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { Pagination } from '../../components/pagination/Pagination';
+import { Line } from '../../components/line/Line';
 import { ElementDetail } from '../../components/element-detail/ElementDetail';
-import {
-  useGetPokemonQuery,
-  useGetPokemonListQuery,
-  pokemonApi,
-} from '../../redux/pokemonApi';
-import { useTranslations } from 'next-intl';
+import { HomeClientWrapper } from '../../components/home-client-wrapper/HomeClientWrapper';
+import { getTranslations } from 'next-intl/server';
 
 export interface Item {
   hp: number;
@@ -28,187 +13,133 @@ export interface Item {
   title: string;
 }
 
-export interface PokemonAbilityItem {
+interface ApiStat {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+}
+
+interface ApiPokemonDetails {
+  name: string;
+  sprites: {
+    front_default: string | null;
+  };
+  stats: ApiStat[];
+}
+
+interface ApiPokemonListItem {
   name: string;
   url: string;
 }
 
-export interface PokemonResponse {
-  name: string;
-  height: number;
-  weight: number;
-  abilities: PokemonAbilityItem[];
-  sprites: {
-    front_default: string | null;
-  };
-  stats: Array<{
-    base_stat: number;
-    stat: { name: string };
-  }>;
+interface ApiPokemonListResponse {
+  results: ApiPokemonListItem[];
 }
 
-interface HomePageProps {
+interface PageProps {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  children?: ReactNode;
 }
 
-const Page: FC<HomePageProps> = ({
-  searchParams: searchParamsPromise,
-  children,
-}) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const nextSearchParams = useSearchParams();
-  const t = useTranslations('HomePage');
+async function fetchPokemonDetails(url: string): Promise<Item> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error();
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const data: ApiPokemonDetails = await res.json();
 
-  const [localStorageValue] = useLocalStorage<string>('input-value', '');
-  const { theme } = useTheme();
+  const statsMap: Record<string, number> = {};
+  data.stats.forEach((s: ApiStat) => {
+    statsMap[s.stat.name] = s.base_stat;
+  });
 
-  const dispatch = useDispatch();
-  const selectedItems = useSelector(
-    (state: RootState) => state.pokemons.selectedItems
-  );
-
-  useEffect(() => {
-    searchParamsPromise.then((resolvedParams) => {
-      const pageFromUrl = Number(resolvedParams?.page) || 1;
-      const queryFromUrl =
-        typeof resolvedParams?.query === 'string' ? resolvedParams.query : '';
-      setCurrentPage(pageFromUrl);
-      setSearchQuery(queryFromUrl);
-    });
-  }, [searchParamsPromise, nextSearchParams]);
-
-  const handleCardClick = (pokemonName: string) => {
-    const updatedParams = new URLSearchParams(nextSearchParams.toString());
-    updatedParams.set('pokemon', pokemonName);
-    router.push(`${pathname}?${updatedParams.toString()}`);
+  return {
+    title: data.name,
+    img: data.sprites.front_default ?? '',
+    hp: statsMap['hp'] || 0,
+    attack: statsMap['attack'] || 0,
+    defense: statsMap['defense'] || 0,
+    speed: statsMap['speed'] || 0,
   };
+}
 
-  const offsetValue: number = (currentPage - 1) * 12;
-  const activeQuery: string = localStorageValue || searchQuery;
-  const isSearchMode: boolean = activeQuery.length >= 3;
+export default async function Page({ params, searchParams }: PageProps) {
+  const { locale } = await params;
+  const resolvedSearchParams = await searchParams;
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
 
-  useEffect(() => {
-    if (isSearchMode && currentPage !== 1) {
-      const updatedParams = new URLSearchParams(nextSearchParams.toString());
-      updatedParams.set('page', '1');
-      router.push(`${pathname}?${updatedParams.toString()}`);
-    }
-  }, [isSearchMode, currentPage, pathname, router, nextSearchParams]);
+  const currentPage = Number(resolvedSearchParams?.page) || 1;
+  const searchQuery =
+    typeof resolvedSearchParams?.query === 'string'
+      ? resolvedSearchParams.query
+      : '';
+  const activePokemonName =
+    typeof resolvedSearchParams?.pokemon === 'string'
+      ? resolvedSearchParams.pokemon
+      : undefined;
 
-  const {
-    data: listData,
-    isFetching: isListFetching,
-    error: listError,
-  } = useGetPokemonListQuery(
-    { limit: 12, offset: offsetValue },
-    { skip: isSearchMode }
-  );
+  const offsetValue = (currentPage - 1) * 12;
+  const isSearchMode = searchQuery.length >= 3;
 
-  const {
-    data: searchData,
-    isFetching: isSearchFetching,
-    error: searchError,
-  } = useGetPokemonQuery(activeQuery, { skip: !isSearchMode });
-
-  const pokemonItems: Item[] | null = isSearchMode
-    ? searchData
-      ? [searchData]
-      : null
-    : listData || null;
-
-  const isLoadingData = isSearchMode ? isSearchFetching : isListFetching;
-
-  const currentFetchError = isSearchMode ? searchError : listError;
+  let pokemonItems: Item[] | null = null;
   let errorMessage = '';
 
-  if (currentFetchError) {
-    if ('status' in currentFetchError) {
-      if (currentFetchError.status === 404) {
+  try {
+    if (isSearchMode) {
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${searchQuery.toLowerCase()}`
+      );
+      if (res.status === 404) {
         errorMessage = 'Pokemon not found. Please write another name';
-      } else if (
-        typeof currentFetchError.status === 'number' &&
-        currentFetchError.status >= 500
-      ) {
+      } else if (!res.ok) {
         errorMessage = 'Server error';
       } else {
-        errorMessage = 'GlobalError when we fetching data';
+        const singleData = await fetchPokemonDetails(
+          `https://pokeapi.co/api/v2/pokemon/${searchQuery.toLowerCase()}`
+        );
+        pokemonItems = [singleData];
       }
     } else {
-      errorMessage = 'Network error';
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${offsetValue}`
+      );
+      if (!res.ok) throw new Error('Server error');
+
+      const listData: ApiPokemonListResponse = await res.json();
+
+      pokemonItems = await Promise.all(
+        listData.results.map((p: ApiPokemonListItem) =>
+          fetchPokemonDetails(p.url)
+        )
+      );
     }
+  } catch {
+    errorMessage = 'GlobalError when we fetching data';
   }
 
-  const handleRefresh = () => {
-    dispatch(pokemonApi.util.invalidateTags(['PokemonList', 'PokemonDetail']));
-  };
-
-  const handlePageChange = (newPageNumber: number) => {
-    const updatedParams = new URLSearchParams(nextSearchParams.toString());
-    updatedParams.set('page', String(newPageNumber));
-    router.push(`${pathname}?${updatedParams.toString()}`);
-  };
-
-  const activePokemonName = nextSearchParams.get('pokemon');
+  const hasItems = !!(pokemonItems && pokemonItems.length > 0);
 
   return (
-    <main className={`${theme === 'dark' ? 'dark-mode' : ''}`}>
-      <div className="controls-panel">
-        <button
-          type="button"
-          className="refresh-button"
-          onClick={handleRefresh}
-          disabled={isLoadingData}
-        >
-          {t('refresh-data')}
-        </button>
-      </div>
-
-      {isLoadingData && <div className={'loader'}>loading...</div>}
-
-      {errorMessage && !isLoadingData && (
-        <div className={'error-showing-container'}>
+    <HomeClientWrapper
+      refreshText={t('refresh-data')}
+      currentPage={currentPage}
+      hasItems={hasItems}
+    >
+      {errorMessage && (
+        <div className="error-showing-container">
           <p>{errorMessage}</p>
         </div>
       )}
 
-      <div className={'list-wrapper'}>
-        <section className={'list'}>
-          {!isLoadingData &&
-            pokemonItems?.map((pokemonItem: Item) => {
-              const isChecked = selectedItems.some(
-                (selected: { title: string }) =>
-                  selected.title === pokemonItem.title
-              );
-              return (
-                <Line
-                  key={pokemonItem.title}
-                  onClick={() => handleCardClick(pokemonItem.title)}
-                  item={pokemonItem}
-                  isChecked={isChecked}
-                  handleCheckboxChange={() => {
-                    dispatch(toggleItem(pokemonItem));
-                  }}
-                />
-              );
-            })}
+      <div className="list-wrapper">
+        <section className="list">
+          {pokemonItems?.map((pokemonItem: Item) => (
+            <Line key={pokemonItem.title} item={pokemonItem} />
+          ))}
         </section>
       </div>
 
-      {children}
-
       {activePokemonName && <ElementDetail name={activePokemonName} />}
-
-      {!isLoadingData && pokemonItems && pokemonItems.length > 0 && (
-        <Pagination page={currentPage} onChangePage={handlePageChange} />
-      )}
-    </main>
+    </HomeClientWrapper>
   );
-};
-
-export default Page;
+}

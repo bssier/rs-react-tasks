@@ -6,6 +6,7 @@ import closeIcon from '../../assets/close.png';
 import { useSearchParams } from 'next/navigation';
 import { useRouter, usePathname } from '@/navigation';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface PokemonDetailedInfo {
   height: number;
@@ -44,6 +45,8 @@ export const ElementDetail = ({ name }: ElementDetailProps) => {
   const searchParams = useSearchParams();
   const [isLoading, setLoading] = useState(false);
   const [item, setItem] = useState<PokemonDetailedInfo | null>(null);
+
+  const t = useTranslations('PokemonDetail');
 
   const handleCloseClick = () => {
     const updatedParams = new URLSearchParams(searchParams.toString());
@@ -106,11 +109,15 @@ export const ElementDetail = ({ name }: ElementDetailProps) => {
         {isLoading && <div className={'loader'}>loading...</div>}
         {!isLoading && item && (
           <div>
-            <h1>{name}</h1>
+            <h1>{name[0].toUpperCase() + name.slice(1)}</h1>
             <section className={'detailed-info'}>
-              <p>Height: {item.height}</p>
-              <p>weight: {item.weight}</p>
-              <h3>Abilities:</h3>
+              <p>
+                {t('height')}: {item.height}
+              </p>
+              <p>
+                {t('weight')}: {item.weight}
+              </p>
+              <h3>{t('abilities')}:</h3>
               <ul>
                 {item.abilities.map((ability) => (
                   <li key={ability} className={'abilities'}>

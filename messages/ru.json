@@ -38,5 +38,18 @@
     "selected": "выбрано",
     "unselect-all": "Снять выделение",
     "download-csv": "Скачать CSV"
+  },
+
+  "PokemonCard": {
+    "speed": "Скорость",
+    "defense": "Защита",
+    "attack": "Атака",
+    "hp": "ХП"
+  },
+
+  "PokemonDetail": {
+    "height": "Рост",
+    "weight": "Вес",
+    "abilities": "Способности"
   }
 }

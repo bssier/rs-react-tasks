@@ -2,6 +2,12 @@
 
 import './Line.css';
 import Image from 'next/image';
+import { useRouter, usePathname } from '@/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '../../store/store.ts';
+import { toggleItem } from '../../store/itemSlice';
+import { useTranslations } from 'next-intl';
 
 export interface Item {
   hp: number;
@@ -14,26 +20,36 @@ export interface Item {
 
 interface Props {
   item: Item;
-  isChecked: boolean;
-  handleCheckboxChange: () => void;
-  onClick?: () => void;
 }
 
-export const Line = ({
-  item,
-  isChecked,
-  handleCheckboxChange,
-  onClick,
-}: Props) => {
+export const Line = ({ item }: Props) => {
   const { hp, attack, defense, speed, img, title } = item;
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const dispatch = useDispatch();
+
+  const t = useTranslations('PokemonCard');
+
+  const isChecked = useSelector((state: RootState) =>
+    state.pokemons.selectedItems.some((selected) => selected.title === title)
+  );
+
+  const handleCardClick = () => {
+    const updatedParams = new URLSearchParams(searchParams.toString());
+    updatedParams.set('pokemon', title);
+    router.push(`${pathname}?${updatedParams.toString()}`);
+  };
+
   return (
-    <article className={'line'} onClick={onClick}>
+    <article className={'line'} onClick={handleCardClick}>
       <div className={'checkbox-container'}>
         <input
           type="checkbox"
           checked={isChecked}
           id={`checkbox-${title}`}
-          onChange={handleCheckboxChange}
+          onChange={() => dispatch(toggleItem(item))}
           onClick={(e: React.MouseEvent<HTMLInputElement>) =>
             e.stopPropagation()
           }
@@ -55,10 +71,18 @@ export const Line = ({
         />
       </h3>
       <div className={'stats-wrapper'}>
-        <div className={'stats'}>Speed: {speed}</div>
-        <div className={'stats'}>Defense: {defense}</div>
-        <div className={'stats'}>Attack: {attack}</div>
-        <div className={'stats'}>Hp: {hp}</div>
+        <div className={'stats'}>
+          {t('speed')}: {speed}
+        </div>
+        <div className={'stats'}>
+          {t('defense')}: {defense}
+        </div>
+        <div className={'stats'}>
+          {t('attack')}: {attack}
+        </div>
+        <div className={'stats'}>
+          {t('hp')}: {hp}
+        </div>
       </div>
     </article>
   );
