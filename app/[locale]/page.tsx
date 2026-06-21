@@ -33,7 +33,15 @@ interface ApiPokemonListItem {
   url: string;
 }
 
-interface ApiPokemonListResponse {
+export interface PokemonResponse {
+  name: string;
+  sprites: {
+    front_default: string | null;
+  };
+  stats: ApiStat[];
+}
+
+export interface ApiPokemonListResponse {
   results: ApiPokemonListItem[];
 }
 

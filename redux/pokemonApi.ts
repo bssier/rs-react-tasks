@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Item } from '../../bssier-REACT2026Q2/src/components/line/Line.tsx';
+import type { Item } from '../components/line/Line';
 import type {
-  PokemonListResponse,
+  ApiPokemonListResponse,
   PokemonResponse,
-} from '../../bssier-REACT2026Q2/src/pages/home-page/HomePage.tsx';
+} from '../app/[locale]/page';
 
 const CACHE_TTL: number = Number(process.env.NEXT_PUBLIC_CACHE_TTL) || 60;
 
@@ -53,7 +53,7 @@ export const pokemonApi = createApi({
 
         if (listResult.error) return { error: listResult.error };
 
-        const data = listResult.data as PokemonListResponse;
+        const data = listResult.data as ApiPokemonListResponse;
 
         try {
           const detailedData = await Promise.all(
