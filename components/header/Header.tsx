@@ -1,6 +1,7 @@
 'use client';
 
 import { type FC, useState, useEffect } from 'react';
+import Image from 'next/image';
 import './Header.css';
 import Search from '../../assets/search.svg';
 import Logo from '../../assets/pokemon-logo.svg';
@@ -9,26 +10,27 @@ import { useSearchParams } from 'next/navigation';
 import DarkMode from '../../assets/dark-mode.svg';
 import LightMode from '../../assets/light-mode.svg';
 import { useTheme } from '../../context';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export const Header: FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const t = useTranslations('Header');
+  const currentLocale = useLocale();
 
   const currentQueryInUrl = searchParams.get('query') || '';
 
   const [inputValue, setInputValue] = useState('');
+  const [prevQuery, setPrevQuery] = useState(currentQueryInUrl);
   const [error, setError] = useState<Error | null>(null);
   const [snackBarMessage, setSnackBarMessage] = useState('');
   const { theme, toggleTheme } = useTheme();
 
-  useEffect(() => {
-    if (currentQueryInUrl) {
-      setInputValue(currentQueryInUrl);
-    }
-  }, [currentQueryInUrl]);
+  if (currentQueryInUrl !== prevQuery) {
+    setInputValue(currentQueryInUrl);
+    setPrevQuery(currentQueryInUrl);
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regExpOnlyEngSym = /^[a-zA-Z\s-]*$/;
@@ -90,6 +92,12 @@ export const Header: FC = () => {
     }
   };
 
+  const toggleLanguage = () => {
+    const nextLocale = currentLocale === 'ru' ? 'en' : 'ru';
+    const params = new URLSearchParams(searchParams.toString());
+    router.replace(`${pathname}?${params.toString()}`, { locale: nextLocale });
+  };
+
   if (error) {
     throw error;
   }
@@ -110,7 +118,7 @@ export const Header: FC = () => {
       <header>
         <div className={'logo'}>
           <div className={'logo-container'}>
-            <img src={Logo.src || Logo} alt={'logo'} className={'logo'} />
+            <Image src={Logo} alt={'logo'} className={'logo'} />
           </div>
         </div>
         <nav className={'to-pokemon-list-container'}>
@@ -118,6 +126,15 @@ export const Header: FC = () => {
             {t('pokemon-list')}
           </Link>
         </nav>
+
+        <button
+          className={'lang-switcher'}
+          onClick={toggleLanguage}
+          type="button"
+        >
+          {currentLocale.toUpperCase()}
+        </button>
+
         <div className={'search-container'}>
           <input
             type="text"
@@ -135,18 +152,19 @@ export const Header: FC = () => {
             type="button"
           >
             <div className={'search-icon-container'}>
-              <img src={Search.src || Search} alt={'search'} />
+              <Image src={Search} alt={'search'} />
             </div>
           </button>
         </div>
         <button
           className={`theme-switcher ${theme}-mode`}
           onClick={toggleTheme}
+          type="button"
         >
           {theme === 'light' ? (
-            <img src={DarkMode.src || DarkMode} alt={'dark mode'} />
+            <Image src={DarkMode} alt={'dark mode'} />
           ) : (
-            <img src={LightMode.src || LightMode} alt={'light mode'} />
+            <Image src={LightMode} alt={'light mode'} />
           )}
         </button>
         <nav className={'about-page-link'}>
