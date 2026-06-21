@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useSnackBar } from './useSnackBar';
+import { useLocalStorage } from './useLocalStorage';
 import type { HeaderTypes } from '@/types/headerTypes';
 import { MIN_LENGTH } from '../pages/home-page/homePageConstaints';
 
@@ -9,8 +10,9 @@ export const useHeaderSearch = (): HeaderTypes => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { message: snackBarMessage, showMessage: showSnackBar } = useSnackBar();
 
-  const [inputValue, setInputValue] = useState(
-    () => searchParams.get('query') ?? '',
+  const [inputValue, setInputValue] = useLocalStorage(
+    'input-value',
+    searchParams.get('query') ?? '',
   );
 
   if (error) {
@@ -35,7 +37,6 @@ export const useHeaderSearch = (): HeaderTypes => {
 
     if (valueWithoutSpace.length >= MIN_LENGTH) {
       setInputValue(valueWithoutSpace);
-      localStorage.setItem('input-value', valueWithoutSpace);
       setSearchParams({ query: valueWithoutSpace });
     } else {
       showSnackBar('your query must be longer than three characters!');
@@ -43,7 +44,6 @@ export const useHeaderSearch = (): HeaderTypes => {
   };
 
   const handleToPokemonListClick = (): void => {
-    localStorage.removeItem('input-value');
     setInputValue('');
     searchParams.delete('query');
     setSearchParams(searchParams);
