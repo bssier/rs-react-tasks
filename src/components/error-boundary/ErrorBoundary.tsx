@@ -1,7 +1,7 @@
 import { Component, type ErrorInfo } from 'react';
 import type { ReactNode } from 'react';
 import './ErrorBoundary.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 type Props = {
   children: ReactNode;

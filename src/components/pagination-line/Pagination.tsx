@@ -4,7 +4,7 @@ import {
   MIN_PAGE_LENGTH,
   PAGE_LIMIT,
 } from '../../pages/home-page/homePageConstaints';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 type PaginationProps = {
   page: number;

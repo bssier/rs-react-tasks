@@ -1,6 +1,6 @@
 import './ElementDetail.css';
 import closeIcon from '../../assets/close.png';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import type { Item } from '../../types/homePageTypes';
 
 const hasPokemonState = (state: unknown): state is LocationState => {

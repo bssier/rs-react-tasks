@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useSnackBar } from './useSnackBar';
 import type { HeaderTypes } from '@/types/headerTypes';
 import { MIN_LENGTH } from '../pages/home-page/homePageConstaints';

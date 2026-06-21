@@ -3,7 +3,7 @@ import {
   useSearchParams,
   useNavigate,
   useLocation,
-} from 'react-router-dom';
+} from 'react-router';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { usePokemonData } from '../../hooks/usePokemonData';
 import { Line } from '../../components/line/Line';

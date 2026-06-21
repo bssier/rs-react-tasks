@@ -14,7 +14,7 @@ import {
 import type {
   ReturnUsePokemon,
   PokemonDataTypes,
-} from '../types/pokemonDataTypes.ts';
+} from '../types/pokemonDataTypes';
 
 export const usePokemonData = ({
   localStorageValue,

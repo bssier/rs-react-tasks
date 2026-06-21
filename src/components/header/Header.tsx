@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Logo from '../../assets/pokemon-logo.svg';
 import { useHeaderSearch } from '../../hooks/useHeaderSearch';
 import { SnackBar } from '../snack-bar/SnackBar';
