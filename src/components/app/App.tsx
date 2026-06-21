@@ -13,13 +13,13 @@ export const App = () => {
       <ErrorBoundary>
         <Routes>
           <Route element={<MainLayout />}>
-            <Route path={'/'} element={<HomePage />}>
+            <Route path="/" element={<HomePage />}>
               <Route path="pokemon/:name" element={<ElementDetail />} />
             </Route>
-            <Route path={'/about'} element={<AboutPage />}></Route>
+            <Route path="/about" element={<AboutPage />}></Route>
           </Route>
 
-          <Route path={'*'} element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </ErrorBoundary>
     </BrowserRouter>
