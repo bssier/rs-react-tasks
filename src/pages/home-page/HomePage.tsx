@@ -49,7 +49,7 @@ export const HomePage = () => {
   };
 
   return (
-    <main>
+    <main className="main">
       {isLoading && <div className="loader">loading...</div>}
 
       {errorMessage && (

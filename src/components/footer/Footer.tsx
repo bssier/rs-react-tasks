@@ -2,7 +2,7 @@ import './Footer.css';
 
 export const Footer = () => {
   return (
-    <footer>
+    <footer className="footer">
       <nav className="links-container">
         <a href={'https://github.com/bssier'} target="_blank" rel="noreferrer">
           Developer GitHub

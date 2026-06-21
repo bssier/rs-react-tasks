@@ -19,7 +19,7 @@ export const Header = () => {
   return (
     <>
       {snackBarMessage && <SnackBar message={snackBarMessage} />}
-      <header>
+      <header className="header">
         <div className="logo">
           <div className="logo-container">
             <img src={Logo} alt="logo" className="logo" />
