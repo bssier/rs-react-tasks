@@ -46,7 +46,9 @@ export const Header = () => {
         </nav>
 
         <div className="error-generate-container">
-          <button onClick={generateError}>Generate Error</button>
+          <button type="button" onClick={generateError}>
+            Generate Error
+          </button>
         </div>
       </header>
     </>

@@ -25,7 +25,7 @@ export const ElementDetail = () => {
     return (
       <article className="element-detail">
         <div className="close">
-          <button onClick={handleCloseClick}>
+          <button type="button" onClick={handleCloseClick}>
             <img src={closeIcon} alt="close" />
           </button>
         </div>
@@ -39,7 +39,7 @@ export const ElementDetail = () => {
   return (
     <article className="element-detail">
       <div className="close">
-        <button onClick={handleCloseClick}>
+        <button type="button" onClick={handleCloseClick}>
           <img src={closeIcon} alt="close" />
         </button>
       </div>
