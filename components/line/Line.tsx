@@ -1,6 +1,7 @@
 'use client';
 
 import './Line.css';
+import Image from 'next/image';
 
 export interface Item {
   hp: number;
@@ -44,7 +45,14 @@ export const Line = ({
         {title === ''
           ? 'Unknown Pokemon'
           : title[0].toUpperCase() + title.slice(1)}
-        <img className={'image'} src={img} alt={title}></img>
+        <Image
+          className={'image'}
+          src={img}
+          alt={title}
+          width={96}
+          height={96}
+          unoptimized
+        />
       </h3>
       <div className={'stats-wrapper'}>
         <div className={'stats'}>Speed: {speed}</div>

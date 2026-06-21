@@ -1,6 +1,7 @@
 'use client';
 
 import './ElementDetail.css';
+import Image from 'next/image';
 import closeIcon from '../../assets/close.png';
 import { useSearchParams } from 'next/navigation';
 import { useRouter, usePathname } from '@/navigation';
@@ -97,11 +98,8 @@ export const ElementDetail = ({ name }: ElementDetailProps) => {
   return (
     <article className={'element-detail'}>
       <div className={'close'}>
-        <button onClick={handleCloseClick}>
-          <img
-            src={typeof closeIcon === 'object' ? closeIcon.src : closeIcon}
-            alt="close"
-          />
+        <button onClick={handleCloseClick} type="button">
+          <Image src={closeIcon} alt="close" width={24} height={24} />
         </button>
       </div>
       <div className={'info'}>
