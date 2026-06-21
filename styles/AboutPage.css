@@ -22,15 +22,17 @@ p {
   font-family: Quicksand-Light, sans-serif;
 }
 
-.about-page.dark-mode {
+body.dark .about-page,
+body.dark-mode .about-page {
   background-color: black;
+}
+
+body.dark .about-page .greeting-menu p,
+body.dark-mode .about-page .greeting-menu p {
   color: white;
 }
 
-.about-page.dark-mode .greeting-menu p {
-  color: white;
-}
-
-.about-page.dark-mode .greeting-menu a {
+body.dark .about-page .greeting-menu a,
+body.dark-mode .about-page .greeting-menu a {
   color: #4da6ff;
 }

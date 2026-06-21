@@ -31,7 +31,11 @@ export const AppProviders = ({ children }: AppProvidersProps) => {
     } else {
       root.classList.remove('dark');
     }
+
+    document.body.className = theme;
+
     localStorage.setItem('theme', theme);
+    document.cookie = `theme=${theme}; path=/; max-age=31536000`;
   }, [theme]);
 
   return (

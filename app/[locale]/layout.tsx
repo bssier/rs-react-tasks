@@ -5,6 +5,7 @@ import { Footer } from '../../components/footer/Footer';
 import { Flyout } from '../../components/flyout/Flyout';
 import { NextIntlClientProvider } from 'next-intl';
 import { AppProviders } from '../../components/app-providers/AppProviders';
+import { cookies } from 'next/headers';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,9 @@ export default async function RootLayout({ children, params }: LayoutProps) {
   const resolvedParams = await params;
   const locale = resolvedParams.locale;
 
+  const cookieStore = await cookies();
+  const theme = cookieStore.get('theme')?.value || 'light';
+
   let messages;
   try {
     messages = (await import(`../../messages/${locale}.json`)).default;
@@ -24,7 +28,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
 
   return (
     <html lang={locale}>
-      <body>
+      <body className={theme}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AppProviders>
             <div className="app-layout">

@@ -4,20 +4,17 @@ export function useLocalStorage<T>(
   key: string,
   initialValue: T
 ): [T, (value: T | ((value: T) => T)) => void] {
-  const [storedValue, setStoredValue] = useState<T>(initialValue);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === 'undefined') return initialValue;
 
     try {
       const item = window.localStorage.getItem(key);
-      if (item) {
-        setStoredValue(JSON.parse(item));
-      }
+      return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.error(`can't read ls key "${key}":`, error);
+      return initialValue;
     }
-  }, [key]);
+  });
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

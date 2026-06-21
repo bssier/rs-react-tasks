@@ -1,15 +1,16 @@
-'use client';
-
 import '../../../styles/AboutPage.css';
-import { useTheme } from '../../../context';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
-const Page = () => {
-  const { theme } = useTheme();
-  const t = useTranslations('About');
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+const Page = async ({ params }: Props) => {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'About' });
 
   return (
-    <article className={`about-page ${theme === 'dark' ? 'dark-mode' : ''}`}>
+    <article className="about-page">
       <div className={'greeting-menu'}>
         <p>{t('description')}</p>
         <a

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import '../components/error-boundary/ErrorBoudary.css';
 
 interface GlobalErrorProps {
@@ -10,9 +11,17 @@ interface GlobalErrorProps {
 }
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  const pathname = usePathname();
+
   useEffect(() => {
     console.error('Global Error caught:', error?.message || error);
   }, [error]);
+
+  const currentLocale = pathname?.split('/')[1] || 'en';
+
+  const homeUrl = ['en', 'ru'].includes(currentLocale)
+    ? `/${currentLocale}`
+    : '/';
 
   return (
     <html>
@@ -21,7 +30,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
           <h1> Something went wrong. </h1>
           <p className="not-found-text">
             back to{' '}
-            <Link href="/ru" onClick={() => reset()}>
+            <Link href={homeUrl} onClick={() => reset()}>
               main page
             </Link>
           </p>
