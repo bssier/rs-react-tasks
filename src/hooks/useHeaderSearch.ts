@@ -6,18 +6,14 @@ import type { HeaderTypes } from '@/types/headerTypes';
 import { MIN_LENGTH } from '../pages/home-page/homePageConstaints';
 
 export const useHeaderSearch = (): HeaderTypes => {
-  const [error, setError] = useState<Error | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const { message: snackBarMessage, showMessage: showSnackBar } = useSnackBar();
+  const [, setThrowError] = useState<(() => void) | null>(null);
 
   const [inputValue, setInputValue] = useLocalStorage(
     'input-value',
     searchParams.get('query') ?? '',
   );
-
-  if (error) {
-    throw error;
-  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
@@ -60,6 +56,10 @@ export const useHeaderSearch = (): HeaderTypes => {
         handleSearchClick();
       }
     },
-    generateError: (): void => setError(new Error('Special error')),
+    generateError: (): void => {
+      setThrowError(() => {
+        throw new Error('Special error');
+      });
+    },
   };
 };
