@@ -5,7 +5,7 @@ import { useLocalStorage } from './useLocalStorage';
 import type { HeaderTypes } from '@/types/headerTypes';
 import { MIN_LENGTH } from '../pages/home-page/homePageConstaints';
 
-export const useHeaderSearch = (): HeaderTypes => {
+export const useSearch = (): HeaderTypes => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { message: snackBarMessage, showMessage: showSnackBar } = useSnackBar();
   const [, setThrowError] = useState<(() => void) | null>(null);

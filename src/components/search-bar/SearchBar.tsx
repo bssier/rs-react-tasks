@@ -1,9 +1,9 @@
 import Search from '../../assets/search.svg';
-import { useHeaderSearch } from '../../hooks/useHeaderSearch';
+import { useSearch } from '../../hooks/useSearch.ts';
 
 export const SearchBar = () => {
   const { handleEnterClick, handleInputChange, handleSearchClick, inputValue } =
-    useHeaderSearch();
+    useSearch();
 
   return (
     <div className="search-container">

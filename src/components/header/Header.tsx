@@ -1,13 +1,13 @@
 import { Link } from 'react-router';
 import Logo from '../../assets/pokemon-logo.svg';
-import { useHeaderSearch } from '../../hooks/useHeaderSearch';
+import { useSearch } from '../../hooks/useSearch.ts';
 import { SnackBar } from '../snack-bar/SnackBar';
 import { SearchBar } from '../search-bar/SearchBar';
 import './Header.css';
 
 export const Header = () => {
   const { snackBarMessage, handleToPokemonListClick, generateError } =
-    useHeaderSearch();
+    useSearch();
 
   return (
     <>
