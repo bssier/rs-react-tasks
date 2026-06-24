@@ -1,5 +1,5 @@
 import Search from '../../assets/search.svg';
-import { useSearch } from '../../hooks/useSearch.ts';
+import { useSearch } from '../../hooks/useSearch';
 
 export const SearchBar = () => {
   const { handleEnterClick, handleInputChange, handleSearchClick, inputValue } =
