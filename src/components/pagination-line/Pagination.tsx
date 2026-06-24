@@ -1,19 +1,20 @@
 import { type FC } from 'react';
 import './Pagination.css';
-import {
-  MIN_PAGE_LENGTH,
-  PAGE_LIMIT,
-} from '../../pages/home-page/homePageConstaints';
+import { MIN_PAGE_LENGTH } from '../../pages/home-page/homePageConstaints';
 import { useNavigate, useSearchParams } from 'react-router';
 
-export const Pagination: FC = () => {
+type PaginationProps = {
+  hasMore: boolean;
+};
+
+export const Pagination: FC<PaginationProps> = ({ hasMore }) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = Number(searchParams.get('page')) || 1;
 
   const isGoBack: boolean = MIN_PAGE_LENGTH < page;
-  const isGoForward: boolean = PAGE_LIMIT > page;
+  const isGoForward: boolean = hasMore;
 
   const closeElementDetails = (newPage: number): void => {
     const newParams = new URLSearchParams(searchParams);

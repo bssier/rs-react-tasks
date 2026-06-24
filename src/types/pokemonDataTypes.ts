@@ -10,4 +10,5 @@ export type ReturnUsePokemon = {
   isLoading: boolean;
   errorMessage: string;
   items: Item[] | null;
+  hasMore: boolean;
 };

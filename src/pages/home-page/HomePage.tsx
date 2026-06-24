@@ -11,7 +11,6 @@ import { Pagination } from '../../components/pagination-line/Pagination';
 import './HomePage.css';
 import type { Item } from '../../types/homePageTypes';
 import { useEffect } from 'react';
-import { PAGE_LIMIT } from '../../pages/home-page/homePageConstaints';
 
 export const HomePage = () => {
   const [searchParams] = useSearchParams();
@@ -21,19 +20,18 @@ export const HomePage = () => {
   const page = Number(searchParams.get('page')) || 1;
   const query = searchParams.get('query');
   const [localStorageValue] = useLocalStorage('input-value', '');
-  const currentPage = Number(searchParams.get('page')) || 1;
 
-  const { isLoading, errorMessage, items } = usePokemonData({
+  const { isLoading, errorMessage, items, hasMore } = usePokemonData({
     localStorageValue,
     query,
     page,
   });
 
   useEffect(() => {
-    if (currentPage > PAGE_LIMIT || currentPage < 1) {
+    if (page < 1) {
       void navigate('/not-found', { replace: true });
     }
-  }, [currentPage, navigate]);
+  }, [page, navigate]);
 
   const handleCardClick = (item: Item): void => {
     void navigate(`/pokemon/${item.title}${location.search}`, {
@@ -69,7 +67,9 @@ export const HomePage = () => {
 
       <Outlet />
 
-      {!isLoading && items && items.length > 0 && <Pagination />}
+      {!isLoading && items && items.length > 0 && (
+        <Pagination hasMore={hasMore} />
+      )}
     </main>
   );
 };
