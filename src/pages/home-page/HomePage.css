@@ -67,3 +67,16 @@
 .card-container {
   cursor: pointer;
 }
+
+main.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+main.dark-mode .loader {
+  color: white;
+}
+
+main.dark-mode .card-container {
+  color: white;
+}

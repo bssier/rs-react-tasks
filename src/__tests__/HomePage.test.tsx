@@ -1,10 +1,31 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { HomePage } from '../pages/home-page/HomePage';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import pokemonReducer from '../store/itemSlice.ts';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeContext } from '../context.ts';
+
+const renderWithProviders = (ui: React.ReactElement) => {
+  const testStore = configureStore({
+    reducer: {
+      pokemons: pokemonReducer,
+    },
+  });
+  return render(
+    <ThemeContext.Provider value={{ theme: 'light', toggleTheme: vi.fn() }}>
+      <Provider store={testStore}>
+        <BrowserRouter>{ui}</BrowserRouter>
+      </Provider>
+    </ThemeContext.Provider>,
+  );
+};
 
 describe('home page test', () => {
   beforeEach(() => {
     localStorage.clear();
+    vi.restoreAllMocks();
   });
 
   test('not found test', async () => {
@@ -16,10 +37,9 @@ describe('home page test', () => {
       } as Response),
     );
 
-    render(<HomePage />);
+    renderWithProviders(<HomePage />);
 
     const errSpan = await screen.findByText('Not found');
-
     expect(errSpan).toBeInTheDocument();
   });
 
@@ -29,10 +49,9 @@ describe('home page test', () => {
       vi.fn(() => new Promise(() => {})),
     );
 
-    render(<HomePage />);
+    renderWithProviders(<HomePage />);
 
     const loading = screen.getByText(/loading/i);
-
     expect(loading).toBeInTheDocument();
   });
 
@@ -45,12 +64,11 @@ describe('home page test', () => {
       } as Response),
     );
 
-    render(<HomePage />);
+    renderWithProviders(<HomePage />);
 
     const errServer = await screen.findByText(
       /Server error. We try fix problem, please wait/i,
     );
-
     expect(errServer).toBeInTheDocument();
   });
 
@@ -61,11 +79,9 @@ describe('home page test', () => {
         ok: true,
         json: async () => ({
           name: 'pikachu',
-
           sprites: {
             front_default: '',
           },
-
           stats: [
             { base_stat: 35 },
             { base_stat: 55 },
@@ -78,17 +94,16 @@ describe('home page test', () => {
       } as Response),
     );
 
-    render(<HomePage />);
+    renderWithProviders(<HomePage />);
 
     const pikachu = screen.findByText(/pikachu/i);
-
     expect(await pikachu).toBeInTheDocument();
   });
 
   test('not make request if query less three symbols test', () => {
     vi.stubGlobal('fetch', vi.fn());
 
-    render(<HomePage />);
+    renderWithProviders(<HomePage />);
 
     expect(vi.fn()).not.toHaveBeenCalled();
   });

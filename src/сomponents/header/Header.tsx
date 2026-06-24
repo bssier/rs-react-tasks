@@ -1,13 +1,17 @@
 import { Link } from 'react-router';
 import Logo from '../../assets/pokemon-logo.svg';
+import DarkMode from '../../assets/dark-mode.svg';
+import LightMode from '../../assets/light-mode.svg';
 import { useSearch } from '../../hooks/useSearch';
+import { useTheme } from '../../context';
+import { useThrowError } from '../../hooks/useThrowError';
 import { SnackBar } from '../snack-bar/SnackBar';
 import { SearchBar } from '../search-bar/SearchBar';
 import './Header.css';
-import { useThrowError } from '../../hooks/useThrowError';
 
 export const Header = () => {
   const { snackBarMessage, handleToPokemonListClick } = useSearch();
+  const { theme, toggleTheme } = useTheme();
   const createError = useThrowError();
 
   return (
@@ -27,6 +31,19 @@ export const Header = () => {
         </nav>
 
         <SearchBar />
+
+        <button
+          type="button"
+          className={`theme-switcher ${theme}-mode`}
+          onClick={toggleTheme}
+          aria-label="toggle theme"
+        >
+          {theme === 'light' ? (
+            <img src={DarkMode} alt="dark mode" />
+          ) : (
+            <img src={LightMode} alt="light mode" />
+          )}
+        </button>
 
         <nav className="about-page-link">
           <p>

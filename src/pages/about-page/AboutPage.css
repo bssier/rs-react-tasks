@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 80vh;
 }
 
 .greeting-menu {
@@ -18,4 +19,17 @@ p {
   text-align: center;
   color: black;
   font-family: Quicksand-Light, sans-serif;
+}
+
+.about-page.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+.about-page.dark-mode .greeting-menu p {
+  color: white;
+}
+
+.about-page.dark-mode .greeting-menu a {
+  color: #4da6ff;
 }

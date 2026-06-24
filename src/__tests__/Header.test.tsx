@@ -3,6 +3,16 @@ import { Header } from '../components/header/Header';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from '@/components/error-boundary/ErrorBoundary';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeContext } from '../context.ts';
+
+const renderHeader = (ui: React.ReactElement) => {
+  return render(
+    <ThemeContext.Provider value={{ theme: 'light', toggleTheme: vi.fn() }}>
+      <BrowserRouter>{ui}</BrowserRouter>
+    </ThemeContext.Provider>,
+  );
+};
 
 describe('header tests', () => {
   beforeEach(() => {
@@ -11,14 +21,14 @@ describe('header tests', () => {
   });
 
   test('render search input', () => {
-    render(<Header />);
+    renderHeader(<Header />);
 
     expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 
   test('save item in local storage', async () => {
     const user = userEvent.setup();
-    render(<Header />);
+    renderHeader(<Header />);
 
     const input = screen.getByPlaceholderText(/Search pokemons/i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -32,7 +42,7 @@ describe('header tests', () => {
   test('works error boudary test', async () => {
     const user = userEvent.setup();
 
-    render(
+    renderHeader(
       <ErrorBoundary>
         <Header />
       </ErrorBoundary>,
@@ -47,7 +57,7 @@ describe('header tests', () => {
   test('localstorage load value test', () => {
     localStorage.setItem('input-value', 'pikachu');
 
-    render(<Header />);
+    renderHeader(<Header />);
 
     const value = screen.getByDisplayValue('pikachu');
 

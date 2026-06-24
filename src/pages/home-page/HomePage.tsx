@@ -6,11 +6,15 @@ import {
 } from 'react-router';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { usePokemonData } from '../../hooks/usePokemonData';
-import { Line } from '../../components/line/Line';
-import { Pagination } from '../../components/pagination-line/Pagination';
+import { Line } from '../../сomponents/line/Line';
+import { Pagination } from '../../сomponents/pagination-line/Pagination';
 import './HomePage.css';
 import type { Item } from '../../types/homePageTypes';
 import { useEffect } from 'react';
+import { useTheme } from '../../context';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '../../store/store';
+import { toggleItem } from '../../store/itemSlice';
 
 export const HomePage = () => {
   const [searchParams] = useSearchParams();
@@ -20,6 +24,13 @@ export const HomePage = () => {
   const page = Number(searchParams.get('page')) || 1;
   const query = searchParams.get('query');
   const [localStorageValue] = useLocalStorage('input-value', '');
+
+  const { theme } = useTheme();
+  const dispatch = useDispatch();
+
+  const selectedItems = useSelector<RootState, Item[]>(
+    (state) => state.pokemons.selectedItems,
+  );
 
   const { isLoading, errorMessage, items, hasMore } = usePokemonData({
     localStorageValue,
@@ -40,7 +51,7 @@ export const HomePage = () => {
   };
 
   return (
-    <main className="main">
+    <main className={theme === 'dark' ? 'dark-mode' : ''}>
       {isLoading && <div className="loader">loading...</div>}
 
       {errorMessage && (
@@ -51,17 +62,22 @@ export const HomePage = () => {
 
       <div className="list-wrapper">
         <section className="list">
-          {items?.map((item) => (
-            <Line
-              key={item.title}
-              onClick={() => handleCardClick(item)}
-              item={item}
-              isChecked={false}
-              handleCheckboxChange={() => {
-                throw new Error('Function not implemented.');
-              }}
-            />
-          ))}
+          {items?.map((item) => {
+            const isChecked = selectedItems.some(
+              (selected: Item) => selected.title === item.title,
+            );
+            return (
+              <Line
+                key={item.title}
+                onClick={() => handleCardClick(item)}
+                item={item}
+                isChecked={isChecked}
+                handleCheckboxChange={() => {
+                  dispatch(toggleItem(item));
+                }}
+              />
+            );
+          })}
         </section>
       </div>
 
