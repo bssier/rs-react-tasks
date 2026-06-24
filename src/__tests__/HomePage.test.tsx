@@ -13,10 +13,10 @@ describe('home page test', () => {
       vi.fn().mockResolvedValue({
         ok: false,
         status: 404,
-      } as Response)
+      } as Response),
     );
 
-    render(<HomePage query={'notpokemon'} />);
+    render(<HomePage />);
 
     const errSpan = await screen.findByText('Not found');
 
@@ -26,10 +26,10 @@ describe('home page test', () => {
   test('test loading state', () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(() => new Promise(() => {}))
+      vi.fn(() => new Promise(() => {})),
     );
 
-    render(<HomePage query={'pikachu'} />);
+    render(<HomePage />);
 
     const loading = screen.getByText(/loading/i);
 
@@ -42,13 +42,13 @@ describe('home page test', () => {
       vi.fn().mockResolvedValue({
         ok: false,
         status: 500,
-      } as Response)
+      } as Response),
     );
 
-    render(<HomePage query={'pikachu'} />);
+    render(<HomePage />);
 
     const errServer = await screen.findByText(
-      /Server error. We try fix problem, please wait/i
+      /Server error. We try fix problem, please wait/i,
     );
 
     expect(errServer).toBeInTheDocument();
@@ -75,10 +75,10 @@ describe('home page test', () => {
             { base_stat: 90 },
           ],
         }),
-      } as Response)
+      } as Response),
     );
 
-    render(<HomePage query={'pikachu'} />);
+    render(<HomePage />);
 
     const pikachu = screen.findByText(/pikachu/i);
 
@@ -88,7 +88,7 @@ describe('home page test', () => {
   test('not make request if query less three symbols test', () => {
     vi.stubGlobal('fetch', vi.fn());
 
-    render(<HomePage query={'pic'} />);
+    render(<HomePage />);
 
     expect(vi.fn()).not.toHaveBeenCalled();
   });
