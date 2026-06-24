@@ -20,7 +20,7 @@ export const usePokemonData = ({
   localStorageValue,
   query,
   page,
-}: PokemonDataTypes): ReturnUsePokemon & { hasMore: boolean } => {
+}: PokemonDataTypes): ReturnUsePokemon => {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [items, setItems] = useState<Item[] | null>(null);

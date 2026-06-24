@@ -8,7 +8,7 @@ import { useThrowError } from '../../hooks/useThrowError';
 
 export const Header = () => {
   const { snackBarMessage, handleToPokemonListClick } = useSearch();
-  const error = useThrowError();
+  const createError = useThrowError();
 
   return (
     <>
@@ -35,7 +35,7 @@ export const Header = () => {
         </nav>
 
         <div className="error-generate-container">
-          <button type="button" onClick={error}>
+          <button type="button" onClick={createError}>
             Generate Error
           </button>
         </div>
