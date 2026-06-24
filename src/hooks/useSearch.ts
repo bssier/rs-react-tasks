@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useSnackBar } from './useSnackBar';
 import { useLocalStorage } from './useLocalStorage';
@@ -8,7 +7,6 @@ import { MIN_LENGTH } from '../pages/home-page/homePageConstaints';
 export const useSearch = (): HeaderTypes => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { message: snackBarMessage, showMessage: showSnackBar } = useSnackBar();
-  const [, setThrowError] = useState<(() => void) | null>(null);
 
   const [inputValue, setInputValue] = useLocalStorage(
     'input-value',
@@ -55,11 +53,6 @@ export const useSearch = (): HeaderTypes => {
       if (e.key === 'Enter') {
         handleSearchClick();
       }
-    },
-    generateError: (): void => {
-      setThrowError(() => {
-        throw new Error('Special error');
-      });
     },
   };
 };
