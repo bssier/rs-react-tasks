@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import './App.css';
 import { HomePage } from '../../pages/home-page/HomePage';
 import { NotFoundPage } from '../../pages/not-found/NotFoundPage';
@@ -13,13 +13,13 @@ export const App = () => {
       <ErrorBoundary>
         <Routes>
           <Route element={<MainLayout />}>
-            <Route path={'/'} element={<HomePage />}>
+            <Route path="/" element={<HomePage />}>
               <Route path="pokemon/:name" element={<ElementDetail />} />
             </Route>
-            <Route path={'/about'} element={<AboutPage />}></Route>
+            <Route path="/about" element={<AboutPage />}></Route>
           </Route>
 
-          <Route path={'*'} element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </ErrorBoundary>
     </BrowserRouter>

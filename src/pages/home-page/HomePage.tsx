@@ -3,29 +3,27 @@ import {
   useSearchParams,
   useNavigate,
   useLocation,
-} from 'react-router-dom';
+} from 'react-router';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { usePokemonData } from '../../hooks/usePokemonData';
 import { Line } from '../../сomponents/line/Line';
 import { Pagination } from '../../сomponents/pagination-line/Pagination';
 import './HomePage.css';
-import type { Item } from '../../сomponents/line/Line';
+import type { Item } from '../../types/homePageTypes';
 import { useEffect } from 'react';
-import { PAGE_LIMIT } from '../../pages/home-page/homePageConstaints';
-import { useTheme } from '../../context.ts';
+import { useTheme } from '../../context';
 import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../../store/store.ts';
-import { toggleItem } from '../../store/itemSlice.ts';
+import type { RootState } from '../../store/store';
+import { toggleItem } from '../../store/itemSlice';
 
 export const HomePage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
 
   const page = Number(searchParams.get('page')) || 1;
   const query = searchParams.get('query');
   const [localStorageValue] = useLocalStorage('input-value', '');
-  const currentPage = Number(searchParams.get('page')) || 1;
 
   const { theme } = useTheme();
   const dispatch = useDispatch();
@@ -34,28 +32,21 @@ export const HomePage = () => {
     (state) => state.pokemons.selectedItems,
   );
 
-  const { isLoading, errorMessage, items } = usePokemonData({
+  const { isLoading, errorMessage, items, hasMore } = usePokemonData({
     localStorageValue,
     query,
     page,
   });
 
   useEffect(() => {
-    if (currentPage > PAGE_LIMIT || currentPage < 1) {
+    if (page < 1) {
       void navigate('/not-found', { replace: true });
     }
-  }, [currentPage, navigate]);
+  }, [page, navigate]);
 
   const handleCardClick = (item: Item): void => {
     void navigate(`/pokemon/${item.title}${location.search}`, {
       state: { item },
-    });
-  };
-
-  const handlePageChange = (newPage: number): void => {
-    setSearchParams((prevParams) => {
-      prevParams.set('page', String(newPage));
-      return prevParams;
     });
   };
 
@@ -93,7 +84,7 @@ export const HomePage = () => {
       <Outlet />
 
       {!isLoading && items && items.length > 0 && (
-        <Pagination page={page} onChangePage={handlePageChange} />
+        <Pagination hasMore={hasMore} />
       )}
     </main>
   );

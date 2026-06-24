@@ -1,37 +1,31 @@
 import Search from '../../assets/search.svg';
+import { useSearch } from '../../hooks/useSearch';
 
-type SearchBarProps = {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown: (e: React.KeyboardEvent) => void;
-  onSearch: () => void;
+export const SearchBar = () => {
+  const { handleEnterClick, handleInputChange, handleSearchClick, inputValue } =
+    useSearch();
+
+  return (
+    <div className="search-container">
+      <input
+        type="text"
+        className="search-input"
+        placeholder="Search pokemons..."
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleEnterClick}
+        aria-label="Search pokemons"
+      />
+      <button
+        className="search-button"
+        onClick={handleSearchClick}
+        aria-label="search"
+        type="button"
+      >
+        <div className="search-icon-container">
+          <img src={Search} alt="search" />
+        </div>
+      </button>
+    </div>
+  );
 };
-
-export const SearchBar = ({
-  value,
-  onChange,
-  onKeyDown,
-  onSearch,
-}: SearchBarProps) => (
-  <div className="search-container">
-    <input
-      type="text"
-      className="search-input"
-      placeholder="Search pokemons..."
-      value={value}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      aria-label="Search pokemons"
-    />
-    <button
-      className="search-button"
-      onClick={onSearch}
-      aria-label="search"
-      type="button"
-    >
-      <div className="search-icon-container">
-        <img src={Search} alt="search" />
-      </div>
-    </button>
-  </div>
-);

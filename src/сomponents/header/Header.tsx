@@ -1,30 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Logo from '../../assets/pokemon-logo.svg';
 import DarkMode from '../../assets/dark-mode.svg';
 import LightMode from '../../assets/light-mode.svg';
-import { useHeaderSearch } from '../../hooks/useHeaderSearch';
-import { useTheme } from '../../context.ts';
+import { useSearch } from '../../hooks/useSearch';
+import { useTheme } from '../../context';
+import { useThrowError } from '../../hooks/useThrowError';
 import { SnackBar } from '../snack-bar/SnackBar';
 import { SearchBar } from '../search-bar/SearchBar';
 import './Header.css';
 
 export const Header = () => {
-  const {
-    inputValue,
-    snackBarMessage,
-    handleInputChange,
-    handleSearchClick,
-    handleToPokemonListClick,
-    handleEnterClick,
-    generateError,
-  } = useHeaderSearch();
-
+  const { snackBarMessage, handleToPokemonListClick } = useSearch();
   const { theme, toggleTheme } = useTheme();
+  const createError = useThrowError();
 
   return (
     <>
       {snackBarMessage && <SnackBar message={snackBarMessage} />}
-      <header>
+      <header className="header">
         <div className="logo">
           <div className="logo-container">
             <img src={Logo} alt="logo" className="logo" />
@@ -37,14 +30,10 @@ export const Header = () => {
           </Link>
         </nav>
 
-        <SearchBar
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleEnterClick}
-          onSearch={handleSearchClick}
-        />
+        <SearchBar />
 
         <button
+          type="button"
           className={`theme-switcher ${theme}-mode`}
           onClick={toggleTheme}
           aria-label="toggle theme"
@@ -63,7 +52,9 @@ export const Header = () => {
         </nav>
 
         <div className="error-generate-container">
-          <button onClick={generateError}>Generate Error</button>
+          <button type="button" onClick={createError}>
+            Generate Error
+          </button>
         </div>
       </header>
     </>
