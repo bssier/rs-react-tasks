@@ -6,7 +6,7 @@ export const AboutPage = () => {
 
   return (
     <article className={`about-page ${theme === 'dark' ? 'dark-mode' : ''}`}>
-      <div className={'greeting-menu'}>
+      <div className="greeting-menu">
         <p>
           Hi, dear user! As you might have guessed, this is an app for searching
           pokemons. If you want to find something, enter the pokemon name but it
