@@ -1,5 +1,5 @@
 import './AboutPage.css';
-import { useTheme } from '../../context.ts';
+import { useTheme } from '../../context';
 
 export const AboutPage = () => {
   const { theme } = useTheme();

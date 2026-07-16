@@ -1,0 +1,62 @@
+import { Link } from 'react-router';
+import Logo from '../../assets/pokemon-logo.svg';
+import DarkMode from '../../assets/dark-mode.svg';
+import LightMode from '../../assets/light-mode.svg';
+import { useSearch } from '../../hooks/useSearch';
+import { useTheme } from '../../context';
+import { useThrowError } from '../../hooks/useThrowError';
+import { SnackBar } from '../snack-bar/SnackBar';
+import { SearchBar } from '../search-bar/SearchBar';
+import './Header.css';
+
+export const Header = () => {
+  const { snackBarMessage, handleToPokemonListClick } = useSearch();
+  const { theme, toggleTheme } = useTheme();
+  const createError = useThrowError();
+
+  return (
+    <>
+      {snackBarMessage && <SnackBar message={snackBarMessage} />}
+      <header className="header">
+        <div className="logo">
+          <div className="logo-container">
+            <img src={Logo} alt="logo" className="logo" />
+          </div>
+        </div>
+
+        <nav className="to-pokemon-list-container">
+          <Link onClick={handleToPokemonListClick} to="/">
+            Pokemon list
+          </Link>
+        </nav>
+
+        <SearchBar />
+
+        <button
+          type="button"
+          className={`theme-switcher ${theme}-mode`}
+          onClick={toggleTheme}
+          aria-label="toggle theme"
+        >
+          {theme === 'light' ? (
+            <img src={DarkMode} alt="dark mode" />
+          ) : (
+            <img src={LightMode} alt="light mode" />
+          )}
+        </button>
+
+        <nav className="about-page-link">
+          <p>
+            <Link to="/about">About</Link>
+          </p>
+        </nav>
+
+        <div className="error-generate-container">
+          <button type="button" onClick={createError}>
+            Generate Error
+          </button>
+        </div>
+      </header>
+    </>
+  );
+};

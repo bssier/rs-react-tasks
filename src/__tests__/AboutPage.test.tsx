@@ -7,7 +7,7 @@ const renderAbout = (theme: 'light' | 'dark') => {
   return render(
     <ThemeContext.Provider value={{ theme, toggleTheme: vi.fn() }}>
       <AboutPage />
-    </ThemeContext.Provider>
+    </ThemeContext.Provider>,
   );
 };
 
@@ -16,7 +16,7 @@ describe('AboutPage', () => {
     renderAbout('light');
 
     expect(
-      screen.getByText(/this is an app for searching pokemons/i)
+      screen.getByText(/this is an app for searching pokemons/i),
     ).toBeInTheDocument();
   });
 

@@ -1,13 +1,10 @@
-import { StrictMode, useEffect, useState, type ReactNode } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
-import { store } from '../../store/store.ts';
-import { ThemeContext } from '../../context.ts';
+import { store } from '../../store/store';
+import { ThemeContext } from '../../context';
+import { App } from '../app/App';
 
-interface AppProvidersProps {
-  children: ReactNode;
-}
-
-export const AppProviders = ({ children }: AppProvidersProps) => {
+export const AppProvider = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark' || savedTheme === 'light'
@@ -20,12 +17,7 @@ export const AppProviders = ({ children }: AppProvidersProps) => {
   };
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
   }, [theme]);
 
@@ -33,7 +25,7 @@ export const AppProviders = ({ children }: AppProvidersProps) => {
     <StrictMode>
       <Provider store={store}>
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-          {children}
+          <App />
         </ThemeContext.Provider>
       </Provider>
     </StrictMode>

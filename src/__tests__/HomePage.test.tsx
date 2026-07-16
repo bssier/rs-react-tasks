@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { HomePage } from '../pages/home-page/HomePage';
@@ -5,10 +6,13 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import pokemonReducer from '../store/itemSlice.ts';
 import { pokemonApi } from '../redux/pokemonApi.ts';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { ThemeContext } from '../context.ts';
 
-const renderWithProviders = (ui: React.ReactElement) => {
+const renderWithProviders = (
+  ui: ReactElement,
+  { initialEntries = ['/'] } = {},
+) => {
   const testStore = configureStore({
     reducer: {
       pokemons: pokemonReducer,
@@ -26,9 +30,9 @@ const renderWithProviders = (ui: React.ReactElement) => {
       }}
     >
       <Provider store={testStore}>
-        <BrowserRouter>{ui}</BrowserRouter>
+        <MemoryRouter initialEntries={initialEntries}>{ui}</MemoryRouter>
       </Provider>
-    </ThemeContext.Provider>
+    </ThemeContext.Provider>,
   );
 };
 
@@ -51,15 +55,17 @@ describe('home page test', () => {
             headers: {
               'Content-Type': 'application/json',
             },
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
 
-    renderWithProviders(<HomePage query={'notpokemon'} />);
+    renderWithProviders(<HomePage />, {
+      initialEntries: ['/?query=notpokemon'],
+    });
 
     const errSpan = await screen.findByText(
-      /Pokemon not found\. Please write another name/i
+      /Pokemon not found\. Please write another name/i,
     );
 
     expect(errSpan).toBeInTheDocument();
@@ -68,10 +74,10 @@ describe('home page test', () => {
   test('test loading state', () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(() => new Promise(() => {}))
+      vi.fn(() => new Promise(() => {})),
     );
 
-    renderWithProviders(<HomePage query={'pikachu'} />);
+    renderWithProviders(<HomePage />, { initialEntries: ['/?query=pikachu'] });
 
     const loading = screen.getByText(/loading.../i);
 
@@ -91,12 +97,12 @@ describe('home page test', () => {
             headers: {
               'Content-Type': 'application/json',
             },
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
 
-    renderWithProviders(<HomePage query={'pikachu'} />);
+    renderWithProviders(<HomePage />, { initialEntries: ['/?query=pikachu'] });
 
     const errServer = await screen.findByText(/Server error/i);
 
@@ -116,8 +122,8 @@ describe('home page test', () => {
                 { name: 'bulbasaur', url: 'url' },
               ],
             }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
-          )
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
+          ),
         )
         .mockResolvedValueOnce(
           new Response(
@@ -126,8 +132,8 @@ describe('home page test', () => {
               sprites: { front_default: '' },
               stats: [{ base_stat: 10, stat: { name: 'hp' } }],
             }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
-          )
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
+          ),
         )
         .mockResolvedValueOnce(
           new Response(
@@ -136,12 +142,12 @@ describe('home page test', () => {
               sprites: { front_default: '' },
               stats: [{ base_stat: 10, stat: { name: 'hp' } }],
             }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
-          )
-        )
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
+          ),
+        ),
     );
 
-    renderWithProviders(<HomePage query={''} />);
+    renderWithProviders(<HomePage />, { initialEntries: ['/'] });
 
     expect(await screen.findByText(/pikachu/i)).toBeInTheDocument();
     expect(await screen.findByText(/bulbasaur/i)).toBeInTheDocument();
@@ -157,29 +163,28 @@ describe('home page test', () => {
             sprites: { front_default: '' },
             stats: [{ base_stat: 10, stat: { name: 'hp' } }],
           }),
-          { status: 200, headers: { 'Content-Type': 'application/json' } }
-        )
-      )
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        ),
+      ),
     );
 
-    renderWithProviders(<HomePage query={'pikachu'} />);
+    renderWithProviders(<HomePage />, { initialEntries: ['/?query=pikachu'] });
 
     expect(await screen.findByText(/pikachu/i)).toBeInTheDocument();
   });
 
   test('refresh button', async () => {
-    vi.fn();
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(
         new Response(JSON.stringify({ results: [] }), {
           status: 200,
           headers: { 'Content-Type': 'application/json' },
-        })
-      )
+        }),
+      ),
     );
 
-    renderWithProviders(<HomePage query={''} />);
+    renderWithProviders(<HomePage />, { initialEntries: ['/'] });
 
     const btn = screen.getByRole('button', { name: /refresh data/i });
 
@@ -196,8 +201,8 @@ describe('home page test', () => {
             JSON.stringify({
               results: [{ name: 'pikachu', url: 'url' }],
             }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
-          )
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
+          ),
         )
         .mockResolvedValue(
           new Response(
@@ -206,12 +211,12 @@ describe('home page test', () => {
               sprites: { front_default: '' },
               stats: [{ base_stat: 10, stat: { name: 'hp' } }],
             }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
-          )
-        )
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
+          ),
+        ),
     );
 
-    renderWithProviders(<HomePage query={''} />);
+    renderWithProviders(<HomePage />, { initialEntries: ['/'] });
     const item = await screen.findByText(/pikachu/i);
     expect(item).toBeInTheDocument();
   });

@@ -15,7 +15,7 @@ const mockItem = {
 describe('Line component', () => {
   test('renders pokemon data', () => {
     render(
-      <Line item={mockItem} isChecked={false} handleCheckboxChange={vi.fn()} />
+      <Line item={mockItem} isChecked={false} handleCheckboxChange={vi.fn()} />,
     );
 
     expect(screen.getByText(/Pikachu/i)).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe('Line component', () => {
         item={mockItem}
         isChecked={false}
         handleCheckboxChange={handleCheckboxChange}
-      />
+      />,
     );
 
     const checkbox = screen.getByRole('checkbox');
@@ -53,7 +53,7 @@ describe('Line component', () => {
         isChecked={false}
         handleCheckboxChange={vi.fn()}
         onClick={onClick}
-      />
+      />,
     );
 
     const article = screen.getByText(/Pikachu/i).closest('article')!;
@@ -73,7 +73,7 @@ describe('Line component', () => {
         isChecked={false}
         handleCheckboxChange={handleCheckboxChange}
         onClick={onClick}
-      />
+      />,
     );
 
     const checkbox = screen.getByRole('checkbox');
@@ -89,7 +89,7 @@ describe('Line component', () => {
         item={{ ...mockItem, title: '' }}
         isChecked={false}
         handleCheckboxChange={vi.fn()}
-      />
+      />,
     );
 
     expect(screen.getByText(/Unknown Pokemon/i)).toBeInTheDocument();

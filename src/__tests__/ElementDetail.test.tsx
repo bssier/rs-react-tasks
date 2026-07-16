@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { ElementDetail } from '../components/pokemon-detail/ElementDetail';
+import { MemoryRouter, Route, Routes } from 'react-router';
+import { ElementDetail } from '../сomponents/pokemon-detail/ElementDetail';
 
 describe('ElementDetail', () => {
   beforeEach(() => {
@@ -14,14 +14,14 @@ describe('ElementDetail', () => {
         <Routes>
           <Route path="/pokemon/:name" element={<ElementDetail />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   };
 
   test('renders loading state test', () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(() => new Promise(() => {})) as unknown as typeof fetch
+      vi.fn(() => new Promise(() => {})) as unknown as typeof fetch,
     );
 
     renderWithRouter('/pokemon/pikachu');
@@ -38,7 +38,7 @@ describe('ElementDetail', () => {
 
     vi.stubGlobal(
       'fetch',
-      vi.fn().mockResolvedValue(mockResponse) as unknown as typeof fetch
+      vi.fn().mockResolvedValue(mockResponse) as unknown as typeof fetch,
     );
 
     renderWithRouter('/pokemon/not-exist');

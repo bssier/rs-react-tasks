@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { describe, test, expect } from 'vitest';
 import { NotFoundPage } from '../pages/not-found/NotFoundPage';
 
@@ -8,7 +8,7 @@ describe('NotFoundPage', () => {
     render(
       <MemoryRouter>
         <NotFoundPage />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
   test('render 404 header test', () => {

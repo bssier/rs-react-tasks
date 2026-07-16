@@ -26,7 +26,7 @@ describe('AppProviders tests', () => {
     render(
       <AppProviders>
         <TestComponent />
-      </AppProviders>
+      </AppProviders>,
     );
 
     expect(screen.getByTestId('theme').textContent).toBe('light');
@@ -38,7 +38,7 @@ describe('AppProviders tests', () => {
     render(
       <AppProviders>
         <TestComponent />
-      </AppProviders>
+      </AppProviders>,
     );
 
     expect(screen.getByTestId('theme').textContent).toBe('dark');
@@ -48,7 +48,7 @@ describe('AppProviders tests', () => {
     render(
       <AppProviders>
         <TestComponent />
-      </AppProviders>
+      </AppProviders>,
     );
 
     expect(screen.getByTestId('theme').textContent).toBe('light');

@@ -1,4 +1,4 @@
-main {
+.main {
   width: 100%;
   height: calc(100vh - 150px);
   display: flex;
@@ -89,4 +89,10 @@ main.dark-mode .card-container {
   color: white;
   cursor: pointer;
   border-radius: 10px;
+}
+
+.controls-panel {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }

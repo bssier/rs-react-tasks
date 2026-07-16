@@ -17,22 +17,22 @@ describe('Footer component', () => {
 
     expect(screen.getByText(/Developer GitHub/i)).toHaveAttribute(
       'href',
-      'https://github.com/bssier'
+      'https://github.com/bssier',
     );
 
     expect(screen.getByText(/Project GitHub/i)).toHaveAttribute(
       'href',
-      'https://github.com/rolling-scopes-school/bssier-REACT2026Q2/tree/class-components'
+      'https://github.com/rolling-scopes-school/bssier-REACT2026Q2/tree/class-components',
     );
 
     expect(screen.getByText(/RS School courses/i)).toHaveAttribute(
       'href',
-      'https://rs.school/'
+      'https://rs.school/',
     );
 
     expect(screen.getByText(/Developer LinkedIn/i)).toHaveAttribute(
       'href',
-      'https://www.linkedin.com/in/michael-tavyrin-9b84833bb/?skipRedirect=true'
+      'https://www.linkedin.com/in/michael-tavyrin-9b84833bb/?skipRedirect=true',
     );
   });
 
