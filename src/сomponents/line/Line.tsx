@@ -1,13 +1,5 @@
 import './line.css';
-
-export type Item = {
-  hp: number;
-  attack: number;
-  defense: number;
-  speed: number;
-  img: string;
-  title: string;
-};
+import type { Item } from '../../types/homePageTypes';
 
 type Props = {
   item: Item;

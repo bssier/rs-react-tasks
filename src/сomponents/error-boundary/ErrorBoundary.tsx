@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback ?? (
-          <main className="error-boudary-container">
+          <main className="error-boundary-container">
             <h1> Something went wrong. </h1>
             <p className="not-found-text">
               back to{' '}

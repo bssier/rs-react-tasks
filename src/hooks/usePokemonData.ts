@@ -1,101 +1,65 @@
-import { useState, useEffect } from 'react';
-import type { Item } from '../types/homePageTypes';
+import { useDispatch } from 'react-redux';
 import {
-  isPokemonResponse,
-  isPokemonListResponse,
-  mapPokemonItem,
-} from '../utils/dataMappers';
+  useGetPokemonQuery,
+  useGetPokemonListQuery,
+  pokemonApi,
+} from '../redux/pokemonApi';
 import {
+  OFFSET,
   MIN_LENGTH,
   NOT_FOUND,
-  OFFSET,
-  SERVER_ERROR,
 } from '../pages/home-page/homePageConstaints';
+import type { Item } from '../types/homePageTypes';
 import type {
   ReturnUsePokemon,
   PokemonDataTypes,
 } from '../types/pokemonDataTypes';
 
 export const usePokemonData = ({
-  localStorageValue,
   query,
   page,
 }: PokemonDataTypes): ReturnUsePokemon => {
-  const [isLoading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [items, setItems] = useState<Item[] | null>(null);
-  const [hasMore, setHasMore] = useState<boolean>(false);
-
+  const dispatch = useDispatch();
+  const cleanQuery: string = query ?? '';
+  const isSearchMode: boolean = cleanQuery.length >= MIN_LENGTH;
   const offset: number = (page - 1) * OFFSET;
 
-  useEffect((): void => {
-    const fetchData = async (): Promise<void> => {
-      setItems(null);
-      setErrorMessage('');
-      setLoading(true);
+  const {
+    data: listData,
+    isFetching: isListFetching,
+    error: listError,
+  } = useGetPokemonListQuery({ limit: OFFSET, offset }, { skip: isSearchMode });
 
-      const cleanQuery: string = query ?? '';
-      const isSearchMode: boolean = cleanQuery.length >= MIN_LENGTH;
-      const limitWithNumber = OFFSET + 1;
+  const {
+    data: searchData,
+    isFetching: isSearchFetching,
+    error: searchError,
+  } = useGetPokemonQuery(cleanQuery, { skip: !isSearchMode });
 
-      const url: string = isSearchMode
-        ? `https://pokeapi.co/api/v2/pokemon/${cleanQuery}`
-        : `https://pokeapi.co/api/v2/pokemon?limit=${String(limitWithNumber)}&offset=${String(offset)}`;
+  const items: Item[] | null = isSearchMode
+    ? searchData
+      ? [searchData]
+      : null
+    : (listData ?? null);
 
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          if (response.status === NOT_FOUND) {
-            throw new Error('Not found');
-          }
-          if (response.status >= SERVER_ERROR) {
-            throw new Error('Server error. We try fix problem, please wait');
-          }
-          throw new Error('Error data loading');
-        }
+  const isLoading = isSearchMode ? isSearchFetching : isListFetching;
 
-        const jsonRaw: unknown = await response.json();
+  let errorMessage = '';
+  const currentError = isSearchMode ? searchError : listError;
 
-        if (isSearchMode && isPokemonResponse(jsonRaw)) {
-          const mappedItem: Item = mapPokemonItem(jsonRaw);
-          setItems([mappedItem]);
-          setHasMore(false);
-        } else if (!isSearchMode && isPokemonListResponse(jsonRaw)) {
-          const hasMoreElements = jsonRaw.results.length > OFFSET;
-          setHasMore(hasMoreElements);
+  if (currentError) {
+    errorMessage =
+      'status' in currentError && currentError.status === NOT_FOUND
+        ? 'Pokemon not found. Please write another name'
+        : 'Error data loading';
+  }
 
-          const resultsToProcess = hasMoreElements
-            ? jsonRaw.results.slice(0, OFFSET)
-            : jsonRaw.results;
+  const hasMore =
+    !isSearchMode && (listData ? listData.length === OFFSET : false);
 
-          const detailedData: Item[] = await Promise.all(
-            resultsToProcess.map(
-              async (pokemon: { url: string }): Promise<Item> => {
-                const res: Response = await fetch(pokemon.url);
-                const detailsRaw: unknown = await res.json();
+  const handleRefresh = (): void => {
+    dispatch(pokemonApi.util.invalidateTags(['PokemonList', 'PokemonDetail']));
+  };
 
-                if (isPokemonResponse(detailsRaw)) {
-                  return mapPokemonItem(detailsRaw);
-                }
-                throw new Error('Invalid pokemon details structure');
-              },
-            ),
-          );
-
-          setItems(detailedData);
-        } else {
-          throw new Error('Invalid API response structure');
-        }
-      } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : '';
-        setErrorMessage(errorMsg);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    void fetchData();
-  }, [query, page, localStorageValue, offset]);
-
-  return { isLoading, errorMessage, items, hasMore };
+  return { isLoading, errorMessage, items, hasMore, handleRefresh };
 };

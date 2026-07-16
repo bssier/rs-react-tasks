@@ -1,7 +1,7 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
-import { store } from '../../store/store.ts';
-import { ThemeContext } from '../../context.ts';
+import { store } from '../../store/store';
+import { ThemeContext } from '../../context';
 import { App } from '../app/App';
 
 export const AppProvider = () => {

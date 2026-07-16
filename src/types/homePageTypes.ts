@@ -5,9 +5,9 @@ export type Item = {
   speed: number;
   img: string;
   title: string;
-  height: number;
-  weight: number;
-  abilities: string[];
+  height?: number;
+  weight?: number;
+  abilities?: string[];
 };
 
 export type PokemonResponse = {

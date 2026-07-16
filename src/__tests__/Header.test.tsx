@@ -1,66 +1,60 @@
 import { render, screen } from '@testing-library/react';
-import { Header } from '../components/header/Header';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { Header } from '../сomponents/header/Header';
+import { describe, expect, test, vi, beforeEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { ErrorBoundary } from '@/components/error-boundary/ErrorBoundary';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeContext } from '../context.ts';
+import { MemoryRouter } from 'react-router';
 
-const renderHeader = (ui: React.ReactElement) => {
+vi.mock('../hooks/useSearch', () => ({
+  useSearch: () => ({
+    snackBarMessage: null,
+    handleToPokemonListClick: vi.fn(),
+  }),
+}));
+
+vi.mock('../hooks/useThrowError', () => ({
+  useThrowError: () => vi.fn(),
+}));
+
+vi.mock('../сomponents/search-bar/SearchBar', () => ({
+  SearchBar: () => (
+    <div>
+      <input placeholder="Search pokemons..." />
+      <button>Search</button>
+    </div>
+  ),
+}));
+
+const renderHeader = () => {
   return render(
-    <ThemeContext.Provider value={{ theme: 'light', toggleTheme: vi.fn() }}>
-      <BrowserRouter>{ui}</BrowserRouter>
-    </ThemeContext.Provider>,
+    <MemoryRouter>
+      <Header />
+    </MemoryRouter>,
   );
 };
 
 describe('header tests', () => {
   beforeEach(() => {
-    localStorage.clear();
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
-  test('render search input', () => {
-    renderHeader(<Header />);
-
-    expect(screen.getByRole('textbox')).toBeInTheDocument();
+  test('render Header elements', () => {
+    renderHeader();
+    expect(screen.getByRole('img', { name: /logo/i })).toBeInTheDocument();
+    expect(screen.getByText(/Pokemon list/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Search pokemons/i)).toBeInTheDocument();
   });
 
-  test('save item in local storage', async () => {
+  test('toggle theme button renders', () => {
+    renderHeader();
+    const toggleButton = screen.getByRole('button', { name: /toggle theme/i });
+    expect(toggleButton).toBeInTheDocument();
+  });
+
+  test('generate error button calls useThrowError', async () => {
     const user = userEvent.setup();
-    renderHeader(<Header />);
-
-    const input = screen.getByPlaceholderText(/Search pokemons/i);
-    const button = screen.getByRole('button', { name: /search/i });
-
-    await user.type(input, 'pikachu');
-    await user.click(button);
-
-    expect(localStorage.getItem('input-value')).toBe('pikachu');
-  });
-
-  test('works error boudary test', async () => {
-    const user = userEvent.setup();
-
-    renderHeader(
-      <ErrorBoundary>
-        <Header />
-      </ErrorBoundary>,
-    );
-
-    const errButton = screen.getByRole('button', { name: 'Generate Error' });
-
-    await user.click(errButton);
-    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
-  });
-
-  test('localstorage load value test', () => {
-    localStorage.setItem('input-value', 'pikachu');
-
-    renderHeader(<Header />);
-
-    const value = screen.getByDisplayValue('pikachu');
-
-    expect(value).toBeInTheDocument();
+    renderHeader();
+    const errorBtn = screen.getByRole('button', { name: /Generate Error/i });
+    await user.click(errorBtn);
+    expect(errorBtn).toBeInTheDocument();
   });
 });

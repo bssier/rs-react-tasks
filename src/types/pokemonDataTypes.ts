@@ -11,4 +11,5 @@ export type ReturnUsePokemon = {
   errorMessage: string;
   items: Item[] | null;
   hasMore: boolean;
+  handleRefresh: () => void;
 };
