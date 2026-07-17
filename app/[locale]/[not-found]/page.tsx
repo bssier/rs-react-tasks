@@ -1,5 +1,5 @@
-import NotFound from '../not-found';
+import NotFoundView from '../../../src/views/not-found/NotFoundView';
 
 export default function CatchAllNotFoundPage() {
-  return <NotFound />;
+  return <NotFoundView />;
 }

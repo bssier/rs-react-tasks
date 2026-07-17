@@ -1,0 +1,150 @@
+@import '../../../styles/fonts-declarative.css';
+
+.header {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px 0 10px;
+  box-sizing: border-box;
+  background-color: var(--side-color);
+}
+
+.search-input {
+  width: 500px;
+  height: 35px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  background-color: var(--input-color);
+  padding-left: var(--basic-text-font);
+  color: var(--main-text-color);
+  font-family: Quicksand-Regular, sans-serif;
+  font-size: var(--basic-text-font);
+  outline: none;
+  border: none;
+
+  &::placeholder {
+    color: var(--main-text-color);
+  }
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.search-button {
+  all: unset;
+  border-left: 1px solid var(--main-border-color);
+  height: 35px;
+  width: 40px;
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+  background-color: var(--input-color);
+  cursor: pointer;
+}
+
+.search-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.text-logo-container {
+  display: flex;
+  padding-top: 20px;
+  padding-left: 5px;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.text-logo {
+  font-family: Quicksand-Bold, sans-serif;
+  color: white;
+  font-size: var(--big-text-font);
+  text-transform: uppercase;
+}
+
+.text-logo-description {
+  color: white;
+  font-family: Quicksand-Light, sans-serif;
+  text-align: justify;
+}
+
+.error-generate-container button {
+  height: 30px;
+  width: 100px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--input-color);
+  color: var(--main-text-color);
+  font-family: Quicksand-Light, sans-serif;
+  cursor: pointer;
+}
+
+.about-page-link a {
+  text-decoration: none;
+  color: black;
+  font-family: Quicksand-Light, sans-serif;
+}
+
+.to-pokemon-list-container a {
+  font-family: Quicksand-Light, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+}
+
+.snack-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  z-index: 100;
+  padding-top: 5px;
+}
+
+.message-container {
+  height: 10px;
+  width: 250px;
+  border-radius: 8px;
+  font-family: Quicksand-Light, sans-serif;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #333333;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message-container p {
+  color: white;
+}
+
+.theme-switcher {
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--input-color);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

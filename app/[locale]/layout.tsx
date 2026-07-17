@@ -1,43 +1,47 @@
 import '../../styles/index.css';
-
-import { Header } from '../../components/header/Header';
-import { Footer } from '../../components/footer/Footer';
-import { Flyout } from '../../components/flyout/Flyout';
+import { Header } from '../../src/сomponents/header/Header';
+import { Footer } from '../../src/сomponents/footer/Footer';
+import { Flyout } from '../../src/сomponents/flyout/Flyout';
 import { NextIntlClientProvider } from 'next-intl';
-import { AppProviders } from '../../components/app-providers/AppProviders';
+import { AppProvider } from '../../src/сomponents/app-provider/AppProvider';
 import { cookies } from 'next/headers';
+import type { AbstractIntlMessages } from 'next-intl';
 
-interface LayoutProps {
+import enMessages from '../../messages/en.json';
+import ruMessages from '../../messages/ru.json';
+
+type LayoutProps = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
-}
+};
+
+const messages: Record<string, AbstractIntlMessages> = {
+  en: enMessages,
+  ru: ruMessages,
+};
 
 export default async function RootLayout({ children, params }: LayoutProps) {
   const resolvedParams = await params;
   const locale = resolvedParams.locale;
 
   const cookieStore = await cookies();
-  const theme = cookieStore.get('theme')?.value || 'light';
+  const themeValue = cookieStore.get('theme')?.value ?? 'light';
+  const theme: 'light' | 'dark' = themeValue === 'dark' ? 'dark' : 'light';
 
-  let messages;
-  try {
-    messages = (await import(`../../messages/${locale}.json`)).default;
-  } catch (error) {
-    messages = {};
-  }
+  const localeMessages = messages[locale] ?? {};
 
   return (
-    <html lang={locale}>
-      <body className={theme}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <AppProviders>
+    <html lang={locale} className={theme}>
+      <body>
+        <NextIntlClientProvider locale={locale} messages={localeMessages}>
+          <AppProvider initialTheme={theme}>
             <div className="app-layout">
               <Header />
               <main>{children}</main>
               <Flyout />
               <Footer />
             </div>
-          </AppProviders>
+          </AppProvider>
         </NextIntlClientProvider>
       </body>
     </html>

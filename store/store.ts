@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import type { Middleware } from '@reduxjs/toolkit';
 import pokemonReducer from './itemSlice';
 import { pokemonApi } from '../redux/pokemonApi';
 
@@ -7,8 +8,10 @@ export const store = configureStore({
     pokemons: pokemonReducer,
     [pokemonApi.reducerPath]: pokemonApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(pokemonApi.middleware),
+  middleware: (getDefaultMiddleware) => {
+    const apiMiddleware: Middleware = pokemonApi.middleware;
+    return getDefaultMiddleware().prepend(apiMiddleware);
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
