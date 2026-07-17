@@ -1,16 +1,18 @@
-import { StrictMode, useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
-import { store } from '../../store/store';
-import { ThemeContext } from '../../context';
-import { App } from '../app/App';
+'use client';
 
-export const AppProvider = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark' || savedTheme === 'light'
-      ? savedTheme
-      : 'light';
-  });
+import { StrictMode, useEffect, useState, type ReactNode } from 'react';
+import { Provider } from 'react-redux';
+import Cookies from 'js-cookie';
+import { store } from '../../../store/store';
+import { ThemeContext } from '../../../context';
+
+type AppProviderProps = {
+  children?: ReactNode;
+  initialTheme: 'light' | 'dark';
+};
+
+export const AppProvider = ({ children, initialTheme }: AppProviderProps) => {
+  const [theme, setTheme] = useState<'light' | 'dark'>(initialTheme);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
@@ -19,13 +21,19 @@ export const AppProvider = () => {
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
+
+    Cookies.set('theme', theme, {
+      path: '/',
+      expires: 365,
+      sameSite: 'lax',
+    });
   }, [theme]);
 
   return (
     <StrictMode>
       <Provider store={store}>
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-          <App />
+          {children}
         </ThemeContext.Provider>
       </Provider>
     </StrictMode>

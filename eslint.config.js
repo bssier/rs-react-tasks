@@ -163,6 +163,8 @@ export default defineConfig([
       '*.config.js',
       'stylelint.config.ts',
       '**/__tests__/**',
+      '.next/*',
+      'i18n/request.ts',
     ],
   },
 ]);

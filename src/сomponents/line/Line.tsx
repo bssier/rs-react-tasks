@@ -1,20 +1,27 @@
-import './line.css';
+'use client';
+
+import './Line.css';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Item } from '../../types/homePageTypes';
 
 type Props = {
   item: Item;
   isChecked: boolean;
   handleCheckboxChange: () => void;
-  onClick?: () => void;
 };
 
-export const Line = ({
-  item,
-  isChecked,
-  handleCheckboxChange,
-  onClick,
-}: Props) => {
+export const Line = ({ item, isChecked, handleCheckboxChange }: Props) => {
   const { hp, attack, defense, speed, img, title } = item;
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handleLineClick = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('details', title);
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const firstLetter = title.at(0)?.toUpperCase() ?? '';
   const restOfName = title.slice(1);
@@ -22,7 +29,7 @@ export const Line = ({
     title.trim() === '' ? 'Unknown Pokemon' : firstLetter + restOfName;
 
   return (
-    <article className="line" onClick={onClick}>
+    <article className="line" onClick={handleLineClick}>
       <div className="checkbox-container">
         <input
           type="checkbox"

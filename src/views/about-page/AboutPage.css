@@ -1,0 +1,37 @@
+.about-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.greeting-menu {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 100px;
+  font-size: 25px;
+}
+
+.greeting-menu a,
+p {
+  text-align: center;
+  color: black;
+  font-family: Quicksand-Light, sans-serif;
+}
+
+body.dark .about-page,
+body.dark-mode .about-page {
+  background-color: black;
+}
+
+body.dark .about-page .greeting-menu p,
+body.dark-mode .about-page .greeting-menu p {
+  color: white;
+}
+
+body.dark .about-page .greeting-menu a,
+body.dark-mode .about-page .greeting-menu a {
+  color: #4da6ff;
+}

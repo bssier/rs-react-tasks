@@ -1,6 +1,8 @@
+'use client';
+
 import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../../store/store';
-import { clearAll } from '../../store/itemSlice';
+import type { RootState } from '../../../store/store';
+import { clearAll } from '../../../store/itemSlice';
 import './Flyout.css';
 
 export const Flyout = () => {

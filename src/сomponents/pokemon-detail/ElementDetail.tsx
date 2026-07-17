@@ -1,83 +1,63 @@
+'use client';
+
 import './ElementDetail.css';
-import closeIcon from '../../assets/close.png';
-import { useLocation, useNavigate, useParams } from 'react-router';
-import {
-  useGetPokemonDetailQuery,
-  type DetailedItem,
-} from '../../redux/pokemonApi';
-
-type LocationState = {
-  item: DetailedItem;
-};
-
-const hasPokemonState = (state: unknown): state is LocationState => {
-  return typeof state === 'object' && state !== null && 'item' in state;
-};
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useGetPokemonDetailQuery } from '../../../redux/pokemonApi';
 
 export const ElementDetail = () => {
-  const navigate = useNavigate();
-  const { name } = useParams();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const stateItem = hasPokemonState(location.state)
-    ? location.state.item
-    : null;
+  const name = searchParams.get('details');
 
-  const hasFullDetails = !!stateItem;
-
-  const { data: apiItem, isFetching } = useGetPokemonDetailQuery(name ?? '', {
-    skip: !name || hasFullDetails,
+  const { data: item, isFetching } = useGetPokemonDetailQuery(name ?? '', {
+    skip: !name,
   });
 
-  const item = stateItem ?? apiItem;
+  if (!name) {
+    return null;
+  }
 
   const handleCloseClick = (): void => {
-    void navigate(`/${location.search}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('details');
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   return (
     <article className="element-detail">
       <div className="close">
         <button type="button" onClick={handleCloseClick}>
-          <img src={closeIcon} alt="close" />
+          <img src="/close.png" alt="close" />
         </button>
       </div>
 
       <div className="info">
-        {item ? (
+        {isFetching ? (
+          <div className="loader">Loading...</div>
+        ) : item ? (
           <div>
-            <h1>
-              {name
-                ? (name.at(0)?.toUpperCase() ?? '') + name.slice(1)
-                : 'Unknown Pokemon'}
-            </h1>
+            <h1>{name.charAt(0).toUpperCase() + name.slice(1)}</h1>
             <section className="detailed-info">
-              {isFetching && !item.height ? (
-                <div className="loader">Loading details...</div>
+              <p>Height: {item.height}</p>
+              <p>Weight: {item.weight}</p>
+              <h3>Abilities:</h3>
+              {item.abilities.length > 0 ? (
+                <ul>
+                  {item.abilities.map((abilityName: string) => (
+                    <li key={abilityName} className="abilities">
+                      {abilityName}
+                    </li>
+                  ))}
+                </ul>
               ) : (
-                <>
-                  <p>Height: {item.height}</p>
-                  <p>Weight: {item.weight}</p>
-                  <h3>Abilities:</h3>
-                  {item.abilities.length > 0 ? (
-                    <ul>
-                      {item.abilities.map((abilityName: string) => (
-                        <li key={abilityName} className="abilities">
-                          {abilityName}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No abilities specified</p>
-                  )}
-                </>
+                <p>No abilities specified</p>
               )}
             </section>
           </div>
-        ) : isFetching ? (
-          <div className="loader">Loading...</div>
         ) : (
-          <p>Data not found. Please go back to the list.</p>
+          <p>Data not found.</p>
         )}
       </div>
     </article>

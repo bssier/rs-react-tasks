@@ -1,6 +1,11 @@
+'use client';
+
 import './Footer.css';
+import { useTranslations } from 'next-intl';
 
 export const Footer = () => {
+  const t = useTranslations('Footer');
+
   return (
     <footer className="footer">
       <nav className="links-container">
@@ -9,7 +14,7 @@ export const Footer = () => {
           target="_blank"
           rel="noreferrer noopener"
         >
-          Developer GitHub
+          {t('gh')}
         </a>
         <a
           href={
@@ -18,14 +23,14 @@ export const Footer = () => {
           target="_blank"
           rel="noreferrer noopener"
         >
-          Project GitHub
+          {t('proj')}
         </a>
         <a
           href={'https://rs.school/'}
           target="_blank"
           rel="noreferrer noopener"
         >
-          RS School courses
+          {t('course')}
         </a>
         <a
           href={
@@ -34,7 +39,7 @@ export const Footer = () => {
           target="_blank"
           rel="noreferrer noopener"
         >
-          Developer LinkedIn
+          {t('dev-link')}
         </a>
       </nav>
     </footer>

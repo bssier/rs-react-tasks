@@ -1,5 +1,8 @@
-import Search from '../../assets/search.svg';
-import { useSearch } from '../../hooks/useSearch';
+'use client';
+
+import Image from 'next/image';
+import Search from '../../../assets/search.svg';
+import { useSearch } from '../../../hooks/useSearch';
 
 export const SearchBar = () => {
   const { handleEnterClick, handleInputChange, handleSearchClick, inputValue } =
@@ -23,7 +26,7 @@ export const SearchBar = () => {
         type="button"
       >
         <div className="search-icon-container">
-          <img src={Search} alt="search" />
+          <Image src={Search} alt="search" width={24} height={24} />
         </div>
       </button>
     </div>
